@@ -1,0 +1,20 @@
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: nb_monitor_db
+    restart: unless-stopped
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_DB: nb_monitor
+      POSTGRES_USER: ${POSTGRES_USER:-nb_admin}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-nb_secret}
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+      - ./database/schema_init.sql:/docker-entrypoint-initdb.d/01_schema_init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-nb_admin} -d nb_monitor"]
+      interval: 10s
+      timeout: 5s
+      retries: 5

@@ -1,0 +1,23 @@
+# Environment
+.env
+__pycache__/
+*.pyc
+.venv/
+
+# Data (large files)
+data/raw/
+data/postgres/
+data/processed/
+powerbi/data_exports/*.csv
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Jupyter
+.ipynb_checkpoints/
