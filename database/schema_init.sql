@@ -128,7 +128,7 @@ CREATE TABLE IF NOT EXISTS raw.financials_raw (
     brand           brand_enum    NOT NULL,
     fiscal_period   VARCHAR(20)   NOT NULL,   -- 'FY2025-Q3', 'FY2025-H1', 'FY2025'
     metric_name     VARCHAR(100)  NOT NULL,   -- 'revenue', 'gross_margin', 'dtp_revenue'
-    value           NUMERIC(16,4),
+    value           NUMERIC(20,4),
     currency        VARCHAR(5)    DEFAULT 'USD',
     source_url      TEXT,
     source_type     VARCHAR(30),              -- 'sec_10q','ir_report','news_estimate'
