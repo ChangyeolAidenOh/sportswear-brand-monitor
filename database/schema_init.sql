@@ -38,7 +38,8 @@ CREATE TABLE IF NOT EXISTS raw.google_trends_raw (
     search_type   VARCHAR(20)   NOT NULL DEFAULT 'web',    -- 'web','youtube','shopping'
     week_start    DATE          NOT NULL,
     interest      NUMERIC(8,2),                            -- 0-100 (stitched values can be decimal)
-    collected_at  TIMESTAMPTZ   NOT NULL DEFAULT NOW()
+    collected_at  TIMESTAMPTZ   NOT NULL DEFAULT NOW(),
+    UNIQUE (layer, keyword, region, search_type, week_start)
 );
 CREATE INDEX IF NOT EXISTS idx_gtr_layer_keyword_week
     ON raw.google_trends_raw (layer, keyword, week_start);
@@ -57,7 +58,8 @@ CREATE TABLE IF NOT EXISTS raw.naver_datalab_raw (
     age_group     VARCHAR(20),              -- '10' | '20' | '30' | ... | 'all'
     category      VARCHAR(200),             -- shopping insight category path
     raw_json      JSONB,
-    collected_at  TIMESTAMPTZ   NOT NULL DEFAULT NOW()
+    collected_at  TIMESTAMPTZ   NOT NULL DEFAULT NOW(),
+    UNIQUE (source_type, keyword_group, keyword, period_start)
 );
 CREATE INDEX IF NOT EXISTS idx_ndl_keyword_period
     ON raw.naver_datalab_raw (keyword, period_start);
@@ -119,7 +121,8 @@ CREATE TABLE IF NOT EXISTS raw.ecos_raw (
     period          VARCHAR(10)   NOT NULL,   -- 'YYYY-MM'
     value           NUMERIC(14,4),
     unit            VARCHAR(30),
-    collected_at    TIMESTAMPTZ   NOT NULL DEFAULT NOW()
+    collected_at    TIMESTAMPTZ   NOT NULL DEFAULT NOW(),
+    UNIQUE (stat_code, item_code, period)
 );
 
 -- Financial data (SEC EDGAR 10-Q/10-K, Adidas/Puma IR, NB news)
@@ -128,11 +131,14 @@ CREATE TABLE IF NOT EXISTS raw.financials_raw (
     brand           brand_enum    NOT NULL,
     fiscal_period   VARCHAR(20)   NOT NULL,   -- 'FY2025-Q3', 'FY2025-H1', 'FY2025'
     metric_name     VARCHAR(100)  NOT NULL,   -- 'revenue', 'gross_margin', 'dtp_revenue'
-    value           NUMERIC(20,4),
+    value           NUMERIC(20,4),            -- widened for KRW-scale figures
     currency        VARCHAR(5)    DEFAULT 'USD',
     source_url      TEXT,
     source_type     VARCHAR(30),              -- 'sec_10q','ir_report','news_estimate'
-    collected_at    TIMESTAMPTZ   NOT NULL DEFAULT NOW()
+    source_tier     VARCHAR(10),              -- 'T1','T2','T3','T4' (governance level)
+    note            TEXT,                     -- provenance / caveats
+    collected_at    TIMESTAMPTZ   NOT NULL DEFAULT NOW(),
+    UNIQUE (brand, fiscal_period, metric_name, source_type)
 );
 CREATE INDEX IF NOT EXISTS idx_fin_brand_period
     ON raw.financials_raw (brand, fiscal_period);
