@@ -29,17 +29,19 @@ END $$;
 -- RAW SCHEMA  (Python collectors -> raw tables)
 -- ============================================================
 
--- Google Trends (pytrends)
+-- Google Trends (manual CSV + pytrends fallback)
 CREATE TABLE IF NOT EXISTS raw.google_trends_raw (
     id            BIGSERIAL PRIMARY KEY,
+    layer         VARCHAR(40)   NOT NULL DEFAULT 'brand',  -- 'brand','macro_category','micro_product_prevalidation','micro_product_final'
     keyword       VARCHAR(200)  NOT NULL,
     region        region_enum   NOT NULL DEFAULT 'global',
+    search_type   VARCHAR(20)   NOT NULL DEFAULT 'web',    -- 'web','youtube','shopping'
     week_start    DATE          NOT NULL,
-    interest      SMALLINT,                 -- 0-100 relative index
+    interest      NUMERIC(8,2),                            -- 0-100 (stitched values can be decimal)
     collected_at  TIMESTAMPTZ   NOT NULL DEFAULT NOW()
 );
-CREATE INDEX IF NOT EXISTS idx_gtr_keyword_week
-    ON raw.google_trends_raw (keyword, week_start);
+CREATE INDEX IF NOT EXISTS idx_gtr_layer_keyword_week
+    ON raw.google_trends_raw (layer, keyword, week_start);
 
 -- Naver DataLab (search trend + shopping insight)
 CREATE TABLE IF NOT EXISTS raw.naver_datalab_raw (
