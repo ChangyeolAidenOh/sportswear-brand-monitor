@@ -155,12 +155,12 @@ CREATE TABLE IF NOT EXISTS staging.search_weekly (
     product_line    VARCHAR(50),              -- '530','992','2002r','327', NULL=brand-level
     source          VARCHAR(30)   NOT NULL,   -- 'google_trends' | 'naver_datalab'
     region          region_enum   NOT NULL,
+    search_type     VARCHAR(20),              -- 'web','youtube','shopping','naver_search'
+    keyword_group   VARCHAR(40),              -- 'brand','product','nb_product'
     week_start      DATE          NOT NULL,
-    week_end        DATE          NOT NULL,
-    interest_index  NUMERIC(8,4),             -- normalized 0-100
-    raw_id          BIGINT,
+    interest        NUMERIC(8,2),
     updated_at      TIMESTAMPTZ   NOT NULL DEFAULT NOW(),
-    UNIQUE (brand, product_line, source, region, week_start)
+    UNIQUE (brand, product_line, source, region, search_type, week_start)
 );
 
 -- YouTube + Blog social signals unified to weekly grain
@@ -198,8 +198,8 @@ CREATE TABLE IF NOT EXISTS staging.financials_quarterly (
     revenue         NUMERIC(16,4),
     revenue_currency VARCHAR(5),
     revenue_usd     NUMERIC(16,4),            -- converted to USD for comparison
-    gross_margin_pct NUMERIC(6,4),
-    dtp_revenue_pct  NUMERIC(6,4),            -- Direct-to-Consumer share
+    gross_margin_pct NUMERIC(7,4),
+    dtp_revenue_pct  NUMERIC(7,4),            -- Direct-to-Consumer share
     source_type     VARCHAR(30),
     updated_at      TIMESTAMPTZ   NOT NULL DEFAULT NOW(),
     UNIQUE (brand, fiscal_year, fiscal_quarter)
@@ -237,7 +237,7 @@ CREATE TABLE IF NOT EXISTS mart.brand_kpi_weekly (
     search_yoy_pct      NUMERIC(8,4),          -- year-over-year %
 
     -- Share of Voice (search-based)
-    sov_pct             NUMERIC(6,4),          -- brand search / total 4-brand search
+    sov_pct             NUMERIC(7,4),          -- brand search / total 4-brand search
 
     -- Social buzz composite
     social_mention_count INTEGER,
@@ -260,7 +260,7 @@ CREATE TABLE IF NOT EXISTS mart.product_portfolio_weekly (
 
     search_index        NUMERIC(8,4),
     search_wow_pct      NUMERIC(8,4),
-    share_within_nb_pct NUMERIC(6,4),            -- this product / total NB search
+    share_within_nb_pct NUMERIC(7,4),            -- this product / total NB search
     season_label        VARCHAR(10),
 
     updated_at          TIMESTAMPTZ   NOT NULL DEFAULT NOW(),
@@ -277,7 +277,7 @@ CREATE TABLE IF NOT EXISTS mart.channel_mix_weekly (
 
     signal_value        NUMERIC(10,4),
     signal_type         VARCHAR(30),             -- 'click_share','search_ratio','ranking'
-    share_pct           NUMERIC(6,4),
+    share_pct           NUMERIC(7,4),
 
     updated_at          TIMESTAMPTZ   NOT NULL DEFAULT NOW(),
     UNIQUE (brand, channel, week_start)
@@ -316,6 +316,85 @@ CREATE TABLE IF NOT EXISTS mart.anomaly_log (
 );
 CREATE INDEX IF NOT EXISTS idx_anom_date
     ON mart.anomaly_log (detected_date);
+
+
+-- ============================================================
+-- MART VIEWS  (created by Stage 2 ETL, duplicated here for idempotent init)
+-- ============================================================
+
+-- 04: SoV by search type (brand-level, multi-channel)
+CREATE OR REPLACE VIEW mart.vw_sov_by_search_type AS
+SELECT
+    brand, region, search_type, week_start,
+    interest AS search_index,
+    ROUND(100.0 * interest
+          / NULLIF(SUM(interest) OVER (PARTITION BY region, search_type, week_start), 0), 4)
+        AS sov_pct
+FROM staging.search_weekly
+WHERE keyword_group = 'brand'
+  AND source = 'google_trends';
+
+-- 05a: Padding competitive landscape with 7-week MA
+CREATE OR REPLACE VIEW mart.vw_padding_competitive AS
+SELECT
+    CASE keyword
+        WHEN '나이키 패딩'     THEN 'nike'
+        WHEN '아디다스 패딩'   THEN 'adidas'
+        WHEN '뉴발란스 패딩'   THEN 'new_balance'
+        WHEN '노스페이스 패딩' THEN 'north_face'
+    END AS brand,
+    week_start, interest,
+    ROUND(AVG(interest) OVER (PARTITION BY keyword ORDER BY week_start
+          ROWS BETWEEN 6 PRECEDING AND CURRENT ROW), 2) AS ma_7w,
+    EXTRACT(WEEK FROM week_start)::SMALLINT AS iso_week,
+    CASE
+        WHEN EXTRACT(WEEK FROM week_start) BETWEEN 10 AND 35
+            THEN 'SS' || TO_CHAR(week_start, 'YY')
+        WHEN EXTRACT(WEEK FROM week_start) >= 36
+            THEN 'FW' || TO_CHAR(week_start, 'YY')
+        ELSE 'FW' || TO_CHAR(week_start - INTERVAL '1 year', 'YY')
+    END AS season_label
+FROM raw.google_trends_raw
+WHERE layer = 'apparel' AND keyword LIKE '%패딩';
+
+-- 05b: Padding season start detector
+CREATE OR REPLACE VIEW mart.vw_padding_season_start AS
+WITH candidates AS (
+    SELECT brand, week_start, interest, ma_7w, season_label, iso_week,
+           CASE WHEN interest > ma_7w * 1.3 AND iso_week BETWEEN 30 AND 50
+                THEN TRUE ELSE FALSE END AS is_surge
+    FROM mart.vw_padding_competitive
+),
+first_surge AS (
+    SELECT brand, season_label,
+           MIN(week_start) AS season_start_date,
+           MIN(iso_week) AS season_start_week
+    FROM candidates
+    WHERE is_surge AND season_label LIKE 'FW%'
+    GROUP BY brand, season_label
+)
+SELECT fs.brand, fs.season_label, fs.season_start_date, fs.season_start_week,
+       fs.season_start_week - nf.season_start_week AS weeks_vs_northface
+FROM first_surge fs
+LEFT JOIN first_surge nf ON fs.season_label = nf.season_label AND nf.brand = 'north_face'
+ORDER BY fs.season_label, fs.season_start_week;
+
+-- 07a: Brand ranking per region per week
+CREATE OR REPLACE VIEW mart.vw_brand_ranking AS
+SELECT brand, region, week_start, search_index, sov_pct, search_wow_pct,
+       RANK() OVER (PARTITION BY region, week_start ORDER BY search_index DESC NULLS LAST) AS search_rank,
+       DENSE_RANK() OVER (PARTITION BY region, week_start ORDER BY sov_pct DESC NULLS LAST) AS sov_rank,
+       RANK() OVER (PARTITION BY region, week_start ORDER BY search_wow_pct DESC NULLS LAST) AS momentum_rank,
+       season_label
+FROM mart.brand_kpi_weekly;
+
+-- 07b: NB product ranking per region per week
+CREATE OR REPLACE VIEW mart.vw_product_ranking AS
+SELECT product_line, region, week_start, search_index, share_within_nb_pct, search_wow_pct,
+       RANK() OVER (PARTITION BY region, week_start ORDER BY share_within_nb_pct DESC NULLS LAST) AS share_rank,
+       DENSE_RANK() OVER (PARTITION BY region, week_start ORDER BY search_wow_pct DESC NULLS LAST) AS momentum_rank,
+       season_label
+FROM mart.product_portfolio_weekly;
 
 
 -- ============================================================
