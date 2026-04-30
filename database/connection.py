@@ -17,7 +17,7 @@ def get_pool():
             minconn=1,
             maxconn=5,
             host=os.getenv("POSTGRES_HOST", "localhost"),
-            port=int(os.getenv("POSTGRES_PORT", "5432")),
+            port=int(os.getenv("POSTGRES_PORT", "5433")),
             dbname=os.getenv("POSTGRES_DB", "nb_monitor"),
             user=os.getenv("POSTGRES_USER", "nb_admin"),
             password=os.getenv("POSTGRES_PASSWORD", "nb_secret"),
