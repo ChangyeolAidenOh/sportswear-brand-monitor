@@ -2,7 +2,7 @@
 
 **Project:** Global Sportswear Brand Performance Monitor
 **Author:** Changyeol Oh
-**Last updated:** 2026-04-30
+**Last updated:** 2026-05-01 (Prophet Track E added)
 
 ---
 
@@ -328,3 +328,174 @@ For BDC's NB Korea focus, CSI→Search is the most important finding: NB Korea s
 2. **Sales data gap:** NB is unlisted, making public revenue data structurally unavailable. If BDC provides internal sales figures, the Search→Sales hop can be directly tested — the current pipeline architecture (mart.granger_results) supports this extension without schema changes.
 3. **40-month observation window:** Marginal for Granger with 4 lags. Continued data collection will improve statistical power and enable re-testing with longer horizons.
 
+---
+
+## 10. Anomaly Detection — 3-Way Comparison (Stage 5)
+
+### 10.1 Problem Statement
+
+Stage 2 used rolling z-score (8-week trailing window, |z| > 2.0) on raw search_index for anomaly detection, producing 69 flagged weeks (5.0% rate). However, MSTL decomposition (Stage 3) revealed that quarterly (13w) and annual (52w) seasonal patterns dominate the raw signal. Rolling z-score cannot distinguish between a genuine anomaly and a predictable seasonal peak, because the 8-week window is shorter than the 13-week quarterly cycle.
+
+Stage 5 quantifies this problem: 91.3% of Stage 2 anomalies were seasonal artifacts — false positives caused by quarterly pattern peaks/troughs falling within the z-score threshold.
+
+### 10.2 Three Methods
+
+| Method | Input | Anomaly Criterion | Rationale |
+|---|---|---|---|
+| Rolling Z-score (baseline) | Raw search_index | \|z\| > 2.0, 8-week trailing window | Stage 2 replication for comparison |
+| MSTL Residual Z-score | MSTL residual (trend + season removed) | \|residual / std\| > 2.0 | Deseasonalized anomaly detection |
+| Isolation Forest | MSTL residual | contamination=0.05 | Non-parametric, distribution-free |
+
+All three methods use identical threshold/rate parameters (|z| > 2.0 or contamination=0.05) to enable fair comparison. Per advisor decision, brand-specific thresholds were explicitly avoided — uniform thresholds allow anomaly rate differences between brands to emerge as findings rather than artifacts of parameter tuning.
+
+### 10.3 Per-Series Independent Analysis
+
+Each of the 8 brand × region time series is analyzed independently. Rationale: Stage 3 MSTL showed that variance structures differ substantially across series (puma global std=0.48 vs nike korea std=4.51). Multivariate Isolation Forest would conflate these scales, causing one brand's normal range to overlap with another's anomaly zone.
+
+This decision is consistent with Stage 4 Granger findings — each brand has a structurally different relationship with macro sentiment, so anomaly patterns should also be brand-specific.
+
+### 10.4 M+IF Independence Limitation
+
+MSTL Residual and Isolation Forest both operate on the same input (MSTL residual). Their agreement (52 of 54 two-way cases) reflects input sharing, not methodological convergence. This is not independent cross-validation.
+
+Only agreement that includes the Z-score method constitutes true cross-validation, because Z-score uses the raw time series with a rolling window — an entirely different input and methodology.
+
+This distinction motivated the Tier structure for investigation prioritization:
+- **Tier 1 (Z included):** Independent cross-validation. 7 anomalies.
+- **Tier 2 (M+IF only, macro/multi-brand):** Same-input agreement with co-occurrence pattern adding value. Investigation limited to multi-brand weeks.
+- **Excluded:** M+IF only, single-brand — no independent validation, insufficient investigation value.
+
+### 10.5 Event Matching Design
+
+**Window:** Strict `event_date BETWEEN week_start AND week_start + 6`. For range events: `week_start BETWEEN event_date AND event_end_date`. No ±1 week extension — extending would create false matches where events from adjacent weeks (e.g., 3 NB events in 9/10, 9/15, 9/17) inflate Precision.
+
+**Brand logic:** macro_event (brand=NULL) matches any brand anomaly in the matching week. Brand-specific events match only that brand. When multiple events match one anomaly, the closest date is designated primary; others are secondary.
+
+**Coverage period filter:** Precision denominator includes only anomalies within events_calendar coverage period (2024-02 ~ 2025-04, 14 of 40 months). Anomalies outside this range have no matchable events by construction, and would artificially depress Precision.
+
+### 10.6 Evaluation Framework
+
+**Precision** is reported in a 2×2 matrix: {Tier 1, Tier 1+2} × {all matches, ex-macro matches}. This structure prevents macro_event matches (which match all brands in a week) from inflating the headline number.
+
+**Event Detection Rate** replaces "Recall" because events_calendar was constructed anomaly-driven (anomaly first → event retroactive search). This means the calendar structurally overrepresents events that coincide with anomalies, inflating any Recall metric. The `event_origin` tag separates:
+- `scheduled` (7 events): Known independently of anomaly detection (Olympics, Air Max Day, Black Friday, CSI data, London Marathon, AJ3 Black Cement). These form an honest Recall denominator.
+- `investigated` (18 events): Found by searching for what caused a detected anomaly. These cannot form a Recall denominator without circular reasoning.
+
+### 10.7 Air Max Day Spillover Finding
+
+Air Max Day 2024 (March 26, brand=nike) was undetected — not because the matching window missed it, but because Nike had no anomaly in that week. Instead, adidas and NB showed anomalies. Interpretation: Air Max Day is absorbed by Nike's own MSTL seasonal component (predictable annual event), but generates search spillover to competitors whose seasonal models do not anticipate it. This is a methodologically meaningful asymmetry, not a matching failure.
+
+---
+
+## 11. Forecasting Methodology (Stage 6) — DRAFT
+
+### 11.1 Forecast Target and Horizon
+
+Forecast target: NB Korea and NB Global weekly search_index from mart.brand_kpi_weekly. These two series form the core CSI → NB Korea → NB Global chain narrative (Stage 4). Other brands excluded — 4-brand × 2-region expansion offers low marginal value relative to implementation cost, and NB is the project's primary analytical subject.
+
+Forecast horizon: 26 weeks (test set). This spans two quarterly cycles (13w × 2), ensuring the test window contains at least one full period of both annual (52w) and quarterly (13w) seasonality discovered in Stage 3 MSTL decomposition. A 12-week test would not complete a single quarterly cycle, making it impossible to evaluate whether models capture seasonal patterns.
+
+Train: 148 weeks. This is short for deep learning but sufficient for SARIMAX with exogenous variables.
+
+### 11.2 Exogenous Variable: CSI Forward-Fill
+
+ECOS Consumer Sentiment Index (stat_code 511Y002) is the sole exogenous variable, justified by Stage 4 Granger causality (CSI → NB Korea search, unidirectional, p<0.05).
+
+CSI is published monthly. Conversion to weekly granularity uses forward-fill: each week inherits the CSI value of its containing month. This assumes "the published CSI for a given month is the best available estimate of consumer sentiment for all weeks within that month." No interpolation or smoothing is applied — forward-fill is the most conservative assumption and avoids introducing artificial high-frequency variation.
+
+### 11.3 Seasonality Handling: Fourier Terms
+
+Stage 3 MSTL confirmed dual seasonality: annual (52w) and quarterly (13w). Three options were evaluated for incorporating seasonality into SARIMAX:
+
+**Option 1: Seasonal ARIMA (seasonal_order with s=52).** Rejected. With 148 training observations, estimating seasonal AR/MA parameters at s=52 creates severe degrees-of-freedom constraints. The model would need to estimate parameters linking observations 52 weeks apart, with fewer than 3 complete annual cycles available. Convergence failures are expected.
+
+**Option 2: Quarterly dummy variables.** Rejected. Dummy variables model seasonality as abrupt level shifts at quarter boundaries. Stage 3 MSTL seasonal components showed smooth sinusoidal patterns, not step functions. Dummies would misrepresent the shape of seasonal variation and waste parameters on an incorrect functional form.
+
+**Option 3: Fourier terms as exogenous regressors.** Selected. Fourier pairs sin(2πkt/T) and cos(2πkt/T) for period T and harmonic k naturally represent smooth cyclical patterns. This follows Hyndman & Athanasopoulos's recommended "ARIMA + Fourier" approach for long-period seasonality.
+
+Configuration: K=2 for T=52 (annual) + K=2 for T=13 (quarterly) = 8 Fourier columns. K=2 captures the fundamental frequency and first harmonic for each period. K≥3 was rejected because total parameter count (ARIMA order + 9 exogenous + intercept ≈ 12-14 parameters) against 148 observations must maintain at least 10:1 ratio.
+
+The Fourier index t is sequential (0, 1, ..., n-1) starting from the first training observation. For test-period forecasting, t continues seamlessly (148, 149, ..., 173), ensuring phase continuity.
+
+### 11.4 SARIMAX Order Selection
+
+**Stationarity:** ADF test on raw series: Korea p=0.020 (borderline stationary), Global p=0.264 (non-stationary). d=1 differencing applied to both — Korea's ADF is marginal, and auto_arima with d=1 yields lower AIC.
+
+**Order search:** pmdarima auto_arima with seasonal=False (seasonal structure handled by Fourier exogenous), d=1 fixed, max_p=5, max_q=5, stepwise=True, information_criterion=AIC.
+
+**Results:** Korea (0,1,1), Global (0,1,0). Manual comparison of 6-7 candidate orders confirmed auto_arima selections as AIC-optimal in both series.
+
+**Global (0,1,0) interpretation:** A random walk with drift. The series has no AR or MA structure, meaning no autocorrelation-based predictive information exists. Trend is captured by the drift term, while seasonality and macro environment are explained by Fourier and CSI exogenous variables. This is recorded as Data Point 15.
+
+### 11.5 Prophet Design and Ablation
+
+Prophet (Facebook/Meta, 2017) decomposes time series into trend + seasonality + regressors using a Bayesian structural model. Its key differentiator from SARIMAX is **automatic changepoint detection** — the trend is modeled as a piecewise linear function with changepoints selected from the training data.
+
+**Configuration:** `seasonality_mode='additive'` (search index 0-100, variance not level-proportional), `changepoint_prior_scale=0.05` (default, conservative on 174 weeks). CSI added via `add_regressor('csi')` for feature parity with SARIMAX/LSTM.
+
+**Custom seasonality:** Prophet default `yearly_seasonality=True` uses `fourier_order=10` (20 Fourier columns). To ensure fair comparison with SARIMAX (K=2, 4 columns), yearly seasonality was manually set to `fourier_order=2`. Quarterly seasonality added as `period=91.25` days (13 weeks × 7), `fourier_order=2`.
+
+**Ablation methodology:** Two Prophet variants were compared — K=2 (SARIMAX parity) and K=10 (Prophet default) — to separate changepoint detection effect from Fourier flexibility effect:
+
+| Region | Changepoint contribution | Fourier K=10 contribution |
+|---|---|---|
+| Korea | 147% (sole driver; K=10 harmful) | -47% (overfitting) |
+| Global | 66% (primary) | 34% (secondary) |
+
+This ablation demonstrates that changepoint detection is the primary source of Prophet's advantage. For short event-driven series (Korea), excessive Fourier terms actively degrade performance by overfitting annual seasonality with insufficient data support.
+
+**CSI regressor coefficient comparison:** Prophet CSI regressor coefficients (Korea -0.09, Global +0.002) are near-zero, contrasting sharply with SARIMAX (Korea +3.98, Global +2.01). This divergence is not a contradiction but a consequence of model architecture: Prophet's flexible trend and SARIMAX's rigid drift partition the same variance differently.
+
+Prophet's 25 piecewise trend changepoints absorb CSI-correlated structural variation because both CSI and the piecewise trend capture the same underlying signal — macro-environment-driven demand level shifts. When Prophet's trend component claims this variance first, the CSI regressor has no marginal effect remaining. SARIMAX's ARIMA(0,1,0)/(0,1,1) has only a simple drift for trend, so CSI must absorb all level-change information, producing the large positive coefficients.
+
+This means Prophet's advantage (changepoint detection) and CSI coefficient disappearance are two sides of the same phenomenon. Prophet implicitly encodes CSI-equivalent information through trend breakpoints. Data Point 16's CSI elasticity asymmetry (Korea 3.98 vs Global 2.01) reflects real demand structure but is observable only in models with rigid trend specification.
+
+### 11.6 LSTM Architecture Decisions
+
+**Feature parity:** LSTM receives identical input features to SARIMAX (search_index + CSI + 8 Fourier terms = 10 features). This ensures the 3-way comparison tests model architecture differences, not feature engineering differences. Adding LSTM-only features would confound the comparison.
+
+**No Attention mechanism:** With 174 total observations and lookback=13, the maximum number of training sequences is ~113. Attention mechanisms require sufficient batch diversity to learn "where to attend" within the lookback window. At 113 sequences, attention parameters would overfit to training-specific patterns. A simpler 2-layer stacked LSTM is more appropriate.
+
+**Model capacity vs sample size:** The LSTM has 52,801 parameters against 113 training sequences — a 467:1 ratio. This is structurally overfitting and explains why LSTM underperforms SARIMAX on Korea. Early stopping (patience=30) and dropout (0.3) mitigate but cannot overcome this fundamental mismatch. For comparison, well-performing LSTM applications typically operate at 1:10 to 1:100 parameter-to-sample ratios.
+
+**Validation split:** 15% of training data (~22 weeks) held for early stopping validation. Effective training set: ~126 weeks. The 3-way train/val/test partition creates structurally small datasets at each stage — an inherent limitation of applying DL to 174-week series.
+
+**Recursive forecasting:** 26-week horizon generated one step at a time, with each predicted value fed back as input for the next step. This accumulates prediction errors but represents the realistic operational scenario where future actuals are unavailable.
+
+### 11.7 Chronos Zero-Shot Design
+
+Chronos (Amazon, 2024) is a T5-based pretrained time series foundation model. It tokenizes time series values via scaling and quantization, then generates probabilistic forecasts through autoregressive sampling.
+
+**Univariate design is intentional.** Chronos receives only the search_index series — no CSI, no Fourier terms. This is not an oversight but a deliberate comparison axis: "what can a foundation model achieve with temporal patterns alone, without domain exogenous variables?" If Chronos outperforms SARIMAX+CSI, it demonstrates that foundation model pattern recognition exceeds domain feature engineering. If it loses, it demonstrates that domain exogenous variables (CSI) provide irreplaceable predictive information that pre-training cannot substitute.
+
+**Two model sizes:** chronos-t5-small (~46M params) and chronos-t5-base (~200M params) run on M2 MacBook CPU. Both produce 20 probabilistic samples; median serves as point forecast, 10th/90th percentiles as uncertainty bounds.
+
+### 11.8 Anti-Scaling Finding
+
+Chronos-small outperforms Chronos-base in both NB Korea and NB Global. This contradicts the general scaling law expectation that larger models perform better.
+
+Explanation: Chronos was pre-trained on diverse time series datasets with thousands to tens of thousands of timesteps. The base model's larger capacity encodes longer-range temporal dependencies learned from these long series. When applied to a 174-week context, these longer-range patterns have no empirical support in the data and act as noise — the model's prior overwhelms the evidence.
+
+This is recorded as Data Point 17 and has practical implications: for short time series (< 200 timesteps), smaller foundation models may be preferred over larger variants.
+
+### 11.9 Evaluation Framework
+
+**Primary metric: RMSE.** Chosen because all three models produce forecasts on the same scale (search_index 0-100), enabling direct comparison. RMSE penalizes large errors, which is desirable for detecting whether models miss event-driven spikes.
+
+**Secondary metrics: MAE and MAPE.** MAPE excludes weeks with search_index = 0 to avoid division artifacts. MAPE provides scale-independent interpretability.
+
+**Anomaly-week analysis caveat:** Test set contains n=1 anomaly week per region. Single-observation RMSE comparison is not statistically meaningful and should not be interpreted as evidence of anomaly prediction capability.
+
+**Train in-sample residual analysis (supplementary):** SARIMAX re-fit on training data, in-sample residuals compared for anomaly vs normal weeks. Anomaly/normal mean |residual| ratio: Korea 1.17x, Global 1.22x. However, in-sample residuals measure fit quality (the model learned from these weeks), not prediction quality. Out-of-sample anomaly-specific evaluation would require rolling/expanding window cross-validation, but with 0-2 anomalies per test fold, statistical power is absent. This is a structural limitation of short time series forecasting, not a methodological gap.
+
+**CSI elasticity vs event override:** The SARIMAX CSI coefficients (Korea 3.98, Global 2.01) describe the average structural relationship between consumer sentiment and search demand. However, Stage 5 Data Point 12 demonstrates that strong event stacking can produce positive search spikes even during CSI troughs (e.g., 2025-03-23 z=+3.00 and 2025-04-20 z=+4.24 occurred at CSI 93-94). The CSI-based forecast captures baseline demand trajectory; event-driven spikes operate on a separate, structurally unpredictable layer. This dual-layer framing — predictable baseline (CSI + seasonality) vs unpredictable spikes (events) — is the honest characterization of forecast capability on this series.
+
+### 11.10 Korea-Global Performance Divergence
+
+The finding that Korea favors SARIMAX while Global favors LSTM is not random — it follows from the series' structural properties:
+
+**Korea:** Strong annual seasonality (Fourier 52w significant), event-driven spikes (Stage 5 anomaly density), CSI-reactive demand. SARIMAX's explicit Fourier terms and CSI coefficient capture these structures parsimoniously. LSTM's 467:1 param/sample ratio cannot learn the same structures more efficiently.
+
+**Global:** No autoregressive pattern (ARIMA 0,1,0), weak annual seasonality (Fourier 52w non-significant), smoother dynamics. LSTM's ability to model nonlinear interactions between CSI and sub-quarterly Fourier terms provides an advantage that the linear random walk model cannot achieve.
+
+This divergence supports the methodological choice to run multiple model families rather than selecting a single "best" approach ex ante. It also validates the decision to forecast both NB Korea and NB Global rather than selecting one — a single-series analysis would have missed the structural split and led to a misleading generalization about model superiority.

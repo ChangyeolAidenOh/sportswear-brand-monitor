@@ -309,6 +309,121 @@ Stage 3 KPI 5종에 추가:
 
 ---
 
+
+## Stage 5 Anomaly Detection Insights
+
+### Data Point 11: Celebrity-Driven Search Dominance in NB Korea
+
+2024-09-15 주간 (z=+2.15, 3-way agreement)은 세 가지 NB Korea 이벤트가 동시에 겹쳤다: 송혜교 밀라노 SNS 착용샷(전 사이즈 품절 대란), 아이유 글로벌 앰버서더 가을 화보, Stone Island x NB 991V2 GHOST 콜라보 공개. 셀럽 효과가 제품 출시 효과를 압도하는 구조가 확인되었다.
+
+Stage 5 전체 최고 severity (z=+4.24, 2025-04-20)도 992 팝업스토어 + 하프마라톤 대회 + 키즈 샌들 완판이라는 복합 이벤트 구조였다. NB Korea의 anomaly spike는 단일 제품보다 **이벤트 적층(event stacking)**에 의해 발생하는 패턴이 반복적으로 관찰된다.
+
+BDC 시사점: NB Korea 캠페인 기획 시 셀럽 콘텐츠 + 제품 출시 + 이벤트를 의도적으로 같은 주에 집중시키는 "event stacking" 전략의 검색 효과가 실증적으로 확인되었다.
+
+### Data Point 12: CSI 급락과 Multi-Brand Dip 매칭
+
+2024-12 CSI 87.9 (전월 대비 -12.7pt)와 2025-02 CSI 95.0 저점은 각각 NB+puma korea dip 클러스터와 adidas+nike+puma korea dip을 설명한다. 이 매칭은 Stage 4 Granger 결과(NB: CSI→Search 단방향)와 일관된다 — 거시 경기 하락이 NB 검색 수요를 직접적으로 억제하는 구조가 anomaly 수준에서도 확인되었다.
+
+특히 2025-03-23 (z=+3.00)과 2025-04-20 (z=+4.24)이 CSI 93~94 수준에서 발생한 positive spike라는 점이 주목할 만하다. 낮은 CSI에서도 NB-specific 이벤트(Stone Island 콜라보, 992 팝업)가 macro를 override할 수 있음을 보여준다. 이는 "NB는 CSI에 수동적으로 끌려다닌다"는 단순 해석에 대한 nuance다.
+
+### Data Point 13: Air Max Day 경쟁사 검색 교란 효과
+
+Nike Air Max Day (3/26)는 Nike 자체 시계열에서는 anomaly로 잡히지 않았다(MSTL seasonal이 흡수). 그러나 같은 주 adidas global과 NB global에서 anomaly가 검출되었다. 매년 반복되는 Nike 이벤트가 **Nike에겐 예측 가능한 연례 행사이지만, 경쟁사에겐 비예측적 검색 교란 이벤트**로 작용하는 비대칭 구조다.
+
+이는 MSTL 기반 anomaly detection의 방법론적 장점을 보여준다: 브랜드별 독립 seasonal model이 "해당 브랜드에게 예측 가능한 패턴"과 "비예측적 외부 충격"을 자동으로 구분한다.
+
+### Data Point 14: 2024 봄 올림픽 연도 초과 수요
+
+2024-03-24 ~ 2024-04-28 4주 연속 글로벌 전 브랜드 동반 spike는 MSTL residual에서 검출되었다 — 매년 반복되는 "봄 시즌"은 이미 52주 seasonal이 흡수했으므로, 이 residual spike는 2024년 봄이 **평년 대비 비정상적으로 강했음**을 의미한다.
+
+원인: Paris 2024 올림픽 D-100 캠페인 총공세 (Nike On Air 파리 쇼케이스 + adidas 41종목 올림픽 신발 공개 + NB "We Got Now" 캠페인 + Puma "FOREVER.FASTER." 10년 만의 글로벌 캠페인) + Euro 2024/Copa America 국가대표 키트 공개 + Air Max Day + London Marathon. 올림픽 연도는 정의상 4년에 1회이므로 연간 seasonal에 흡수되지 않으며, 이런 구조적 초과 수요는 올림픽 연도 특유의 패턴이다.
+
+Stage 6 Forecasting 시사점: SARIMAX exogenous 변수로 "올림픽 연도 여부" binary indicator를 포함할 근거가 된다.
+
+### Integrated Business Diagnosis (Stage 5 업데이트)
+
+Stage 4 진단: **"수요-전환 갭 + CSI 수동형 수요 구조 + Korea→Global 10주 선행"**
+
+Stage 5 업데이트: 91.3% false positive 제거 후, NB Korea의 진짜 anomaly 패턴이 드러남:
+
+1. **Event stacking이 핵심 전략**: 단일 이벤트보다 셀럽 + 콜라보 + 이벤트의 동시 집중이 검색 spike를 만든다 (Data Point 11)
+2. **CSI 하락은 dip를 만들지만, 강한 이벤트는 CSI를 override**: NB의 CSI→Search 수동 구조에도 불구하고, 이벤트 적층은 macro 역풍을 돌파할 수 있다 (Data Point 12)
+3. **경쟁사 이벤트도 기회**: Nike Air Max Day 같은 업계 주목 이벤트가 NB 검색을 동반 상승시킬 수 있다 (Data Point 13)
+
+### BDC Implication (Stage 5 추가)
+
+Stage 4 KPI 7종에 추가:
+8. **Event Stacking Density** — 같은 주에 겹치는 이벤트 수와 검색 spike 크기의 상관. 이벤트 기획 시 분산보다 집중이 효과적인지 정량 검증.
+9. **Anomaly Detection Method Agreement** — 3-way agreement 건수 월별 추적. 높은 agreement = 높은 신뢰 anomaly.
+
+---
+
+
+
 *Stage 0 Quick Exploratory Pass: COMPLETED.*
 *Stage 3 Cross-cutting Insights: APPENDED (2026-04-30).*
-*Stage 4 Leading Indicator Insights: APPENDED (2026-04-30).*
+
+## Stage 6 Forecasting Insights
+
+### Data Point 15: NB Global ARIMA(0,1,0) — 자기회귀 정보 부재
+
+NB Global 검색 지수의 SARIMAX 최적 order는 (0,1,0), 즉 AR항도 MA항도 없는 random walk with drift다. AR/MA 구조가 없으므로 시계열의 자기상관(autocorrelation)에서 오는 예측 정보가 없고, trend는 drift로, 계절성과 거시 환경은 Fourier + CSI exogenous로 설명된다.
+
+이는 NB Global 검색이 "자체적인 모멘텀이나 관성 없이, 외부 요인에 의해서만 움직이는 수요"임을 시사한다. Stage 4에서 NB Korea가 Global을 ~10주 선행한다는 발견과 결합하면, Global 검색은 Korea의 선행 신호 + CSI 거시 환경이라는 두 외부 요인의 함수일 가능성이 높다.
+
+**BDC 시사점:** NB Global 검색 수요 예측에서 자체 과거 데이터보다 CSI 전망 + NB Korea 추세 모니터링이 더 가치 있다.
+
+### Data Point 16: CSI 탄력성 비대칭 — Korea가 Global 대비 2배 민감
+
+SARIMAX CSI 계수: Korea 3.98 vs Global 2.01 (둘 다 p<0.001). CSI 1pt 상승 시 Korea 검색 ~4pt, Global ~2pt 증가. Korea의 CSI 탄력성이 Global의 약 2배다.
+
+Stage 4 Granger 결과("NB는 거시 경기 후행 수요 구조")의 정량적 확인이면서, 추가 발견이다. Korea가 더 민감한 이유는 두 가지로 해석 가능하다: (1) 한국 소비자의 NB에 대한 수요가 더 재량적(discretionary)이어서 경기 변동에 탄력적, (2) 한국 시장이 브랜드 관성이 약한 신생 시장이라 외부 환경에 더 반응적.
+
+**BDC 시사점:** CSI 하락 전환 시 Korea 캠페인 강화 우선순위가 Global보다 높다. Korea의 CSI 민감도가 2배이므로 같은 macro 하락에서 Korea 검색 감소폭이 더 크다.
+
+> *This elasticity is SARIMAX-specific. Prophet's piecewise trend absorbs CSI-correlated structural variation, reducing CSI regressor marginal effect to near-zero (Korea -0.09, Global 0.002). The elasticity asymmetry reflects real demand structure but is observable only in models with rigid trend specification.*
+
+### Data Point 17: Foundation Model Anti-Scaling — 짧은 시계열에서의 역전
+
+Chronos-base(200M params)가 Chronos-small(46M params)보다 NB Korea, NB Global 모두에서 성능이 떨어졌다 (Korea RMSE: small 7.20 vs base 7.80, Global: 3.65 vs 3.99). 일반적인 scaling law 기대와 반대.
+
+174주 context는 base 모델의 사전학습 과정에서 학습된 장기 패턴을 정당화하기에 불충분하다. base가 수천~수만 시점 시계열에서 학습한 longer-range dependency는 174주에서 데이터 근거가 없으므로 noise로 작용한다. 모델의 prior가 evidence를 압도하는 구조.
+
+**실무 시사점:** 200시점 미만의 짧은 시계열에 foundation model을 적용할 때, 모델 크기를 키우는 것이 성능 개선을 보장하지 않는다. 오히려 smaller variant가 데이터 규모에 맞는 prior complexity를 제공할 수 있다.
+
+### Data Point 18: Prophet 메커니즘 3각 분석 — Changepoint 우위, CSI 흡수, Fourier 과적합
+
+Prophet이 SARIMAX를 이긴 이유를 3가지 각도에서 분석:
+
+**첫째, Changepoint가 왜 이겼는가 (ablation).** Prophet ablation (yearly fourier_order K=2 vs K=10): changepoint detection이 Prophet 우위의 주된 원인. Korea에서 changepoint 기여 147%, Global 66%. SARIMAX의 단순 drift는 COVID 회복 → 올림픽 효과 → 2025 전환 등 구조적 break를 포착하지 못한다.
+
+**둘째, CSI 정보가 어디로 갔는가 (흡수).** Prophet CSI 계수: Korea -0.09, Global +0.002 (거의 소멸). SARIMAX: Korea +3.98, Global +2.01. Prophet의 25개 changepoint가 CSI와 상관된 "거시 환경에 따른 수요 레벨 변화"를 trend로 먼저 흡수하여, CSI regressor에 남는 marginal effect가 없다. 이건 Prophet이 CSI 없이도 비슷한 정보를 trend로 잡고 있다는 뜻이다. SARIMAX는 drift뿐이라 CSI가 그 역할을 전부 떠안는다. Prophet이 이긴 이유와 CSI 계수 소멸은 같은 현상의 양면.
+
+**셋째, Fourier 과적합이 왜 발생하는가 (K=10 역효과).** Korea에서 K=10이 K=2보다 RMSE가 높다 (5.85 > 5.57). 174주에서 연간 시즌의 고차 하모닉(K≥3)은 데이터 근거가 불충분하여 event-driven noise를 fit한다. Global에서는 smoother dynamics 덕에 K=10이 약간 유리하지만, 개선폭(34%)은 changepoint(66%)에 비해 부차적.
+
+Data Point 15와 함께 읽어야 한다 — SARIMAX는 Global에서 AR/MA 구조 부재를 확인하고, Prophet은 같은 현상을 "자기회귀 모멘텀 없는 piecewise linear trend"로 재해석한다. 두 모델이 같은 결론에 수렴: NB Global 검색은 자체 추진력이 없다.
+
+**BDC 시사점:** 예측 모델 선택 시 "더 복잡한 모델 = 더 좋은 성능"은 보장되지 않는다. 데이터 규모와 구조에 맞는 적정 복잡도가 핵심.
+
+### Integrated Business Diagnosis (Stage 6 업데이트)
+
+Stage 5 진단: **"Event stacking 전략 + CSI override 가능성 + 경쟁사 이벤트 기회"**
+
+Stage 6 업데이트: 예측 모델 4-way 비교(SARIMAX/Prophet/LSTM/Chronos)를 통해 NB 검색 수요의 구조적 특성이 정량적으로 확인됨:
+
+1. **Prophet 전승 — changepoint detection이 핵심**: piecewise linear trend가 COVID 회복 → 올림픽 효과 → 2025 전환 등 구조적 break를 포착. SARIMAX의 단순 drift보다 우수.
+2. **Korea는 CSI에 2배 민감 — 거시 방어 우선 시장**: CSI 하락 시 Korea 검색이 가장 먼저, 가장 크게 타격. 캠페인 자원 배분에서 Korea 방어가 우선. (SARIMAX-specific, Prophet에서는 trend가 흡수)
+3. **Global은 자기 모멘텀이 없다**: ARIMA(0,1,0) — Global 수요 예측은 자체 과거보다 Korea 선행 신호 + CSI 추적이 핵심.
+4. **짧은 시계열에서 통계 모델 > DL**: 174주 규모에서 Prophet/SARIMAX의 파라미터 효율성이 LSTM의 모델 용량을 압도.
+5. **대시보드 모델 단일화**: Prophet이 양쪽 모두 1위 → Stage 8 Streamlit에서 단일 프레임워크로 구현 가능.
+
+### BDC Implication (Stage 6 추가)
+
+Stage 5 KPI 9종에 추가:
+10. **CSI 탄력성 모니터링** — CSI 변동 × Korea 탄력성(3.98) 기반 검색 영향 추정. CSI 3pt 하락 시 Korea 검색 ~12pt 감소 예상.
+11. **26주 검색 예측 Prophet Baseline** — CSI + Fourier K=2 + changepoint 기반 분기 예측을 월 1회 업데이트. RMSE 5.57(Korea)/2.54(Global) 기준 ±2σ 경고 밴드.
+
+---
+
+*Stage 6 Forecasting Insights: APPENDED (2026-05-01, updated with Track E Prophet + DP18).*
+*다음: Stage 7 — Korea-Global Bridge Analysis.*
