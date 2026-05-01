@@ -1,0 +1,26 @@
+event_date,event_end_date,brand,event_type,event_name,description,impact_expected,source,event_origin
+2024-02-05,,nike,collab,Travis Scott Jumpman Jack 그래미 기습 발매,트래비스 스콧 첫 시그니처 스니커즈 그래미 도중 서프라이즈 드롭,positive,마리끌레르코리아,investigated
+2024-02-08,,nike,campaign,뉴진스 Nike 싱가포르 매장 방문,뉴진스 아시아 최대 Nike Orchard Road 방문 SNS 화제,positive,마리끌레르코리아,investigated
+2024-03-14,,puma,collab,Puma x 베베드피노 협업 컬렉션,프리미엄 유아동 브랜드 협업 출시,positive,네이버뉴스,investigated
+2024-03-18,,puma,collab,Puma x OPEN YY 스피드캣 OG 콜라보,로컬 디자이너 오픈와이와이 협업 롯데월드몰 팝업 3/23-25,positive,네이버뉴스,investigated
+2024-03-26,,nike,product_launch,Air Max Day 2024 / Air Max Dn 출시,에어맥스 데이 10주년 신모델 Dn 전세계 동시 출시,positive,Nike,scheduled
+2024-03-28,,puma,campaign,Puma Euro 2024 국가대표 키트 공개,오스트리아 스위스 등 후원국 유니폼 공개,positive,Puma,investigated
+2024-04-10,,puma,campaign,Puma FOREVER.FASTER. 글로벌 캠페인,10년 만의 첫 글로벌 브랜드 캠페인 올림픽 포지셔닝,positive,Puma,investigated
+2024-04-11,2024-04-17,,macro_event,Paris 2024 Olympics D-100 캠페인 총공세,Nike On Air 파리 쇼케이스 + adidas 41종목 올림픽 신발 공개 + NB We Got Now 캠페인,positive,Reuters/Nike/adidas,scheduled
+2024-04-21,,new_balance,campaign,2024 London Marathon,NB 공식 파트너 러닝 카테고리 글로벌 관심 증가,positive,public record,scheduled
+2024-07-26,2024-08-11,,macro_event,2024 Paris Olympics,올림픽 기간 검색 대체 효과(sports event search cannibalization) 스니커즈 검색 일시적 하락,negative,public record,scheduled
+2024-08-14,,adidas,product_launch,아디다스 북촌 헤리티지 스토어 오픈,삼바 탈 단독 재출시 국내 최초 스니커즈 전문 매장,positive,네이버뉴스,investigated
+2024-08-17,,adidas,campaign,아디다스 러너스 서울 에너지 나이트,서울시 협업 러닝 이벤트,positive,네이버뉴스,investigated
+2024-08-29,,adidas,campaign,아디다스 Z.N.E. 컬렉션 베이비몬스터,K-POP 베이비몬스터 등 글로벌 아이콘 기용 컬렉션,positive,fashionbiz.co.kr,investigated
+2024-09-10,,new_balance,campaign,아이유 NB 2024 가을 컬렉션 화보,글로벌 앰버서더 가을 기획전,positive,네이버뉴스,investigated
+2024-09-15,,new_balance,collab,Stone Island x NB 991V2 GHOST,스톤아일랜드 협업 991V2 공개,positive,ktnews,investigated
+2024-09-17,,new_balance,campaign,송혜교 NB Fresh Foam 품절 대란,밀라노 SNS 착용샷 공개 후 전 사이즈 품절,positive,위키트리,investigated
+2024-11-17,,nike,product_launch,Air Jordan 3 Black Cement 복각,AJ3 Black Cement 11/23 출시 대형 이벤트 글로벌 검색 집중,positive,sneakernews.com,scheduled
+2024-11-20,,new_balance,collab,Ganni x NB Fresh Foam Trainer,Ganni 협업 Fresh Foam Trainer 11/20 출시,positive,sneakernews.com,investigated
+2024-11-24,,new_balance,campaign,Black Friday 2024,블프 주간 NB global 검색 반등,positive,industry pattern,scheduled
+2024-12-01,,,macro_event,CSI 87.9 급락,전월 101.6에서 -12.7pt 급락 소비심리 위축,negative,ECOS 소비자심리지수,scheduled
+2025-02-16,,,macro_event,CSI 저점기 소비심리 위축,CSI 95.0 전월 91.0에서 회복 중이나 여전히 저점,negative,ECOS 소비자심리지수,investigated
+2025-03-17,,new_balance,campaign,29CM x NB 뷰티풀무브 25SS 러닝화,29CM 협업 25SS 러닝화 컬렉션 출시 + 인터뷰 콘텐츠,positive,한스비즈,investigated
+2025-03-27,,new_balance,collab,Stone Island x NB Made in USA 998,스톤아일랜드 협업 998 스니커즈 3/27 출시,positive,마리끌레르코리아,investigated
+2025-04-13,,new_balance,campaign,2025 Run Your Way Half Race Incheon,NB 주관 하프마라톤 아트센터 인천,positive,시사위크 2025.04.14,investigated
+2025-04-14,,new_balance,product_launch,NB 992 팝업스토어 성수,992 발매 기념 성수 플래그십 팝업 4/30까지,positive,네이버뉴스,investigated
