@@ -580,4 +580,28 @@ Migration 011 (`011_korea_global_lag_sign_correction.sql`) applied 2026-05-03 to
 
 #### 12.7.5 Methodology Asset Propagation (KPI 12, KPI 13)
 
-Two new KPIs from Stage 7 represent governance assets transferable to future analyses: KPI 12 (5-Dimension Orthogonal Null Verification Pattern) and KPI 13 (Methodology Validation Stage Pattern). These are not surfaced in the Stage 8 dashboard data layer (operational metrics) but documented in the project's Methodology Documentation tab as analytical governance principles. For interview narrative, KPI 12/13 represent the "transferable analytical discipline" framing — Stage 7's value extends beyond project-specific findings to enterprise-grade analytical governance protocols.
+Two new KPIs from Stage 7 represent governance assets transferable to future analyses: KPI 12 (5-Dimension Orthogonal Null Verification Pattern) and KPI 13 (Methodology Validation Stage Pattern). These are surfaced in the Stage 8 Methodology Documentation tab (6th tab) as governance assets, separated from operational metrics (Tab 1-5) by design. Implementation includes 5-dim null heatmap (11/11 REJECT visualization), DP20→DP23→DP24 cascade flow diagram, and DP24 before/after signature chart. Interview narrative: KPI 12/13 represent transferable analytical discipline — Stage 7's value extends beyond project-specific findings to enterprise-grade analytical governance protocols. For interview narrative, KPI 12/13 represent the "transferable analytical discipline" framing — Stage 7's value extends beyond project-specific findings to enterprise-grade analytical governance protocols.
+
+
+### 12.8 Stage 8 Dashboard Implementation Record (2026-05-03)
+
+Stage 8 implemented the BDC analytics dashboard as Streamlit web application, deployed to Streamlit Cloud. Live URL: https://sportswear-brand-monitor-newbalance.streamlit.app/
+
+**Architecture:** Dual data source design — PostgreSQL (local development via `database.connection.get_conn()` context manager) with automatic CSV fallback (Streamlit Cloud deployment, zero infrastructure cost). Toggle: `USE_CSV_FALLBACK` environment variable or auto-fallback on `psycopg2` import failure.
+
+**6-Tab Structure:**
+
+| Tab | KPIs | Key Visualizations |
+|-----|------|--------------------|
+| Weekly KPI | 1, 2, 3, 5, 6, 10 | 4 KPI cards + 4-brand search trend + SoV stacked area + 530 dependency ratio |
+| Season | 4 | Season position (SS/FW) + YoY overlay + weekly seasonal pattern + product mix by season |
+| Channel | 2 | SoV Korea vs Global grouped bar + divergence timeline + product gap (574/2002r) |
+| Anomaly | 4, 8, 9 | 3-way detection timeline + method agreement monthly + spike/dip breakdown + event stacking |
+| Forecast & Bridge | 6, 7, 10, 11 | Prophet 26w with CI + 4-way model comparison + chain diagram + Global 4w MA |
+| Methodology Doc | 12, 13 | 5-dim null heatmap + DP cascade flow + DP24 signature chart + 4-layer narrative cards |
+
+**Stage 7 Narrative Surfacing (5 locations):** (1) Sidebar About — 4-layer one-line summary, (2) Tab 5 chain_summary.png + chain_diagram_data.json visualization, (3) Tab 5 monitoring vs predictive caption, (4) Tab 5 degradation evidence expander, (5) Methodology Doc tab — KPI 12/13 full governance asset visualization.
+
+**Migration 011 Verification:** `mart.korea_global_lag` queried directly with sign-corrected column names (`deseason_method`, `lag_direction = 'Global leads'`). CSV export post-Migration 011 confirmed 12 rows.
+
+**Data Export:** `dashboard/export_csv.py` produces 11 CSV files (7 mart queries + 4 forecast CSVs) totaling 5,253+ rows for Streamlit Cloud static deployment.
