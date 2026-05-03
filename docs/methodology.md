@@ -499,3 +499,85 @@ The finding that Korea favors SARIMAX while Global favors LSTM is not random —
 **Global:** No autoregressive pattern (ARIMA 0,1,0), weak annual seasonality (Fourier 52w non-significant), smoother dynamics. LSTM's ability to model nonlinear interactions between CSI and sub-quarterly Fourier terms provides an advantage that the linear random walk model cannot achieve.
 
 This divergence supports the methodological choice to run multiple model families rather than selecting a single "best" approach ex ante. It also validates the decision to forecast both NB Korea and NB Global rather than selecting one — a single-series analysis would have missed the structural split and led to a misleading generalization about model superiority.
+
+## 12. Korea-Global Bridge — Methodology Validation Stage (Stage 7)
+
+Stage 7 was designed to verify the CSI → NB Korea → NB Global 3-stage chain hypothesis. Across **5 independent methodological dimensions** (VARX bidirectional, monthly Granger bidirectional, mediation bidirectional × 2 transformations, lagged cointegration bidirectional), all 11 individual tests rejected the chain hypothesis. The verification process surfaced three self-diagnostic findings — DP20 (mediation spurious correlation pre-emption), DP23 (MSTL forward-looking leakage), DP24 (Stage 4 sign convention inversion) — redefining Stage 7's role from hypothesis testing to methodology validation. Sub-sections below summarize each methodology component; full quantitative details and analytical artifacts are documented in `stage7_checkpoint.md`.
+
+### 12.1 Frequency Mismatch — Option H Hybrid Resolution
+
+CSI exists at monthly frequency (41 observations) while Korea/Global search operate at weekly frequency (174 observations). Three resolution options were considered: full monthly aggregation (Option M, lag resolution loss), full weekly forward-fill (Option W, spurious autocorrelation), and hybrid Option H. Option H was adopted: Stage 4's existing monthly Granger results re-used for the CSI→Korea/Global hop, with Stage 7's new bidirectional analysis at weekly resolution using forward-filled CSI as control covariate. This preserves Stage 4's quantitative findings while exploiting weekly degrees of freedom for the new Korea↔Global tests. Limitation acknowledged: forward-fill introduces step-function artifact in CSI series, addressed via diff1 robustness checks (DP20).
+
+Cross-reference: `stage7_checkpoint.md` Step 0 + Decision 1.
+
+### 12.2 VARX(2) Design — Search d1 Endogenous + CSI Distributed Lag
+
+VARX(2) endogenous variables: `korea_search_d1`, `global_search_d1` (both ADF stationary p=0.0000). Lag selection via VAR.select_order(maxlags=13) returned p=1 across AIC/BIC/HQIC/FPE. CSI exogenous treated as distributed lag {0, 4, 8, 12} weeks per Stage 4 monthly Granger pattern (NB significant at 1–4 month lags = 4–16 weeks); lag 0 contemporaneous mandatory to avoid underspecification of macro reactivity. Bidirectional Granger within VARX returned null (Korea→Global F=1.45 p=0.23; Global→Korea F=0.23 p=0.63); joint LR for CSI distributed lag marginal (p=0.0886) with only `csi_d1_l0` significant in the Global equation. Result: short-run weekly causal channel absent in both directions, with contemporaneous CSI macro reactivity preserved.
+
+Cross-reference: `stage7_checkpoint.md` Track A1 + Decision 3.
+
+### 12.3 Mediation Analysis — Bidirectional Joint Block Bootstrap
+
+Baron-Kenny three-regression mediation with joint Moving Block Bootstrap (13w block, Hall-Horowitz √n) primary + Stationary Bootstrap robustness, 5000 iterations, BCa 95% CI. Pre-committed Decision 7 thresholds (4-bin % indirect classification) prevent HARKing. Two transformations (trend, diff1) × two directions (Korea→Global pre-DP24, Global→Korea post-DP24) = 4 cells × 5000 iter = 20,000 bootstrap fits per direction. All four cells return BCa CI containing zero — mediation channel absent in both directions and both transformations. Sign correction comparison surfaces three quantitative signatures of correct directional specification (§12.3.5 expansion below + §12.4 Track A3 third signature).
+
+Cross-reference: `stage7_checkpoint.md` Track A1' + Decision 4.
+
+### 12.3.5 Stage 7 as Methodology Validation Stage
+
+Stage 7 was designed to verify the 3-stage chain hypothesis (CSI → NB Korea → NB Global). Execution surfaced three cumulative self-diagnostic findings, each detected without external review through internal sanity checks:
+
+**DP20 — Mediation spurious correlation pre-emption.** Step 0 stationarity re-check identified that monthly-aggregated trend components produce non-stationary regression inputs, which would generate spurious mediation coefficients regardless of true causal structure. Alternative specifications (diff1, residual) were committed pre-execution, preventing post-hoc result chasing.
+
+**DP23 — MSTL forward-looking leakage.** Track A3 narrative-negative result (Korea trend exogenous → Prophet RMSE +59%) triggered self-diagnostic that revealed MSTL decomposition uses two-sided STL filter, leaking future information into trend component. This invalidated Track A3 design and prompted leakage-free replication.
+
+**DP24 — Stage 4 sign convention inversion.** Leakage-free DTW + CC re-computation classified results as direction_flipped relative to Stage 4 labels. Synthetic test data (Korea leads Global by 5w) confirmed Stage 4 code returns CC −5, DTW −4.57 — magnitude correct, sign convention inverted. Mediation re-run with corrected direction validated: inconsistent mediation signature dissipated (% indirect 120% → 11%), CI width narrowed 47%, both quantitative signatures of correct directional specification.
+
+**Cumulative implication.** Stage 7's value lies less in the hypothesis test result (chain rejected) than in the verification process. For BDC roles requiring internal data analysis, the demonstrated competency is **self-skepticism + multi-method validation**. Three critical findings were surfaced without external reviewer, indicating the analytical discipline transferable to enterprise contexts where external validation is rare.
+
+### 12.4 Korea Trend / Global Trend Exogenous (Sign-Corrected, Track A3)
+
+Original Track A3 (Korea trend → Global Prophet) invalidated by DP23 (MSTL forward-looking leakage) and DP24 (Stage 4 sign convention inversion). Re-design: Global trend → Korea Prophet, raw `global_search` lagged primary (leakage-free), expanding-window MSTL fallback. Triple comparison (Prophet baseline / +CSI / +CSI+Global_lag11) at lag 11w (paired-fold CV winner, 8/9 lags within ±1 SE — statistically indistinguishable, ±1–2w uncertainty disclosed). Both Prophet and SARIMAX show consistent degradation: Prophet −9.01%, SARIMAX −10.94%, both DM p<0.001. Outcome: 4th scenario (degradation) added to the pre-committed 3-way matrix; auto-classifier patch (unsigned→signed delta) self-detected and applied. DP24 quantitative validation third signature: pre-correction Korea→Global degradation +41~59% → post-correction Global→Korea degradation +9~11% = 1/4–1/5 magnitude reduction. Sentinel framing operational refinement: Global signal serves as monitoring leading indicator (directional reference) but not as predictive feature in forecast models.
+
+Cross-reference: `stage7_checkpoint.md` Track A3 + §12.4.1–§12.4.5.
+
+### 12.5 Seasonal Lead Asymmetry — Track B1 (Nested in A3 Re-design)
+
+Sign-corrected Global → Korea lag estimation split by Korea's FW (Week 40–13) vs SS (Week 14–39) seasons. Both seasons show degradation (FW −3.64%, SS −1.78%); seasonal magnitude difference modest. Korea forecast model's resistance to Global signal as exogenous holds across the FW/SS structural divide documented in Stage 3. Absolute RMSE asymmetry (FW 2.20, SS 4.21) reflects Stage 3's Korea FW-dominant search behavior producing tighter seasonal forecasts but does not modulate the degradation direction. Seasonal asymmetry null result — interference effect is season-robust.
+
+Cross-reference: `stage7_checkpoint.md` Track B1.
+
+### 12.6 Mechanism — Three Plausible Hypotheses (Sign-Corrected Direction)
+
+Stage 7 quantitative analysis confirms Global → Korea lead of ~10w with magnitude robustness. The mechanism — **why** Global precedes Korea — cannot be tested with the project's data scope. Three face-validity hypotheses are documented for future verification with BDC internal data:
+
+**Hypothesis 1 — Global brand attention precedence (cultural/demographic).** US/EU markets are NB's primary consumer base. Global brand-level search demand responds to product launches, marketing campaigns, and category trends earlier because the demographic concentration drives signal magnitude. Korea search demand follows after diffusion through K-fashion intermediaries.
+
+**Hypothesis 2 — HQ marketing trigger (operational).** Global headquarters campaign cycles initiate at Global market level. Region campaigns (Korea) follow with localization lag. The ~10w lag corresponds to typical HQ-to-region campaign rollout cycles.
+
+**Hypothesis 3 — Differential reactivity to common drivers (structural).** Both Korea and Global respond to common shocks (CSI, cultural events) but with different reactivity speeds. Global market's larger sample size enables faster signal detection, while Korea market's smaller scale produces noisier short-term response, manifesting as apparent lag.
+
+**Distinction not testable in current scope.** All three hypotheses produce observationally equivalent ~10w Global-leads-Korea pattern in aggregate search data. Discriminating mechanism requires BDC internal data: campaign timeline records, market-level demographic decomposition, region-specific sentiment lag. This delineation defines the boundary between this project's contribution and in-role analytical extension.
+
+### 12.7 Stage 7 → Stage 8 Handoff: Forecast & Bridge Tab Integration
+
+Stage 8 implements a unified BDC analytics dashboard (Streamlit primary + Power BI Service auxiliary) consuming Stage 7's quantitative outputs. The handoff has five operational components.
+
+#### 12.7.1 Forecast Model Selection (Stage 6 + Stage 7 cascade)
+
+Stage 6 4-way comparison established Prophet as primary forecast model for both Korea and Global series (Korea RMSE 5.57, Global 2.54, both first ranked). Stage 7 Track A3 refines this for Korea forecast specifically: Korea Prophet input scope = CSI exogenous only (Korea autoregressive structure preserved); Global lagged signal explicitly excluded due to documented degradation (Prophet −9.01%, SARIMAX −10.94%, DM p<0.001). Stage 8 Forecast tab implements Prophet for both regions with this asymmetric exogenous structure: Korea (CSI only), Global (CSI only), preventing the cross-region interference identified in Track A3.
+
+#### 12.7.2 Bridge Tab Right-Panel Integration
+
+Stage 8 dashboard adopts a "Forecast & Bridge" tab consolidating Stage 6's forecasting output with Stage 7's chain diagram visualization (Track C). The right panel surfaces three artifacts: (1) Global trend MA as monitoring leading indicator visualization (KPI 7 redefinition), (2) `chain_diagram_data.json` node/edge structure rendering CSI/Global/Korea relationships with sign-corrected direction labels and `operational_use` metadata distinguishing monitoring vs predictive scope, (3) Mirror Sentinel + Differential Reactivity narrative tooltip surfacing the BDC operational interpretation. Korea Prophet forecast chart occupies the left panel; the right panel does not feed into the forecast model — operational asymmetry between visualization and prediction is itself documented in the dashboard tooltip as design rationale.
+
+#### 12.7.3 KPI 7 Operational Implementation
+
+KPI 7 redefinition (Korea trend MA → Global trend MA) propagates to two dashboard locations: (a) Streamlit Forecast tab right panel with 4-week moving average overlay on Global search index time series, displayed with ~10w forward-shift annotation indicating typical Korea anticipation horizon; (b) Power BI HQ Bridge tab summary card displaying current Global trend direction (rising / flat / declining) with interpretive caption "Korea demand directional reference — not predictive input." The monitoring-vs-predictive scope distinction is surfaced in tooltip help text on both implementations to prevent misuse as forecast model input.
+
+#### 12.7.4 Migration 011 Retrofit Status
+
+Migration 011 (`011_korea_global_lag_sign_correction.sql`) applied 2026-05-03 to `mart.korea_global_lag` table: 12 rows sign-flipped (`mean_lag_weeks`, `median_lag_weeks`, `cc_best_lag_weeks`) + `lag_direction` labels swapped. NB deseason methods now consistently report "Global leads" direction. Stage 8 dashboard Streamlit code queries this table directly with sign-corrected direction labels — no further translation logic required. `stage4_checkpoint.md` preserves original analysis with Sign Correction Notice footnote (trace value).
+
+#### 12.7.5 Methodology Asset Propagation (KPI 12, KPI 13)
+
+Two new KPIs from Stage 7 represent governance assets transferable to future analyses: KPI 12 (5-Dimension Orthogonal Null Verification Pattern) and KPI 13 (Methodology Validation Stage Pattern). These are not surfaced in the Stage 8 dashboard data layer (operational metrics) but documented in the project's Methodology Documentation tab as analytical governance principles. For interview narrative, KPI 12/13 represent the "transferable analytical discipline" framing — Stage 7's value extends beyond project-specific findings to enterprise-grade analytical governance protocols.

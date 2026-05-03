@@ -2,6 +2,32 @@
 
 **Date:** 2026-04-30
 **Status:** COMPLETED
+
+> ** Sign Convention Correction Notice (added 2026-05-03)**
+>
+> Stage 7 Track A2 (Sign Convention Validation) detected a sign convention error in Stage 4's DTW + cross-correlation implementations. Both methods use `correlate(kr, gl)` and `path[:,0] - path[:,1]` formulations that produce **positive values when Global leads Korea**, but Stage 4 labeled positive values as "Korea leads" — a verbal-mathematical inversion.
+>
+> **Magnitude robust** — leakage-free replication reproduces Stage 4 magnitudes within ±2w (DTW median 9.00w vs Stage 4 +10.4w; CC magnitude 10 vs Stage 4 +9w).
+>
+> **Direction inverted** — confirmed via three independent quantitative signatures:
+> 1. Synthetic Korea-leads-by-5w probe → Stage 4 code returns CC −5, DTW −4.57 (sign inverted, magnitude correct)
+> 2. Mediation re-run with corrected direction → inconsistent signature dissipation (% indirect 120% → 11%) + BCa CI 47% narrowing
+> 3. Track A3 degradation magnitude reduction 1/4–1/5 (Korea→Global pre-correction Prophet/SARIMAX +41~59% vs Global→Korea post-correction +9~11%)
+>
+> Cumulative evidence in stage7_checkpoint.md §12.4.4.
+>
+> **DB retrofit applied** — `mart.korea_global_lag` table received migration `011_korea_global_lag_sign_correction.sql` on 2026-05-03, flipping `mean_lag_weeks`, `median_lag_weeks`, `cc_best_lag_weeks` signs and swapping `lag_direction` labels for all 12 rows. Post-commit distribution: Global leads = 10, Korea leads = 2 (NB rows uniformly 'Global leads' across all deseason_method).
+>
+> **Stage 4 narrative body below is preserved as-is** for trace value (advisor decision 4: trace preservation pattern). When interpreting lag values and direction labels in this document, apply sign correction lens:
+> - "Korea leads by +Xw" → "Global leads by Xw"
+> - "Global leads by Xw" (already negative-magnitude) → "Korea leads by Xw"
+> - DP9 (B2 Key Finding line 165): "NB Korea → Global Structural Lead +10.4w" → "**NB Global → Korea Structural Lead ~10.4w**"
+> - DP21 / DP22 narrative downstream: see stage7_checkpoint.md Cascade Corrections section
+>
+> **Cross-references:** stage7_checkpoint.md (Track A2 + DP24 detection + §12.4 quantitative validation), exploratory_findings.md (DP24 sign inversion, DP9 sign-corrected, DP22 deprecated → DP24 successor), v3 §4.5 Hypothesis Evolution sub-section.
+>
+> The original Stage 4 analysis methodology (DTW + CC dual-method approach, three-dimensional separation logic with subsequent cointegration and mediation analyses, seasonal artifact identification) remains valid in structure. Only the directional labeling required correction; the shape similarity finding, magnitude estimates, and three-dimensional separation conclusions are robust.
+
 **Tracks:** A (Granger Search ↔ CSI) + B (DTW Korea-Global Lead-Lag)
 
 ---

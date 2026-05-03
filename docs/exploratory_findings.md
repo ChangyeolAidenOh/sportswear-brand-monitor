@@ -250,7 +250,9 @@ Stage 0 KPI 3종에 추가:
 
 ## Stage 4 Leading Indicator Insights
 
-### Data Point 9: NB Korea → Global Structural Lead (+10.4 weeks)
+### Data Point 9: NB Korea → Global Structural Lead (+10.4 weeks) [Sign Correction Applied 2026-05-03]
+
+> **Sign correction notice (2026-05-03):** Stage 7 Track A2 (DP24) detected Stage 4 sign convention error. Corrected statement: **NB Global → Korea structural lead ~10.4w** (direction inverted; magnitude robust within ±2w via leakage-free replication). Original DP9 body below preserved as-is for trace value. See DP24 + stage7_checkpoint.md §12.4.4 for cumulative quantitative validation.
 
 DTW 3-way 비교 (raw → trend → residual)를 통해 Stage 0 H1의 cross-correlation -167주 비정상 결과를 교정했다.
 
@@ -425,5 +427,186 @@ Stage 5 KPI 9종에 추가:
 
 ---
 
+## Stage 7 Korea-Global Bridge Insights
+
+Stage 7는 CSI → NB Korea → NB Global 3단계 chain 가설을 검증하는 stage로 시작했으나, 검증 과정에서 누적된 self-diagnostic findings (DP20 → DP23 → DP24)이 발견되며 **methodology validation stage**로 재정의됐다. 각 DP는 외부 review 없이 internal sanity check만으로 detection됐다.
+
+### Data Point 19: 5-Dimension Orthogonal Null × 11 Tests (Sign-Corrected)
+
+Stage 7은 chain 가설을 5가지 직교 차원(VARX 양방향 + monthly Granger 양방향 + trend mediation 양방향 + diff1 mediation 양방향 + lagged cointegration 양방향)에서 11개 검정으로 verify했고, **모두 reject**됐다.
+
+| 차원 | 검정 | 방향 | 결과 |
+|---|---|---|---|
+| 단기 (weekly diff1) | VARX(2) Granger | Korea→Global | F=1.45 p=0.23 |
+| 단기 (weekly diff1) | VARX(2) Granger | Global→Korea | F=0.23 p=0.63 |
+| 단기 (weekly diff1) | VARX(2) joint LR (CSI dist. lag) | — | chi2=13.75 p=0.09 marginal |
+| 중기 (monthly mean) | Monthly Granger | Korea→Global | min p=0.14 |
+| 중기 (monthly mean) | Monthly Granger | Global→Korea | min p=0.06 marginal |
+| Trend mediation (original direction) | MBB BCa CI | K→G | [−0.39, +0.18] |
+| Trend mediation (sign-corrected) | MBB BCa CI | G→K | [−0.12, +0.18] |
+| Diff1 mediation (original direction) | MBB BCa CI | K→G | [−0.04, +0.003] |
+| Diff1 mediation (sign-corrected) | MBB BCa CI | G→K | [−0.06, +0.007] |
+| Lagged cointegration | Engle-Granger AEG | Korea_{t-lag} → Global | all p > 0.40 |
+| Lagged cointegration | Engle-Granger AEG | Global_{t-lag} → Korea | all p > 0.94 |
+
+**해석:** CSI는 Korea와 Global을 **직접 그리고 독립적으로** 구동하고, 두 region 사이에는 mediation channel이 없다. Korea와 Global의 trend 형태 유사성(DTW + CC, sign-corrected)은 common driver에 대한 differential reactivity의 결과이지 인과 chain의 증거가 아니다. **5차원 직교 null은 단일 false-negative 가능성을 배제**하며, 본 프로젝트에서 가장 광범위하게 검정된 null hypothesis이다.
+
+**BDC Implication:** Korea 수요 변동을 Global 수요 driver로 해석하지 않는다. CSI 또는 그 외 macro driver를 직접 monitoring하는 것이 더 정확한 forecast input이다. Cross-region 변동성은 monitoring view (dashboard reference)이지 predictive feature가 아니다.
+
+### Data Point 20: Mediation Spurious Correlation Pre-emption (Step 0 Mitigation Pattern)
+
+Stage 7 Step 0에서 trend 시계열에 ADF + KPSS + cointegration 전수 검사를 실행한 결과, korea_trend ≈ I(1) borderline + global_trend ≈ near-integrated + zero-lag cointegration p=0.9433로 **trend regression이 spurious correlation 위험에 직접 노출**됨이 사전 식별됐다.
+
+대응으로 mediation analysis를 **두 specification 병행**하도록 사전 commit (Decision 4):
+1. **Trend regression** (primary): MSTL trend lagged → mediation indirect coefficient
+2. **Diff1 regression** (robustness): search diff1 lagged → mediation indirect coefficient (stationary, spurious-safe)
+
+검정 결과 trend mediation은 inconsistent signature (% indirect 120%, MBB CI sign-unstable)을 보였고, diff1 mediation은 tight near-zero CI를 반환하며 disambiguating. Step 0 사전 commit이 post-hoc result chasing 가능성을 차단한 사례.
+
+**Methodology validation 가치:** 본 design choice는 사전에 식별 안 된 다른 위험(DP23 MSTL forward-looking leakage)에 대해서도 robustness check로 기능했다. 단일 design choice가 두 독립 위험에 대한 안전장치로 작동한 사례 — DP23 본문 참조.
+
+**BDC Implication:** 비정상성 검사 + alternative specification 사전 commit은 시계열 분석의 default 위생 절차여야 한다. spurious result를 회의적으로 검증하는 design 자체가 분석 결과의 신뢰성을 보장한다.
+
+### Data Point 21: Three-Dimensional Separation Robust [Sign Correction Applied 2026-05-03]
+
+DTW + cointegration + mediation 세 검정의 결과 패턴은 Stage 4부터 다음과 같이 robust:
+
+| 검정 차원 | 결과 |
+|---|---|
+| Shape similarity (DTW + CC) | 존재 (~10w lag, sign-corrected) |
+| Level equilibrium (cointegration) | 부재 (lagged cointegration null bidirectional) |
+| Causal mediation (mediation) | 부재 (5-dim orthogonal null per DP19) |
+
+**3-dimensional separation 결론:** Korea와 Global trend는 형태가 닮았지만 균형 관계도, 인과 매개도 없다. 이는 common driver(CSI 등)에 의한 parallel response의 시그니처이지, 두 region 사이의 직접 연결의 증거가 아니다.
+
+**Sign correction 영향 (DP24):** 라벨 정정 후 결론은 다음으로 정정된다:
+
+> "**NB Global이 Korea를 ~10주 선행하는 shape similarity** (lead direction inverted from Stage 4 original labeling), 단 level equilibrium 부재 + causal mediation 부재."
+
+3-dimensional separation logic 자체는 robust — 어느 방향이 lead인지에 무관하게 "shape exists, equilibrium absent, mediation absent" 구조가 보존된다. 부호 정정은 lead 방향 라벨링만 영향.
+
+**BDC Implication:** Korea-Global 관계는 **monitoring view** (Global 트렌드 시각적 reference로 Korea 수요 anticipation)에 적합하나, **predictive view** (Global을 Korea forecast input으로 직접 투입)는 부적합 — DP24 + Track A3 degradation outcome 참조.
+
+### Data Point 22: Sentinel Framing — Korea = Common Driver Sentinel [DEPRECATED 2026-05-03]
+
+> **DEPRECATED 2026-05-03 — replaced by DP24.** DP22 was authored Stage 5 / early Stage 7 prior to detection of Stage 4 sign convention error (DP24). DP22's "Korea sentinel of common drivers via differential reactivity" framing inverted direction with sign correction: Global is the precursor, Korea is the receiver. The Mirror Sentinel + Differential Reactivity successor framing (DP24) preserves the BDC operational role (Korea ↔ Global translator) with direction reversed. DP22 body below preserved as-is for trace value (advisor decision: trace preservation pattern, identical to stage4_checkpoint.md footnote handling).
+
+**[Body preserved as authored pre-DP24]**
+
+CSI → NB Korea → NB Global 3-stage chain 검증 결과 chain hypothesis는 reject되나, 이를 reframe할 때 BDC 활용 시각이 가장 강한 narrative를 제공한다. NB Korea 수요는 Global 수요의 직접 driver는 아니지만, common driver(CSI 등 macro signal)에 대해 Global보다 빠른 반응을 보이는 **sentinel** 역할을 한다. Korea의 빠른 macro 반응성(elasticity 3.98, Stage 6 DP16) + DTW shape similarity(+10.4w, Stage 4 DP9) + Stage 7 lagged cointegration null이 함께 이 framing을 지지한다.
+
+**BDC Implication (DEPRECATED):** Korea 검색 trend의 4주 이동평균을 Global 수요 예측의 leading indicator로 활용. KPI 7 dashboard에 직접 surface.
+
+→ **Successor: DP24 + KPI 7 redefinition (sentinel direction inverted, BDC role preserved)**
+
+### Data Point 23: MSTL Forward-Looking Leakage (Self-Diagnostic)
+
+Track A3 (Korea trend exogenous → Global Prophet)의 narrative-negative 결과(Prophet RMSE +59% degradation)가 self-diagnostic을 trigger했다.
+
+**Detection trail (3 steps):**
+
+1. **Pattern recognition.** Lag grid CV 결과가 lag 6w best mean RMSE 4.38, lag 14w 6.69로 **monotonic increasing** — 짧은 lag일수록 미래 정보 누설이 더 많다는 leakage signature와 정확히 일치.
+
+2. **Algorithm inspection.** `statsmodels.MSTL`은 two-sided STL filter를 사용 — trend at week T가 T+w 데이터까지 사용해 추정됨. Lagged regression의 input으로 쓰면 미래 정보가 누설.
+
+3. **Quantification.** `bridge_mstl_leakage_check.py` — expanding-window MSTL real-time trend 추정 후 bulk-fit trend과의 차이 측정. korea_trend ratio 0.2689, global_trend ratio 0.2612, 둘 다 0.15 significance threshold 초과. **Significant leakage 확정.**
+
+**대응 — Track A3 재설계:** 부호 정정 + MSTL 미사용 + leakage-free trend (raw search lagged 또는 expanding-window MSTL trend)로 재설계 → DP24 narrative와 결합.
+
+**Methodology validation 가치:** Step 0의 diff1 robustness specification (DP20에서 사전 commit)이 spurious regression risk와 MSTL leakage risk **둘 다에 대한 robustness check**로 incidentally 기능했다. 단일 design choice, 두 독립 risk 대응. 본 프로젝트의 가장 강한 design value 사례.
+
+**BDC Implication:** ML/통계 라이브러리의 default behavior가 forecast pipeline에 미세하게 leakage를 일으킬 수 있다. 자체 진단 routine + alternative specification 병행이 default 위생 절차여야 한다.
+
+### Data Point 24: Stage 4 Sign Convention Inversion (DP22 Successor)
+
+Track A3 self-diagnostic (DP23) 진행 중 leakage-free DTW + CC 재계산이 Stage 4 결과와 `direction_flipped` 분류를 출력. 이를 sanity check한 결과 Stage 4 sign convention error가 발견됐다 — DP22가 deprecated된 successor evidence.
+
+**Mathematical inversion:**
+
+`scipy.signal.correlate(kr, gl)` returns `corr[k] = Σ_n kr[n+k] * gl[n]`. 양수 lag k에서 maximize란 의미: kr를 +k만큼 shift해서 gl과 align되는 시점이 가장 강한 상관 — 즉 `kr[n+k] ≈ gl[n]` → Korea의 미래 시점(n+k) = Global의 현재 시점(n) → **Global이 Korea를 k만큼 선행**.
+
+DTW도 동일 패턴: `path[:,0] - path[:,1]` (Korea idx − Global idx) > 0이면 Korea의 늦은 시점이 Global의 이른 시점에 align — **Global이 Korea를 선행**.
+
+Stage 4 코드는 이를 "Korea leads"로 라벨링 — verbal-mathematical inversion. 두 메서드 모두 동일 convention 사용으로 인해 시그니처 패턴이 일관되게 inverted.
+
+**3 Independent Quantitative Signatures Stack:**
+
+| # | Signature | Pre-correction | Post-correction | Finding |
+|---|---|---|---|---|
+| 1 | Synthetic Korea-leads-by-5w probe | — | Stage 4 code returns CC −5, DTW −4.57 | Magnitude correct, sign inverted |
+| 2 | Mediation re-run with corrected direction | % indirect 120%, MBB CI [−0.39, +0.18] | % indirect 11%, MBB CI [−0.12, +0.18] | Inconsistent signature dissipates + CI 47% narrowing |
+| 3 | Track A3 degradation magnitude | Korea→Global Prophet/SARIMAX +41/+59% | Global→Korea Prophet/SARIMAX +9/+11% | Magnitude reduction 1/4–1/5 — sign correction removes both DP23 leakage amplifier and direction interference |
+
+**Three signatures observable only when point estimate aligns with true direction.** Their joint dissipation under sign correction constitutes the strongest quantitative evidence stack for Stage 4 sign convention error.
+
+**Cascade applied:**
+
+| 영역 | Original | Corrected |
+|---|---|---|
+| DP9 lead direction | Korea → Global +10.4w | **Global → Korea +10.4w** |
+| DP21 shape similarity label | Korea leads shape | **Global leads shape** (3-dim separation logic robust) |
+| DP22 sentinel framing | Korea = sentinel | **Mirror Sentinel** — Global = precursor, Korea = receiver, BDC translator role preserved |
+| KPI 7 leading indicator | Korea trend MA | **Global trend MA** (KPI 7 redefinition + operational scope refined) |
+| `mart.korea_global_lag` | Stage 4 raw | **Migration 011 applied 2026-05-03** — 12 rows sign-flipped + labels swapped |
+| `stage4_checkpoint.md` | original analysis preserved | **Sign Correction Notice footnote applied 2026-05-03** (trace value, cross-ref to §12.4.4) |
+
+**Methodology Validation Climax:**
+
+> Self-diagnostic detection of sign convention error in own analytical pipeline — without external review — is the demonstrable evidence of analytical governance discipline.
+
+DP20 (사전 차단) → DP23 (self-diagnostic) → DP24 (검증 부산물의 critical finding)의 3단 stack은 Stage 7을 단순 hypothesis test stage가 아닌 **methodology validation stage**로 정의한다.
+
+**BDC Implication:** 분석 pipeline의 sign convention은 verbal과 mathematical convention이 일치하는지 사전 검증해야 한다. Self-diagnostic routines (synthetic test data probe, multi-method cross-validation, alternative specification 병행)이 enterprise-grade 분석 governance의 핵심이다. 본 발견이 Stage 8 dashboard 진입 전에 잡혔다는 점이 중요 — 면접 narrative에서 가장 강한 self-skepticism evidence.
+
+### KPI 7 Redefinition (Sign-Corrected + Operational Scope Explicit)
+
+**Original (pre-DP24):** "NB Korea 검색 trend 4주 이동평균 — Global 수요 예측 선행 지표"
+
+**Corrected (post-DP24 + post-Track-A3):**
+
+> "NB Global 검색 trend 4주 이동평균 — Korea 수요 monitoring leading indicator (directional reference; predictive feature로는 active interference detected)"
+>
+> **Operational scope:**
+> - 사용 O: BDC 대시보드 시각화 (Korea 수요 방향성 reference, 선행 ~10주)
+> - 사용 X: Korea forecast 모델 input (Track A3 결과 Prophet/SARIMAX 모두 RMSE 9~11% 악화 — interference detected)
+
+**Refinement rationale (post-Track-A3):** Track A3 sign-corrected (Global → Korea) 결과 Global signal을 Korea forecast 모델 input으로 추가 시 양 모델 모두 RMSE degradation (Prophet −9.01%, SARIMAX −10.94%, DM p<0.001). Sentinel framing 자체는 robust (DTW shape similarity + lagged cointegration null bidirectional + mediation null bidirectional)하나, **monitoring과 predictive 사용은 작동 영역이 분리됨** — DTW에서 보이는 shape lead는 dashboard reference에 적합하되, Prophet changepoint absorption + SARIMAX explicit drift 모두 Global lagged regressor에 대해 active interference. 
+
+KPI 7의 BDC 활용은 dashboard 시각화 layer로 한정되며 forecast model layer로는 propagate되지 않는다. 이 operational asymmetry 자체가 finding — Stage 8 dashboard tooltip에 직접 반영될 design rationale.
+
+### Integrated Business Diagnosis (Stage 7 업데이트)
+
+Stage 6 진단: "수요는 있으나 자기 채널로 전환되지 않는다 + 외부 거시 의존이 강하다."
+
+Stage 7 업데이트:
+
+> NB Korea 수요는 NB Global 수요를 직접 구동하지 않는다 (5-dim orthogonal null). 두 region 모두 CSI 등 macro driver를 직접 받으며, 그중 Global이 Korea를 ~10주 선행하는 monitoring signal로 작동한다. 단 Global signal을 Korea forecast 모델 input으로 직접 투입하면 RMSE가 악화 — **BDC의 Korea forecast pipeline은 CSI exogenous + Korea autoregressive 구조로 운영하고, Global signal은 dashboard reference layer에서만 활용**해야 한다.
+
+**약점 재정의:**
+
+NB Korea의 **거시 경기 의존** (Stage 4 DP10) + **자기 채널 부재** (Stage 3 + Stage 6) 위에, **Global 신호도 forecast input으로 통합 안 됨** (Stage 7 Track A3) — 모든 layer에서 single dependency가 작동하고 있다. CSI 단일 driver가 양 region 모두를 직접 구동하는 구조라 다양화 전략이 필요.
+
+**시사점:**
+
+NB Korea/Global 양 region을 위한 BDC analytics framework는:
+
+1. **Forecast layer**: 각 region 독립 모델 (CSI exogenous + 지역 autoregressive)
+2. **Monitoring layer**: Cross-region leading indicator (Global → Korea ~10w, sign-corrected) for direction anticipation
+3. **Methodology validation layer**: 자체 diagnostic routines (sign convention, leakage detection, alternative specification 병행)
+
+### BDC Implication (Stage 7 추가)
+
+Stage 6 KPI 11종에 추가 + 정밀화 + 신규 KPI:
+
+12. **5-Dimension Orthogonal Null Verification Pattern** (KPI 7과 별개의 methodology asset) — 향후 cross-region/cross-channel 가설 검정 시 본 프로젝트의 11-test framework (VARX × monthly Granger × mediation × cointegration, 모두 양방향)를 default verification protocol로 적용. 단일 검정 의존 회피.
+
+13. **Methodology Validation Stage Pattern** (governance asset) — 신규 stage 진입 시 reflexive self-diagnostic routine을 commit. DP20 (사전 차단) → DP23 (self-diagnostic) → DP24 (검증 부산물) 3단 cascade가 default 적용 패턴. Stage 7이 본 프로젝트의 governance climax — 면접 자료의 핵심 narrative.
+
+**KPI 7 운영 정밀화 (DP24 + Track A3 cascade):** dashboard 시각화 layer × forecast model layer 분리 운영. Global signal은 monitoring O / predictive X.
+
+---
+
+
 *Stage 6 Forecasting Insights: APPENDED (2026-05-01, updated with Track E Prophet + DP18).*
-*다음: Stage 7 — Korea-Global Bridge Analysis.*
+*Stage 7 Korea-Global Bridge Insights: APPENDED (2026-05-03, DP19~24 + KPI 7 redefinition + DP9 sign correction tag + DP22 deprecated).*
+*다음: Stage 8 — BDC Analytics Dashboard Construction.*
