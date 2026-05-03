@@ -12,7 +12,12 @@ import pandas as pd
 
 # local
 from dashboard.config import CSV_DIR, USE_CSV_FALLBACK
-from database.connection import get_conn
+
+if not USE_CSV_FALLBACK:
+    try:
+        from database.connection import get_conn
+    except ImportError:
+        USE_CSV_FALLBACK = True
 
 
 # ================================================================
