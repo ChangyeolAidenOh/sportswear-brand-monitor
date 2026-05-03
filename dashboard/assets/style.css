@@ -1,0 +1,28 @@
+/* NB Korea BDC Monitor — custom styles */
+
+/* Reduce default padding for wider content area */
+.block-container {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+/* KPI card styling */
+[data-testid="stMetricValue"] {
+    font-size: 1.4rem;
+}
+
+[data-testid="stMetricDelta"] {
+    font-size: 0.9rem;
+}
+
+/* Tab content padding */
+.stTabs [data-baseweb="tab-panel"] {
+    padding-top: 1rem;
+}
+
+/* Methodology doc section borders */
+.methodology-section {
+    border-left: 3px solid #E74C3C;
+    padding-left: 1rem;
+    margin-bottom: 1.5rem;
+}
