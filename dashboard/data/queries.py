@@ -1,7 +1,7 @@
 """
 Mart table query functions for dashboard data layer.
 Each function queries PostgreSQL or falls back to CSV based on config.
-Usage: from dashboard.data.queries import fetch_weekly_search_index
+Usage: from dashboard.data.queries import fetch_brand_kpi
 """
 
 # stdlib
@@ -9,20 +9,15 @@ import os
 
 # third-party
 import pandas as pd
-import psycopg2
 
 # local
-from dashboard.config import DB_CONFIG, CSV_DIR, USE_CSV_FALLBACK
+from dashboard.config import CSV_DIR, USE_CSV_FALLBACK
+from database.connection import get_conn
 
 
 # ================================================================
-# Connection helper
+# Helpers
 # ================================================================
-def get_connection():
-    """Return a psycopg2 connection using DB_CONFIG."""
-    return psycopg2.connect(**DB_CONFIG)
-
-
 def _read_csv_fallback(filename):
     """Read a CSV file from data/exports/ directory."""
     path = os.path.join(CSV_DIR, filename)
@@ -36,9 +31,8 @@ def _query_or_csv(query, csv_filename, parse_dates=None):
     if USE_CSV_FALLBACK:
         return _read_csv_fallback(csv_filename)
     try:
-        conn = get_connection()
-        df = pd.read_sql(query, conn, parse_dates=parse_dates)
-        conn.close()
+        with get_conn() as conn:
+            df = pd.read_sql(query, conn, parse_dates=parse_dates)
         return df
     except Exception as e:
         print(f"DB query failed: {e}")
@@ -46,29 +40,56 @@ def _query_or_csv(query, csv_filename, parse_dates=None):
 
 
 # ================================================================
-# KPI 1, 2, 3: mart.brand_kpi
+# KPI 1, 2, 3: mart.brand_kpi_weekly
 # ================================================================
-WEEKLY_SEARCH_SQL = """
+BRAND_KPI_SQL = """
 SELECT
     week_start,
     brand,
     region,
-    keyword_group,
     search_index,
     sov_pct,
-    wow_change,
-    mom_change,
-    yoy_change
-FROM mart.brand_kpi
+    search_wow_pct,
+    search_mom_pct,
+    search_yoy_pct,
+    season_label,
+    season_week_num
+FROM mart.brand_kpi_weekly
 ORDER BY week_start, brand, region
 """
 
 
-def fetch_weekly_search_index():
-    """Fetch weekly search index data (KPI 1, 2, 3)."""
+def fetch_brand_kpi():
+    """Fetch weekly brand KPI data (KPI 1, 2, 3)."""
     return _query_or_csv(
-        WEEKLY_SEARCH_SQL,
+        BRAND_KPI_SQL,
         "brand_kpi_weekly.csv",
+        parse_dates=["week_start"],
+    )
+
+
+# ================================================================
+# Product portfolio (530 dependency, Tab 1)
+# ================================================================
+PRODUCT_PORTFOLIO_SQL = """
+SELECT
+    week_start,
+    product_line,
+    region,
+    search_index,
+    search_wow_pct,
+    share_within_nb_pct,
+    season_label
+FROM mart.product_portfolio_weekly
+ORDER BY week_start, product_line, region
+"""
+
+
+def fetch_product_portfolio():
+    """Fetch NB product portfolio weekly data (530 dependency)."""
+    return _query_or_csv(
+        PRODUCT_PORTFOLIO_SQL,
+        "product_portfolio_weekly.csv",
         parse_dates=["week_start"],
     )
 
@@ -92,12 +113,17 @@ def fetch_sentiment_quarterly():
 
 
 # ================================================================
-# KPI 6, 10: mart.csi_macro
+# KPI 6, 10: CSI from staging.macro_monthly
 # ================================================================
 CSI_MACRO_SQL = """
-SELECT *
-FROM mart.csi_macro
-ORDER BY date
+SELECT
+    year_month,
+    indicator,
+    value,
+    yoy_pct
+FROM staging.macro_monthly
+WHERE indicator = 'csi'
+ORDER BY year_month
 """
 
 
@@ -106,7 +132,7 @@ def fetch_csi_macro():
     return _query_or_csv(
         CSI_MACRO_SQL,
         "csi_macro.csv",
-        parse_dates=["date"],
+        parse_dates=["year_month"],
     )
 
 
@@ -167,7 +193,7 @@ def fetch_anomaly_log():
 
 
 # ================================================================
-# KPI 11: mart.forecast_results (created in Stage 8.5 if absent)
+# KPI 11: mart.forecast_results
 # ================================================================
 FORECAST_SQL = """
 SELECT *
@@ -186,39 +212,20 @@ def fetch_forecast_results():
 
 
 # ================================================================
-# SoV analysis (Tab 1, Tab 3)
+# Korea vs Global comparison
 # ================================================================
-SOV_SQL = """
+KOREA_GLOBAL_COMP_SQL = """
 SELECT *
-FROM mart.sov_analysis
-ORDER BY week_start, brand, region
+FROM mart.korea_global_comparison
+ORDER BY week_start, brand, metric_name
 """
 
 
-def fetch_sov_analysis():
-    """Fetch share-of-voice analysis data."""
+def fetch_korea_global_comparison():
+    """Fetch Korea vs Global comparison data."""
     return _query_or_csv(
-        SOV_SQL,
-        "sov_analysis.csv",
-        parse_dates=["week_start"],
-    )
-
-
-# ================================================================
-# Seasonal classifier (Tab 2)
-# ================================================================
-SEASONAL_SQL = """
-SELECT *
-FROM mart.seasonal_phase
-ORDER BY week_start
-"""
-
-
-def fetch_seasonal_phase():
-    """Fetch seasonal phase classification data."""
-    return _query_or_csv(
-        SEASONAL_SQL,
-        "seasonal_phase.csv",
+        KOREA_GLOBAL_COMP_SQL,
+        "korea_global_comparison.csv",
         parse_dates=["week_start"],
     )
 
@@ -227,17 +234,17 @@ def fetch_seasonal_phase():
 # Table existence check
 # ================================================================
 REQUIRED_TABLES = [
-    "mart.brand_kpi",
-    "mart.sov_analysis",
+    "mart.brand_kpi_weekly",
+    "mart.product_portfolio_weekly",
     "mart.anomaly_log",
-    "mart.csi_macro",
-    "mart.korea_global_lag",
+    "mart.korea_global_comparison",
 ]
 
 OPTIONAL_TABLES = [
     "mart.forecast_results",
     "mart.sentiment_quarterly",
-    "mart.seasonal_phase",
+    "mart.korea_global_lag",
+    "staging.macro_monthly",
     "staging.events_calendar",
 ]
 
@@ -257,12 +264,11 @@ def check_table_exists(table_name):
     )
     """
     try:
-        conn = get_connection()
-        cur = conn.cursor()
-        cur.execute(query, (schema, name, schema, name))
-        result = cur.fetchone()[0]
-        cur.close()
-        conn.close()
+        with get_conn() as conn:
+            cur = conn.cursor()
+            cur.execute(query, (schema, name, schema, name))
+            result = cur.fetchone()[0]
+            cur.close()
         return result
     except Exception:
         return False
