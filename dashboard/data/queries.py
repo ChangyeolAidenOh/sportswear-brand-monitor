@@ -177,9 +177,20 @@ def fetch_events_calendar():
 # KPI 9: mart.anomaly_log
 # ================================================================
 ANOMALY_LOG_SQL = """
-SELECT *
+SELECT
+    id,
+    brand,
+    product_line,
+    metric_name,
+    detected_date,
+    anomaly_type,
+    detection_method,
+    severity_score,
+    z_score,
+    matched_event_id,
+    description
 FROM mart.anomaly_log
-ORDER BY week_start, brand, detection_method
+ORDER BY detected_date, brand, detection_method
 """
 
 
@@ -188,7 +199,7 @@ def fetch_anomaly_log():
     return _query_or_csv(
         ANOMALY_LOG_SQL,
         "anomaly_log.csv",
-        parse_dates=["week_start"],
+        parse_dates=["detected_date"],
     )
 
 
