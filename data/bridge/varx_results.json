@@ -1,0 +1,128 @@
+{
+  "date": "2026-05-03T00:29:17.262699",
+  "stage": "7_track_a1_varx",
+  "endog_cols": [
+    "korea_d1",
+    "global_d1"
+  ],
+  "exog_cols": [
+    "csi_d1_l0",
+    "csi_d1_l4",
+    "csi_d1_l8",
+    "csi_d1_l12"
+  ],
+  "csi_lags": [
+    0,
+    4,
+    8,
+    12
+  ],
+  "n_obs_effective": 160,
+  "lag_selection": {
+    "ic_selected": {
+      "aic": 1,
+      "bic": 1,
+      "hqic": 1,
+      "fpe": 1
+    },
+    "primary_p_bic": 1,
+    "aic_bic_gap": 0,
+    "escalation_candidate": false
+  },
+  "fit_metrics": {
+    "aic": 2.663771408378593,
+    "bic": 2.932849117211553,
+    "hqic": 2.773034543767083,
+    "llf": -653.1620432957827
+  },
+  "granger_within_varx": {
+    "korea_to_global": {
+      "test_statistic": 1.4521466770610525,
+      "pvalue": 0.22911491683172702,
+      "df": [
+        1,
+        306
+      ],
+      "conclusion": "fail_to_reject"
+    },
+    "global_to_korea": {
+      "test_statistic": 0.23098125197920383,
+      "pvalue": 0.63114061719943,
+      "df": [
+        1,
+        306
+      ],
+      "conclusion": "fail_to_reject"
+    }
+  },
+  "csi_joint_lr": {
+    "ll_full": -653.1620432957827,
+    "ll_restricted": -660.0358613371511,
+    "lr_stat": 13.74763608273679,
+    "df": 8,
+    "pvalue": 0.08858499468091918,
+    "conclusion": "fail_to_reject"
+  },
+  "csi_per_lag": [
+    {
+      "equation": "korea_d1",
+      "regressor": "csi_d1_l0",
+      "coef": 0.17140659841426514,
+      "pvalue": 0.1227851055601952,
+      "significant": false
+    },
+    {
+      "equation": "korea_d1",
+      "regressor": "csi_d1_l4",
+      "coef": 0.12369691524906566,
+      "pvalue": 0.2892669583113763,
+      "significant": false
+    },
+    {
+      "equation": "korea_d1",
+      "regressor": "csi_d1_l8",
+      "coef": -0.09234627877394168,
+      "pvalue": 0.4445048590685081,
+      "significant": false
+    },
+    {
+      "equation": "korea_d1",
+      "regressor": "csi_d1_l12",
+      "coef": 0.05988778808614898,
+      "pvalue": 0.6144805835908171,
+      "significant": false
+    },
+    {
+      "equation": "global_d1",
+      "regressor": "csi_d1_l0",
+      "coef": 0.17716610559790885,
+      "pvalue": 0.016097994577927956,
+      "significant": true
+    },
+    {
+      "equation": "global_d1",
+      "regressor": "csi_d1_l4",
+      "coef": 0.10228593070972819,
+      "pvalue": 0.18609851039146352,
+      "significant": false
+    },
+    {
+      "equation": "global_d1",
+      "regressor": "csi_d1_l8",
+      "coef": 0.0741647264029975,
+      "pvalue": 0.35416513071794453,
+      "significant": false
+    },
+    {
+      "equation": "global_d1",
+      "regressor": "csi_d1_l12",
+      "coef": -0.008387679961877717,
+      "pvalue": 0.915231732005585,
+      "significant": false
+    }
+  ],
+  "irf_cumulative_h20": {
+    "global_response_to_korea_shock": 0.044353552726545294,
+    "korea_response_to_global_shock": 0.043401482080263426
+  }
+}
