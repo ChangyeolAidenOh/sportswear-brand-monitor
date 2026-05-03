@@ -117,18 +117,16 @@ def fetch_sentiment_quarterly():
 # ================================================================
 CSI_MACRO_SQL = """
 SELECT
-    year_month,
-    indicator,
-    value,
-    yoy_pct
-FROM staging.macro_monthly
-WHERE indicator = 'csi'
-ORDER BY year_month
+    period AS year_month,
+    value AS csi_value
+FROM raw.ecos_raw
+WHERE stat_code = '511Y002' AND item_code = 'FME'
+ORDER BY period
 """
 
 
 def fetch_csi_macro():
-    """Fetch CSI macro data (KPI 6, 10)."""
+    """Fetch CSI macro data from raw.ecos_raw (KPI 6, 10)."""
     return _query_or_csv(
         CSI_MACRO_SQL,
         "csi_macro.csv",

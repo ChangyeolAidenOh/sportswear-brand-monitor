@@ -211,7 +211,7 @@ def render():
     if df_kpi is not None and not df_kpi.empty:
         fig_sov = _build_sov_comparison_chart(df_kpi)
         if fig_sov:
-            st.plotly_chart(fig_sov, use_container_width=True, key="sov_comparison")
+            st.plotly_chart(fig_sov, width="stretch", key="sov_comparison")
 
     st.markdown("---")
 
@@ -231,17 +231,17 @@ def render():
     with col_trend:
         fig_trend = _build_korea_global_trend(df_kg, metric=metric)
         if fig_trend:
-            st.plotly_chart(fig_trend, use_container_width=True, key="kg_trend")
+            st.plotly_chart(fig_trend, width="stretch", key="kg_trend")
 
     with col_div:
         fig_div = _build_divergence_chart(df_kg, metric=metric)
         if fig_div:
-            st.plotly_chart(fig_div, use_container_width=True, key="kg_divergence")
+            st.plotly_chart(fig_div, width="stretch", key="kg_divergence")
 
     # -- Product divergence
     fig_prod = _build_product_divergence_chart(df_kg)
     if fig_prod:
-        st.plotly_chart(fig_prod, use_container_width=True, key="product_divergence")
+        st.plotly_chart(fig_prod, width="stretch", key="product_divergence")
 
     # -- Key finding callout
     with st.expander("Channel Findings Summary"):

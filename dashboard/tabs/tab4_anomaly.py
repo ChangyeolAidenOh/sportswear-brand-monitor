@@ -297,7 +297,7 @@ def render():
     # -- Anomaly timeline
     fig_timeline = _build_anomaly_timeline(df_anomaly, brand=brand, region=region)
     if fig_timeline:
-        st.plotly_chart(fig_timeline, use_container_width=True, key="anomaly_timeline")
+        st.plotly_chart(fig_timeline, width="stretch", key="anomaly_timeline")
     else:
         st.info(f"No anomalies detected for {BRAND_LABELS.get(brand, brand)} ({region}).")
 
@@ -307,23 +307,23 @@ def render():
     with col_agree:
         fig_agree = _build_method_agreement_chart(df_anomaly)
         if fig_agree:
-            st.plotly_chart(fig_agree, use_container_width=True, key="method_agreement")
+            st.plotly_chart(fig_agree, width="stretch", key="method_agreement")
 
     with col_type:
         fig_type = _build_anomaly_type_chart(df_anomaly)
         if fig_type:
-            st.plotly_chart(fig_type, use_container_width=True, key="anomaly_type")
+            st.plotly_chart(fig_type, width="stretch", key="anomaly_type")
 
     # -- Method distribution
     fig_dist = _build_method_distribution(df_anomaly)
     if fig_dist:
-        st.plotly_chart(fig_dist, use_container_width=True, key="method_dist")
+        st.plotly_chart(fig_dist, width="stretch", key="method_dist")
 
     # -- Event stacking
     st.markdown("---")
     fig_events = _build_event_stacking_chart(df_events)
     if fig_events:
-        st.plotly_chart(fig_events, use_container_width=True, key="event_stacking")
+        st.plotly_chart(fig_events, width="stretch", key="event_stacking")
     elif df_events is None or df_events.empty:
         st.info("Events calendar data not available.")
 

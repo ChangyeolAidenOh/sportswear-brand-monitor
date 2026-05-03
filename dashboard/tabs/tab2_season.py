@@ -260,7 +260,7 @@ def render():
     # -- Season overlay chart (YoY same season)
     fig_overlay = _build_season_overlay_chart(df_kpi, brand="new_balance", region=region)
     if fig_overlay:
-        st.plotly_chart(fig_overlay, use_container_width=True, key="season_overlay")
+        st.plotly_chart(fig_overlay, width="stretch", key="season_overlay")
 
     # -- Seasonal pattern + Product mix side by side
     col_pattern, col_product = st.columns(2)
@@ -268,12 +268,12 @@ def render():
     with col_pattern:
         fig_pattern = _build_seasonal_pattern_chart(df_kpi, region=region)
         if fig_pattern:
-            st.plotly_chart(fig_pattern, use_container_width=True, key="season_pattern")
+            st.plotly_chart(fig_pattern, width="stretch", key="season_pattern")
 
     with col_product:
         if df_prod is not None and not df_prod.empty:
             fig_product = _build_product_season_chart(df_prod, region=region)
             if fig_product:
-                st.plotly_chart(fig_product, use_container_width=True, key="product_season")
+                st.plotly_chart(fig_product, width="stretch", key="product_season")
         else:
             st.info("Product portfolio data not available.")

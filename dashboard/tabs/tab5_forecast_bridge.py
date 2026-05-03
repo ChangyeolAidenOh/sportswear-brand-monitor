@@ -206,7 +206,7 @@ def _render_chain_diagram_visual(chain_data):
             st.markdown(f"**All reject chain hypothesis:** {'Yes' if test_summary.get('all_reject_chain') else 'No'}")
             tests = test_summary.get("tests", [])
             if tests:
-                st.dataframe(pd.DataFrame(tests), use_container_width=True)
+                st.dataframe(pd.DataFrame(tests), width="stretch")
 
 
 def _build_global_trend_ma_chart(df_actual):
@@ -279,7 +279,7 @@ def render():
     with col_forecast:
         if df_forecast is not None:
             fig_prophet = _build_prophet_chart(df_forecast, df_actual, region=region)
-            st.plotly_chart(fig_prophet, use_container_width=True, key="prophet_forecast")
+            st.plotly_chart(fig_prophet, width="stretch", key="prophet_forecast")
         else:
             st.warning(f"Prophet forecast CSV not found for {region}.")
 
@@ -287,7 +287,7 @@ def render():
         if df_comparison is not None:
             fig_comp = _build_model_comparison_chart(df_comparison, region=region)
             if fig_comp:
-                st.plotly_chart(fig_comp, use_container_width=True, key="model_comparison")
+                st.plotly_chart(fig_comp, width="stretch", key="model_comparison")
 
     st.caption(
         "CSI (Consumer Sentiment Index) is the sole exogenous variable. "
@@ -306,7 +306,7 @@ def render():
     with col_global:
         fig_global = _build_global_trend_ma_chart(df_actual)
         if fig_global:
-            st.plotly_chart(fig_global, use_container_width=True, key="global_ma")
+            st.plotly_chart(fig_global, width="stretch", key="global_ma")
 
         st.caption(render_tooltip("monitoring_vs_predictive"))
 

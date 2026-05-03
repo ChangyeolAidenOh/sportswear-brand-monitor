@@ -204,7 +204,7 @@ def render():
 
         latest_csi = None
         if df_csi is not None and not df_csi.empty:
-            latest_csi = df_csi.sort_values("year_month").iloc[-1]["value"]
+            latest_csi = df_csi.sort_values("year_month").iloc[-1]["csi_value"]
 
         wow_val = latest.get("search_wow_pct")
         sov_val = latest.get("sov_pct")
@@ -250,7 +250,7 @@ def render():
     # -- Search trend chart
     st.plotly_chart(
         _build_search_trend_chart(df_kpi, region),
-        use_container_width=True,
+        width="stretch",
         key="search_trend",
     )
 
@@ -260,7 +260,7 @@ def render():
     with col_sov:
         st.plotly_chart(
             _build_sov_chart(df_kpi, region),
-            use_container_width=True,
+            width="stretch",
             key="sov_chart",
         )
 
@@ -269,7 +269,7 @@ def render():
             fig_dep = _build_530_dependency_chart(df_prod)
             if fig_dep:
                 st.plotly_chart(
-                    fig_dep, use_container_width=True, key="dep_chart"
+                    fig_dep, width="stretch", key="dep_chart"
                 )
         else:
             st.info("Product portfolio data not available.")
@@ -283,4 +283,4 @@ def render():
 
         latest_df["brand"] = latest_df["brand"].map(BRAND_LABELS).fillna(latest_df["brand"])
         latest_df.columns = ["Brand", "Search Index", "SoV %", "WoW %"]
-        st.dataframe(latest_df.reset_index(drop=True), use_container_width=True)
+        st.dataframe(latest_df.reset_index(drop=True), width="stretch")
