@@ -36,7 +36,7 @@
 | korea_global_comparison.csv | 1,740 |
 | anomaly_log.csv | 222 |
 | events_calendar.csv | 25 |
-| korea_global_lag.csv | (schema mismatch, re-exported) |
+| korea_global_lag.csv | 12 (re-exported post-Migration 011, column method→deseason_method) |
 | csi_macro.csv | 52 |
 | prophet_forecast_korea.csv | 26 |
 | prophet_forecast_global.csv | 26 |
