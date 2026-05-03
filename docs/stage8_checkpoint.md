@@ -68,37 +68,40 @@
 | 8.9 | Methodology Doc visual redesign — heatmap + cascade + signatures | DONE |
 
 ### Files Created
-dashboard/
-├── init.py
-├── app.py
-├── config.py
-├── export_csv.py
-├── requirements.txt
-├── data/
-│   ├── init.py
-│   ├── queries.py
-│   └── chain_diagram.py
-├── tabs/
-│   ├── init.py
-│   ├── tab1_weekly_kpi.py
-│   ├── tab2_season.py
-│   ├── tab3_channel.py
-│   ├── tab4_anomaly.py
-│   ├── tab5_forecast_bridge.py
-│   └── methodology_doc.py
-├── components/
-│   ├── init.py
-│   ├── kpi_card.py
-│   └── tooltip.py
-└── assets/
-└── style.css
-.streamlit/
-├── config.toml
-└── secrets.toml (gitignored)
-requirements.txt (root, for Streamlit Cloud)
-requirements_dashboard.txt (full, for local dev)
-data/exports/ (CSV fallback files)
-docs/stage8_checkpoint.md
+
+    dashboard/
+    |-- __init__.py
+    |-- app.py
+    |-- config.py
+    |-- export_csv.py
+    |-- requirements.txt
+    |-- data/
+    |   |-- __init__.py
+    |   |-- queries.py
+    |   +-- chain_diagram.py
+    |-- tabs/
+    |   |-- __init__.py
+    |   |-- tab1_weekly_kpi.py
+    |   |-- tab2_season.py
+    |   |-- tab3_channel.py
+    |   |-- tab4_anomaly.py
+    |   |-- tab5_forecast_bridge.py
+    |   +-- methodology_doc.py
+    |-- components/
+    |   |-- __init__.py
+    |   |-- kpi_card.py
+    |   +-- tooltip.py
+    +-- assets/
+        +-- style.css
+
+    .streamlit/
+    |-- config.toml
+    +-- secrets.toml (gitignored)
+
+    requirements.txt (root, for Streamlit Cloud)
+    requirements_dashboard.txt (full, for local dev)
+    data/exports/ (CSV fallback files)
+    docs/stage8_checkpoint.md
 
 ### Bugs Fixed During Stage 8
 
