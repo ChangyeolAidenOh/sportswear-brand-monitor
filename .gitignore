@@ -22,3 +22,5 @@ Thumbs.db
 # Jupyter
 .ipynb_checkpoints/
 .streamlit/secrets.toml
+docs/comprehensive_advisor_handoff.md
+docs/comprehensive_advisor_handoff.md
