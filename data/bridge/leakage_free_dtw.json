@@ -1,0 +1,53 @@
+{
+  "date": "2026-05-03T01:58:54.264316",
+  "stage": "7_track_a3_followup_leakage_free_dtw",
+  "stage_4_originals": {
+    "dtw_lag": 10.4,
+    "cc_lag": 9.0
+  },
+  "tolerance_weeks": 2.0,
+  "min_history_weeks": 60,
+  "rolling_window_weeks": 13,
+  "dtw_backend": "tslearn",
+  "dtw_available": true,
+  "cc_max_lag_searched": 26,
+  "results": {
+    "expanding_mstl": {
+      "dtw_stats": {
+        "mean_lag": 8.93,
+        "median_lag": 9.0,
+        "std_lag": 7.22,
+        "min_lag": -3,
+        "max_lag": 24,
+        "distance": 6.350866757813213,
+        "n_path_points": 162
+      },
+      "dtw_status": "ok_tslearn",
+      "cc_best_lag": -10,
+      "cc_best_corr": 0.6758330026812513,
+      "scenario": "direction_flipped",
+      "flags": [
+        "direction_flip_advisor_escalation"
+      ]
+    },
+    "trailing_mean_13w": {
+      "dtw_stats": {
+        "mean_lag": 16.06,
+        "median_lag": 8.5,
+        "std_lag": 30.75,
+        "min_lag": -29,
+        "max_lag": 76,
+        "distance": 12.032735082020846,
+        "n_path_points": 282
+      },
+      "dtw_status": "ok_tslearn",
+      "cc_best_lag": -14,
+      "cc_best_corr": 0.6426220651707486,
+      "scenario": "direction_flipped",
+      "flags": [
+        "direction_flip_advisor_escalation"
+      ]
+    }
+  },
+  "section_12_6_narrative_slot": "Leakage-free replication produced direction-flipped result -- advisor escalation. Stage 4 +10.4w lead is not robust to leakage correction; original DTW finding may be artifact of MSTL forward-looking smoothing."
+}
