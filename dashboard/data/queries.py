@@ -29,14 +29,24 @@ def _read_csv_fallback(filename):
 def _query_or_csv(query, csv_filename, parse_dates=None):
     """Execute SQL query or fall back to CSV. Returns DataFrame or None."""
     if USE_CSV_FALLBACK:
-        return _read_csv_fallback(csv_filename)
+        df = _read_csv_fallback(csv_filename)
+        if df is not None and parse_dates:
+            for col in parse_dates:
+                if col in df.columns:
+                    df[col] = pd.to_datetime(df[col], errors="coerce")
+        return df
     try:
         with get_conn() as conn:
             df = pd.read_sql(query, conn, parse_dates=parse_dates)
         return df
     except Exception as e:
         print(f"DB query failed: {e}")
-        return _read_csv_fallback(csv_filename)
+        df = _read_csv_fallback(csv_filename)
+        if df is not None and parse_dates:
+            for col in parse_dates:
+                if col in df.columns:
+                    df[col] = pd.to_datetime(df[col], errors="coerce")
+        return df
 
 
 # ================================================================
@@ -140,7 +150,7 @@ def fetch_csi_macro():
 KOREA_GLOBAL_LAG_SQL = """
 SELECT *
 FROM mart.korea_global_lag
-ORDER BY method, deseason
+ORDER BY brand, deseason_method
 """
 
 

@@ -248,7 +248,7 @@ def render():
         with col2:
             st.metric("Week in Season", f"W{int(season_week)}" if season_week else "N/A")
         with col3:
-            st.metric("Latest Data", latest_date.strftime("%Y-%m-%d") if latest_date else "N/A")
+            st.metric("Latest Data", str(latest_date)[:10] if latest_date else "N/A")
 
     st.markdown("---")
 

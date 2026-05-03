@@ -181,7 +181,7 @@ def _build_product_divergence_chart(df):
     fig = go.Figure()
     fig.add_trace(go.Bar(
         x=latest["divergence_pct"],
-        y=latest["product"],
+        y=latest["product"].astype(str),
         orientation="h",
         marker_color=colors,
         text=[f"{v:+.1f}%" for v in latest["divergence_pct"]],
@@ -191,6 +191,7 @@ def _build_product_divergence_chart(df):
     fig.update_layout(
         title="Product Divergence — Korea vs Global (Latest Week)",
         xaxis_title="Divergence % (positive = Korea over-index)",
+        yaxis=dict(type="category"),
         height=300,
         margin=dict(l=80, r=60, t=50, b=40),
     )
