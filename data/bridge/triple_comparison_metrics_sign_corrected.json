@@ -1,0 +1,147 @@
+{
+  "date": "2026-05-03T11:11:37.145925",
+  "stage": "7_track_a3_sign_corrected",
+  "direction": "global_to_korea",
+  "sign_correction_applied": true,
+  "lag_grid": [
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14
+  ],
+  "lag_star": 11,
+  "lag_uncertainty": {
+    "best_lag": 11,
+    "best_rmse": 3.750910851269299,
+    "best_se": 0.4862494720523417,
+    "indistinguishable_lags": [
+      6,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14
+    ],
+    "near_neighbor_lags": [
+      9,
+      10,
+      11,
+      12,
+      13
+    ],
+    "uncertainty_disclosure": "lag 11w lowest mean RMSE; lags within ±1 SE = [6, 8, 9, 10, 11, 12, 13, 14] (statistically indistinguishable); ±2w neighborhood = [9, 10, 11, 12, 13]"
+  },
+  "n_paired_folds": 8,
+  "triple_results": [
+    {
+      "label": "prophet_baseline",
+      "rmse": 4.74834076085587,
+      "mae": 3.950872114179814,
+      "mape": 15.07935804226625,
+      "n_train": 148,
+      "n_test": 26,
+      "exog_cols": [],
+      "csi_coef": null,
+      "global_coef": null
+    },
+    {
+      "label": "prophet_csi",
+      "rmse": 5.570876867365775,
+      "mae": 4.798495397151052,
+      "mape": 18.514735810834168,
+      "n_train": 148,
+      "n_test": 26,
+      "exog_cols": [
+        "csi"
+      ],
+      "csi_coef": null,
+      "global_coef": null
+    },
+    {
+      "label": "prophet_csi_global_lag11",
+      "rmse": 6.073073972430693,
+      "mae": 5.37469438859677,
+      "mape": 20.94556677768595,
+      "n_train": 137,
+      "n_test": 26,
+      "exog_cols": [
+        "csi",
+        "global_lag11"
+      ],
+      "csi_coef": null,
+      "global_coef": null
+    },
+    {
+      "label": "sarimax_csi",
+      "rmse": 6.486585012958366,
+      "mae": 5.931287300091491,
+      "mape": 23.017691718166454,
+      "n_train": 148,
+      "n_test": 26,
+      "exog_cols": [
+        "csi"
+      ],
+      "csi_coef": 0.6719926589911643,
+      "global_coef": null
+    },
+    {
+      "label": "sarimax_csi_global_lag11",
+      "rmse": 7.196087684951668,
+      "mae": 6.715799579461167,
+      "mape": 26.333761724378835,
+      "n_train": 137,
+      "n_test": 26,
+      "exog_cols": [
+        "csi",
+        "global_lag11"
+      ],
+      "csi_coef": 0.5156294798472293,
+      "global_coef": 1.7929524029443196
+    }
+  ],
+  "prophet": {
+    "outcome": "degradation",
+    "narrative": "[prophet] DEGRADATION (Δ%=-9.01%, DM p=0.0000). Adding Global lagged regressor significantly worsens forecast. Sentinel framing operational refinement: Global signal is monitoring leading indicator (DTW shape similarity) but NOT predictive feature -- active interference in forecast model. Stage 8 dashboard implication: right-panel reference visualization, NOT model input. 4th outcome scenario (matrix extension).",
+    "delta_pct": -9.014686862077163,
+    "dm_stat": -4.576990337087526,
+    "dm_pvalue": 4.717132399134627e-06
+  },
+  "sarimax": {
+    "outcome": "degradation",
+    "narrative": "[sarimax] DEGRADATION (Δ%=-10.94%, DM p=0.0000). Adding Global lagged regressor significantly worsens forecast. Sentinel framing operational refinement: Global signal is monitoring leading indicator (DTW shape similarity) but NOT predictive feature -- active interference in forecast model. Stage 8 dashboard implication: right-panel reference visualization, NOT model input. 4th outcome scenario (matrix extension).",
+    "delta_pct": -10.938000050502945,
+    "dm_stat": -6.342459901931769,
+    "dm_pvalue": 2.261251186297386e-10
+  },
+  "cross_model": {
+    "classification": "consistent_degradation",
+    "narrative": "BOTH MODELS DEGRADATION (4th outcome scenario, sentinel operational refinement). Global signal is monitoring leading indicator (DTW shape similarity, sign-corrected) but actively interferes with both Prophet changepoint absorption AND SARIMAX explicit regression. Direction-asymmetric quantitative validation of DP24: Korea->Global degradation 41-59% (DP23-contaminated) vs Global->Korea degradation 9-11% (leakage-free) -- magnitude reduction 1/4~1/5 confirms sign correction validity (3rd quantitative signature, joining mediation signature dissipation and CI narrowing)."
+  },
+  "seasonal_b1": [
+    {
+      "season": "FW",
+      "n_weeks": 82,
+      "n_test": 16,
+      "mean_rmse_baseline": 2.2022537026032696,
+      "mean_rmse_treatment": 2.2824628329401615,
+      "delta_pct": -3.6421385166512485,
+      "verdict": "ok"
+    },
+    {
+      "season": "SS",
+      "n_weeks": 81,
+      "n_test": 16,
+      "mean_rmse_baseline": 4.211171629889689,
+      "mean_rmse_treatment": 4.286151752581859,
+      "delta_pct": -1.7805050300012195,
+      "verdict": "ok"
+    }
+  ]
+}

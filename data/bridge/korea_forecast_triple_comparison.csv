@@ -1,0 +1,6 @@
+model,family,lag,fold,train_rmse,test_rmse,train_mae,test_mae,test_mape,csi_coef,global_coef,direction
+prophet_baseline,prophet,,single_split,,4.74834076085587,,3.950872114179814,15.07935804226625,,,global_to_korea
+prophet_csi,prophet,,single_split,,5.570876867365775,,4.798495397151052,18.514735810834168,,,global_to_korea
+prophet_csi_global_lag11,prophet,11.0,single_split,,6.073073972430693,,5.37469438859677,20.94556677768595,,,global_to_korea
+sarimax_csi,sarimax,,single_split,,6.486585012958366,,5.931287300091491,23.017691718166454,0.6719926589911643,,global_to_korea
+sarimax_csi_global_lag11,sarimax,11.0,single_split,,7.196087684951668,,6.715799579461167,26.333761724378835,0.5156294798472293,1.7929524029443196,global_to_korea
