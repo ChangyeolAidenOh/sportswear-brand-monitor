@@ -1,0 +1,29 @@
+{
+  "date": "2026-05-03T01:39:39.444042",
+  "stage": "7_track_a3_followup_mstl_leakage",
+  "min_history_weeks": 60,
+  "leakage_threshold_ratio_no_leakage": 0.05,
+  "leakage_threshold_ratio_significant": 0.15,
+  "results": [
+    {
+      "variable": "korea_trend",
+      "series_std": 4.232834446639858,
+      "db_vs_rt_mean_abs_diff": 1.1380286566202016,
+      "recomputed_vs_rt_mean_abs_diff": 1.1380277692093115,
+      "recomputed_vs_rt_diff_to_std_ratio": 0.26885714136840616,
+      "db_vs_recomputed_mean_abs_diff": 2.4461468923647462e-05,
+      "verdict": "significant_leakage"
+    },
+    {
+      "variable": "global_trend",
+      "series_std": 5.561108416984882,
+      "db_vs_rt_mean_abs_diff": 1.4524421543754686,
+      "recomputed_vs_rt_mean_abs_diff": 1.4524364380518502,
+      "recomputed_vs_rt_diff_to_std_ratio": 0.26117750799746703,
+      "db_vs_recomputed_mean_abs_diff": 2.4882764984499672e-05,
+      "verdict": "significant_leakage"
+    }
+  ],
+  "any_leakage_detected": true,
+  "track_a3_implication": "Track A3 results invalidated by MSTL forward-looking leakage. Lag grid CV's monotonic RMSE-vs-lag pattern (lag 6w best, lag 14w worst) and the +41-59% triple-comparison RMSE degradation are consistent with shorter lags carrying more future information through the centered MSTL smoother. Re-design needed: replace MSTL trend exogenous with either (a) raw korea_search lagged, (b) one-sided rolling mean, or (c) expanding-window MSTL trend."
+}

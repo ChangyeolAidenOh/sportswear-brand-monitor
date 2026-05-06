@@ -1,0 +1,167 @@
+{
+  "date": "2026-05-01T18:29:38.268966",
+  "stage": "7_step0_stationarity",
+  "n_observations": 174,
+  "significance_level": 0.05,
+  "univariate": [
+    {
+      "label": "korea_search_level",
+      "n": 174,
+      "adf_stat": -2.491790444587231,
+      "adf_p": 0.11748459760719437,
+      "kpss_stat": 1.0124813920037457,
+      "kpss_p": 0.01,
+      "verdict": "unit_root"
+    },
+    {
+      "label": "korea_search_diff1",
+      "n": 173,
+      "adf_stat": -5.471741086907082,
+      "adf_p": 2.3902004594241175e-06,
+      "kpss_stat": 0.050598927609540816,
+      "kpss_p": 0.1,
+      "verdict": "stationary"
+    },
+    {
+      "label": "global_search_level",
+      "n": 174,
+      "adf_stat": -2.304286741125863,
+      "adf_p": 0.17058913945339838,
+      "kpss_stat": 1.4055869910176129,
+      "kpss_p": 0.01,
+      "verdict": "unit_root"
+    },
+    {
+      "label": "global_search_diff1",
+      "n": 173,
+      "adf_stat": -13.579658177780656,
+      "adf_p": 2.1359828945189636e-25,
+      "kpss_stat": 0.08181518176970975,
+      "kpss_p": 0.1,
+      "verdict": "stationary"
+    },
+    {
+      "label": "korea_trend_level",
+      "n": 174,
+      "adf_stat": 0.4186561917952027,
+      "adf_p": 0.9821793678343798,
+      "kpss_stat": 1.5256684895804111,
+      "kpss_p": 0.01,
+      "verdict": "unit_root"
+    },
+    {
+      "label": "korea_trend_diff1",
+      "n": 173,
+      "adf_stat": -1.5325811811830543,
+      "adf_p": 0.5173367709549721,
+      "kpss_stat": 1.6622370593784297,
+      "kpss_p": 0.01,
+      "verdict": "unit_root"
+    },
+    {
+      "label": "global_trend_level",
+      "n": 174,
+      "adf_stat": -3.345450766184223,
+      "adf_p": 0.012965103600275316,
+      "kpss_stat": 1.5206916139495756,
+      "kpss_p": 0.01,
+      "verdict": "trend_stationary"
+    },
+    {
+      "label": "global_trend_diff1",
+      "n": 173,
+      "adf_stat": -1.5128309629651524,
+      "adf_p": 0.5271547659986358,
+      "kpss_stat": 1.5684901784002263,
+      "kpss_p": 0.01,
+      "verdict": "unit_root"
+    },
+    {
+      "label": "csi_level",
+      "n": 174,
+      "adf_stat": -2.1126266191564333,
+      "adf_p": 0.239467779289124,
+      "kpss_stat": 0.8297545775033166,
+      "kpss_p": 0.01,
+      "verdict": "unit_root"
+    },
+    {
+      "label": "csi_diff1",
+      "n": 173,
+      "adf_stat": -13.056062866997266,
+      "adf_p": 2.093709059532985e-24,
+      "kpss_stat": 0.1399667902334873,
+      "kpss_p": 0.1,
+      "verdict": "stationary"
+    }
+  ],
+  "cointegration": [
+    {
+      "label": "korea_search_x_global_search",
+      "n": 174,
+      "coint_stat": -3.0937853245209954,
+      "coint_p": 0.08955784405782302,
+      "cointegrated": false
+    },
+    {
+      "label": "korea_search_x_csi",
+      "n": 174,
+      "coint_stat": -3.097860634263661,
+      "coint_p": 0.08873330293263354,
+      "cointegrated": false
+    },
+    {
+      "label": "global_search_x_csi",
+      "n": 174,
+      "coint_stat": -2.1975927239986226,
+      "coint_p": 0.4256052408376927,
+      "cointegrated": false
+    },
+    {
+      "label": "korea_trend_x_global_trend",
+      "n": 174,
+      "coint_stat": -0.729829377790783,
+      "coint_p": 0.9433220001691827,
+      "cointegrated": false
+    },
+    {
+      "label": "korea_trend_x_csi",
+      "n": 174,
+      "coint_stat": 0.6318568663232622,
+      "coint_p": 0.9933571669272462,
+      "cointegrated": false
+    },
+    {
+      "label": "global_trend_x_csi",
+      "n": 174,
+      "coint_stat": -1.8345562206607264,
+      "coint_p": 0.6127901233480104,
+      "cointegrated": false
+    }
+  ],
+  "transformation_decisions": {
+    "korea_search": {
+      "transform": "diff1",
+      "rationale": "Level non-stationary (ADF p=0.1175, KPSS p=0.0100); diff1 stationary"
+    },
+    "global_search": {
+      "transform": "diff1",
+      "rationale": "Level non-stationary (ADF p=0.1706, KPSS p=0.0100); diff1 stationary"
+    },
+    "korea_trend": {
+      "transform": "review",
+      "rationale": "Neither level nor diff1 cleanly stationary (level: unit_root, diff1: unit_root)"
+    },
+    "global_trend": {
+      "transform": "review",
+      "rationale": "Neither level nor diff1 cleanly stationary (level: trend_stationary, diff1: unit_root)"
+    },
+    "csi": {
+      "transform": "diff1",
+      "rationale": "Level non-stationary (ADF p=0.2395, KPSS p=0.0100); diff1 stationary"
+    }
+  },
+  "escalation_triggers": [
+    "AMBIGUOUS_TRANSFORM: ['korea_trend', 'global_trend'] -- neither level nor diff1 cleanly stationary"
+  ]
+}

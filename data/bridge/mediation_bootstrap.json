@@ -1,0 +1,74 @@
+{
+  "date": "2026-05-03T00:51:41.123016",
+  "stage": "7_track_a1_prime_mediation",
+  "lag_star_weeks": 10,
+  "csi_lags": [
+    0,
+    4,
+    8,
+    12
+  ],
+  "block_len_weeks": 13,
+  "n_bootstrap": 5000,
+  "trend_point_estimate": {
+    "a_coef": 0.09281929214397878,
+    "b_coef": 0.5272185562935311,
+    "c_coef": 0.04066018210979429,
+    "c_prime_coef": -0.008275871090520033,
+    "indirect_a_times_b": 0.048936053200335984,
+    "total_effect_c": 0.04066018210979429,
+    "pct_indirect": 120.35374821537799,
+    "primary_treatment": "csi_l0"
+  },
+  "diff1_point_estimate": {
+    "a_coef": 0.12160525046553741,
+    "b_coef": -0.03901161387144991,
+    "c_coef": 0.18284696403816003,
+    "c_prime_coef": 0.18759098111406292,
+    "indirect_a_times_b": -0.0047440170759025,
+    "total_effect_c": 0.18284696403816003,
+    "pct_indirect": -2.5945287639079573,
+    "primary_treatment": "csi_d1_l0"
+  },
+  "bootstrap_results": {
+    "trend_mbb": {
+      "label": "trend_mbb",
+      "point": 0.048936053200335984,
+      "bca_lo": -0.39329992189680946,
+      "bca_hi": 0.175276051879354,
+      "ci_excludes_zero": false,
+      "n_valid": 5000,
+      "n_skipped": 0
+    },
+    "trend_sb": {
+      "label": "trend_sb",
+      "point": 0.048936053200335984,
+      "bca_lo": -0.02459319794615717,
+      "bca_hi": 0.343556079045042,
+      "ci_excludes_zero": false,
+      "n_valid": 5000,
+      "n_skipped": 0
+    },
+    "diff1_mbb": {
+      "label": "diff1_mbb",
+      "point": -0.0047440170759025,
+      "bca_lo": -0.03512826925672258,
+      "bca_hi": 0.0033942392995099557,
+      "ci_excludes_zero": false,
+      "n_valid": 5000,
+      "n_skipped": 0
+    },
+    "diff1_sb": {
+      "label": "diff1_sb",
+      "point": -0.0047440170759025,
+      "bca_lo": -0.035159649148362955,
+      "bca_hi": 0.00293110759115321,
+      "ci_excludes_zero": false,
+      "n_valid": 5000,
+      "n_skipped": 0
+    }
+  },
+  "matrix_row": "row_3_full_parallel",
+  "matrix_row_narrative": "Full parallel structure -- Scenario B confirmed, 'early reactor' pivot",
+  "decision_7_scenario": "B_parallel"
+}

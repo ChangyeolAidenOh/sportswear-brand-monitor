@@ -1,0 +1,19 @@
+week_start,tiers,n_anomalies,brands,regions,max_abs_z
+2024-02-11,T1,1,nike,korea,2.17
+2024-03-17,T1,1,puma,korea,2.97
+2024-03-24,T2,2,"adidas, new_balance",global,3.05
+2024-04-07,T2,2,"new_balance, nike",global,2.58
+2024-04-21,T2,3,"new_balance, nike, puma",global,2.77
+2024-04-28,T2,2,"new_balance, nike",global,2.47
+2024-07-28,T2,2,"new_balance, nike",global,2.29
+2024-08-18,T2,3,"adidas, nike","korea, global",3.3
+2024-08-25,T2,2,"adidas, new_balance",korea,3.7
+2024-09-01,T1,1,puma,korea,2.77
+2024-09-15,T1+T2,5,"adidas, new_balance, nike, puma","korea, global",3.15
+2024-11-17,T1+T2,3,"adidas, new_balance, nike",global,2.96
+2024-11-24,T1,1,new_balance,global,2.15
+2024-12-01,T2,2,"new_balance, puma",korea,2.47
+2024-12-15,T2,2,"new_balance, puma",korea,2.78
+2025-02-16,T2,3,"adidas, nike, puma",korea,3.18
+2025-03-23,T1,1,new_balance,korea,3.0
+2025-04-20,T2,2,"new_balance, nike",korea,4.24
