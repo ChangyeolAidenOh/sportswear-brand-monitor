@@ -44,10 +44,10 @@ STYLE_CSS = os.path.join(os.path.dirname(__file__), "assets", "style.css")
 # Brand constants
 # ================================================================
 BRAND_COLORS = {
-    "new_balance": "#E74C3C",
-    "nike": "#FF6B00",
-    "adidas": "#3498DB",
-    "puma": "#2ECC71",
+    "new_balance": "#E63946",  # NB Red — primary brand emphasis
+    "nike":        "#9CA3AF",  # Medium gray — muted competitor
+    "adidas":      "#6B7280",  # Dark gray — muted competitor
+    "puma":        "#D1D5DB",  # Light gray — muted competitor
 }
 
 BRAND_LABELS = {
