@@ -7,10 +7,11 @@ Usage: tab1_weekly_kpi.render() called from app.py
 
 # third-party
 import streamlit as st
+import pandas as pd
 import plotly.graph_objects as go
 
 # local
-from dashboard.config import BRAND_COLORS, BRAND_LABELS
+from dashboard.config import BRAND_COLORS, BRAND_LABELS, BRAND_LINE_WIDTH, BRAND_LINE_OPACITY
 from dashboard.data.queries import fetch_brand_kpi, fetch_product_portfolio, fetch_csi_macro
 from dashboard.components.kpi_card import render_kpi_row
 from dashboard.components.tooltip import render_tooltip
@@ -85,7 +86,11 @@ def _build_search_trend_chart(df, region="korea"):
             x=brand_df["week_start"],
             y=brand_df["search_index"],
             name=BRAND_LABELS.get(brand, brand),
-            line=dict(color=BRAND_COLORS.get(brand, "#888"), width=2),
+            line=dict(
+                color=BRAND_COLORS.get(brand, "#888"),
+                width=BRAND_LINE_WIDTH.get(brand, 1.5),
+            ),
+            opacity=BRAND_LINE_OPACITY.get(brand, 0.65),
             hovertemplate="%{x|%Y-%m-%d}: %{y:.1f}<extra></extra>",
         ))
 
@@ -115,6 +120,7 @@ def _build_sov_chart(df, region="korea"):
             name=BRAND_LABELS.get(brand, brand),
             stackgroup="sov",
             line=dict(color=BRAND_COLORS.get(brand, "#888"), width=0),
+            opacity=BRAND_LINE_OPACITY.get(brand, 0.65),
             hovertemplate="%{y:.1f}%<extra></extra>",
         ))
 
@@ -151,7 +157,7 @@ def _build_530_dependency_chart(df_prod):
         name="530 Share",
         line=dict(color=BRAND_COLORS["new_balance"], width=2),
         fill="tozeroy",
-        fillcolor="rgba(231, 76, 60, 0.1)",
+        fillcolor="rgba(230, 57, 70, 0.1)",
         hovertemplate="%{x|%Y-%m-%d}: %{y:.1f}%<extra></extra>",
     ))
 
@@ -280,6 +286,11 @@ def render():
         latest_df = df_kpi[
             (df_kpi["week_start"] == latest_week) & (df_kpi["region"] == region)
         ][["brand", "search_index", "sov_pct", "search_wow_pct"]].copy()
+
+        # Force NB-first ordering, then alphabetical for competitors
+        brand_order = ["new_balance", "nike", "adidas", "puma"]
+        latest_df["brand"] = pd.Categorical(latest_df["brand"], categories=brand_order, ordered=True)
+        latest_df = latest_df.sort_values("brand").reset_index(drop=True)
 
         latest_df["brand"] = latest_df["brand"].map(BRAND_LABELS).fillna(latest_df["brand"])
         latest_df.columns = ["Brand", "Search Index", "SoV %", "WoW %"]

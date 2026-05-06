@@ -11,7 +11,7 @@ import plotly.graph_objects as go
 import pandas as pd
 
 # local
-from dashboard.config import BRAND_COLORS, BRAND_LABELS
+from dashboard.config import BRAND_COLORS, BRAND_LABELS, BRAND_LINE_WIDTH, BRAND_LINE_OPACITY
 from dashboard.data.queries import fetch_brand_kpi, fetch_product_portfolio
 
 
@@ -144,7 +144,11 @@ def _build_seasonal_pattern_chart(df, region="korea"):
             x=weekly_avg["week_of_year"],
             y=weekly_avg["search_index"],
             name=BRAND_LABELS.get(brand, brand),
-            line=dict(color=BRAND_COLORS.get(brand, "#888"), width=2),
+            line=dict(
+                color=BRAND_COLORS.get(brand, "#888"),
+                width=BRAND_LINE_WIDTH.get(brand, 1.5),
+            ),
+            opacity=BRAND_LINE_OPACITY.get(brand, 0.65),
             hovertemplate="W%{x}: %{y:.1f}<extra></extra>",
         ))
 

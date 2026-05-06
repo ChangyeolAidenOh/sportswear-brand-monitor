@@ -89,7 +89,7 @@ def _build_prophet_chart(df_forecast, df_actual, region="korea"):
         fig.add_trace(go.Scatter(
             x=nb_actual["week_start"], y=nb_actual["search_index"],
             name="Actual",
-            line=dict(color="#E74C3C", width=2),
+            line=dict(color="#E63946", width=2),
             hovertemplate="%{x|%Y-%m-%d}: %{y:.1f}<extra></extra>",
         ))
 
@@ -97,19 +97,19 @@ def _build_prophet_chart(df_forecast, df_actual, region="korea"):
         fig.add_trace(go.Scatter(
             x=df_forecast["week_start"], y=df_forecast["search_index"],
             name="Test Actual", mode="markers",
-            marker=dict(color="#E74C3C", size=5),
+            marker=dict(color="#E63946", size=5),
             hovertemplate="%{x|%Y-%m-%d}: %{y:.1f}<extra></extra>",
         ))
         fig.add_trace(go.Scatter(
             x=df_forecast["week_start"], y=df_forecast["prophet_forecast"],
             name="Prophet Forecast",
-            line=dict(color="#2ECC71", width=2, dash="dash"),
+            line=dict(color="#F77F00", width=2.5, dash="dash"),
             hovertemplate="%{x|%Y-%m-%d}: %{y:.1f}<extra></extra>",
         ))
         fig.add_trace(go.Scatter(
             x=pd.concat([df_forecast["week_start"], df_forecast["week_start"][::-1]]),
             y=pd.concat([df_forecast["prophet_upper"], df_forecast["prophet_lower"][::-1]]),
-            fill="toself", fillcolor="rgba(46, 204, 113, 0.15)",
+            fill="toself", fillcolor="rgba(247, 127, 0, 0.15)",
             line=dict(color="rgba(0,0,0,0)"), name="95% CI", hoverinfo="skip",
         ))
         anomaly_weeks = df_forecast[df_forecast["is_anomaly_week"] == 1]
@@ -137,8 +137,10 @@ def _build_model_comparison_chart(df_metrics, region="korea"):
         return None
 
     model_colors = {
-        "Prophet": "#2ECC71", "SARIMAX": "#3498DB",
-        "LSTM": "#E74C3C", "Chronos": "#F39C12",
+        "Prophet": "#E63946",   # NB Red — winner emphasis
+        "SARIMAX": "#3498DB",   # Blue
+        "LSTM":    "#FF6B00",   # Orange (was NB color, now Nike-like)
+        "Chronos": "#2ECC71",   # Green
     }
     subset = df_metrics[
         (df_metrics["region"] == region) & (df_metrics["subset"] == "all")

@@ -11,7 +11,7 @@ import plotly.graph_objects as go
 import pandas as pd
 
 # local
-from dashboard.config import BRAND_COLORS, BRAND_LABELS
+from dashboard.config import BRAND_COLORS, BRAND_LABELS, BRAND_LINE_OPACITY
 from dashboard.data.queries import (
     fetch_brand_kpi,
     fetch_korea_global_comparison,
@@ -131,16 +131,21 @@ def _build_sov_comparison_chart(df_kpi):
 
     labels = [BRAND_LABELS.get(b, b) for b in brands]
     colors = [BRAND_COLORS.get(b, "#888") for b in brands]
+    # Per-brand base opacity (NB full, competitors muted)
+    base_opacity = [BRAND_LINE_OPACITY.get(b, 0.65) for b in brands]
+    # Korea = base, Global = base * 0.45 (region distinction)
+    korea_opacity = base_opacity
+    global_opacity = [o * 0.45 for o in base_opacity]
 
     fig = go.Figure()
     fig.add_trace(go.Bar(
         name="Korea", x=labels, y=korea_sov,
-        marker_color=colors, opacity=1.0,
+        marker=dict(color=colors, opacity=korea_opacity),
         text=[f"{v:.1f}%" for v in korea_sov], textposition="inside",
     ))
     fig.add_trace(go.Bar(
         name="Global", x=labels, y=global_sov,
-        marker_color=colors, opacity=0.4,
+        marker=dict(color=colors, opacity=global_opacity),
         text=[f"{v:.1f}%" for v in global_sov], textposition="inside",
     ))
 
