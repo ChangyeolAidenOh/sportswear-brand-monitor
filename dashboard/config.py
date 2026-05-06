@@ -44,10 +44,25 @@ STYLE_CSS = os.path.join(os.path.dirname(__file__), "assets", "style.css")
 # Brand constants
 # ================================================================
 BRAND_COLORS = {
-    "new_balance": "#E63946",  # NB Red — primary brand emphasis
-    "nike":        "#9CA3AF",  # Medium gray — muted competitor
-    "adidas":      "#6B7280",  # Dark gray — muted competitor
-    "puma":        "#D1D5DB",  # Light gray — muted competitor
+    "new_balance": "#E63946",  # NB Red — primary subject
+    "nike":        "#FF6B00",  # Nike orange (industry standard)
+    "adidas":      "#3498DB",  # adidas blue (industry standard)
+    "puma":        "#2ECC71",  # PUMA green (industry standard)
+}
+
+# Visual hierarchy — NB emphasized via line width + opacity, not color reduction
+BRAND_LINE_WIDTH = {
+    "new_balance": 3.0,
+    "nike":        1.5,
+    "adidas":      1.5,
+    "puma":        1.5,
+}
+
+BRAND_LINE_OPACITY = {
+    "new_balance": 1.0,
+    "nike":        0.65,
+    "adidas":      0.65,
+    "puma":        0.65,
 }
 
 BRAND_LABELS = {
