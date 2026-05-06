@@ -103,13 +103,13 @@ def _build_prophet_chart(df_forecast, df_actual, region="korea"):
         fig.add_trace(go.Scatter(
             x=df_forecast["week_start"], y=df_forecast["prophet_forecast"],
             name="Prophet Forecast",
-            line=dict(color="#F77F00", width=2.5, dash="dash"),
+            line=dict(color="#9B59B6", width=2.5, dash="dash"),
             hovertemplate="%{x|%Y-%m-%d}: %{y:.1f}<extra></extra>",
         ))
         fig.add_trace(go.Scatter(
             x=pd.concat([df_forecast["week_start"], df_forecast["week_start"][::-1]]),
             y=pd.concat([df_forecast["prophet_upper"], df_forecast["prophet_lower"][::-1]]),
-            fill="toself", fillcolor="rgba(247, 127, 0, 0.15)",
+            fill="toself", fillcolor="rgba(155, 89, 182, 0.15)",
             line=dict(color="rgba(0,0,0,0)"), name="95% CI", hoverinfo="skip",
         ))
         anomaly_weeks = df_forecast[df_forecast["is_anomaly_week"] == 1]
@@ -138,9 +138,9 @@ def _build_model_comparison_chart(df_metrics, region="korea"):
 
     model_colors = {
         "Prophet": "#E63946",   # NB Red — winner emphasis
-        "SARIMAX": "#3498DB",   # Blue
-        "LSTM":    "#FF6B00",   # Orange (was NB color, now Nike-like)
-        "Chronos": "#2ECC71",   # Green
+        "SARIMAX": "#9B59B6",   # Purple — distinct from all brand colors
+        "LSTM":    "#34495E",   # Slate gray — neutral
+        "Chronos": "#16A085",   # Teal — distinct from PUMA green
     }
     subset = df_metrics[
         (df_metrics["region"] == region) & (df_metrics["subset"] == "all")
@@ -226,11 +226,11 @@ def _build_global_trend_ma_chart(df_actual):
     fig = go.Figure()
     fig.add_trace(go.Scatter(
         x=nb_global["week_start"], y=nb_global["search_index"],
-        name="Global Raw", line=dict(color="#3498DB", width=1), opacity=0.4,
+        name="Global Raw", line=dict(color="#F4A6A6", width=1), opacity=0.6,
     ))
     fig.add_trace(go.Scatter(
         x=nb_global["week_start"], y=nb_global["ma_4w"],
-        name="Global 4w MA", line=dict(color="#3498DB", width=2.5),
+        name="Global 4w MA", line=dict(color="#C44569", width=2.5),
     ))
     fig.update_layout(
         title="KPI 7: NB Global Trend 4-Week MA (Monitoring Only)",

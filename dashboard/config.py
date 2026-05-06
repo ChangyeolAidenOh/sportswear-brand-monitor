@@ -52,17 +52,17 @@ BRAND_COLORS = {
 
 # Visual hierarchy — NB emphasized via line width + opacity, not color reduction
 BRAND_LINE_WIDTH = {
-    "new_balance": 3.0,
-    "nike":        1.5,
-    "adidas":      1.5,
-    "puma":        1.5,
+    "new_balance": 3.5,
+    "nike":        1.0,
+    "adidas":      1.0,
+    "puma":        1.0,
 }
 
 BRAND_LINE_OPACITY = {
     "new_balance": 1.0,
-    "nike":        0.65,
-    "adidas":      0.65,
-    "puma":        0.65,
+    "nike":        0.55,
+    "adidas":      0.55,
+    "puma":        0.55,
 }
 
 BRAND_LABELS = {
