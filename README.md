@@ -22,7 +22,7 @@ A weekly performance monitoring system that integrates search trends, social sig
 - [13 Production KPIs](#13-production-kpis)
 - [Project Structure](#project-structure)
 - [Analytical Governance](#analytical-governance)
-- [Data Policy](#Data Policy)
+- [Data Policy](#data-policy)
 - [How to Run](#how-to-run)
 - [Dependencies](#dependencies)
 
@@ -651,20 +651,14 @@ These findings would have been invisible without **deliberate self-diagnostic pr
 
 ## Data Policy
 
-**Public artifacts:** Aggregated metrics, anonymized analysis results, 
-and statistical artifacts are committed for portfolio reproducibility.
+**Public artifacts:** Aggregated metrics, statistical analysis results, and visualization artifacts are committed for portfolio reproducibility (`data/anomaly/`, `data/bridge/`, `data/exports/`, `data/forecast/`).
 
-**Local-only artifacts:** Raw social media text (Naver blog/cafe 
-content) and OpenAI/Anthropic Batch API request payloads are 
-gitignored due to source licensing. Sentiment analysis results are 
-integrated into `mart.sentiment_static` and surfaced via 
-`sentiment_aggregator.py` — raw text is not required for 
-reproducibility.
+**Local-only artifacts:** Raw social media text (Naver blog/cafe content) and Batch API request/response payloads are gitignored due to source licensing. Sentiment analysis results are integrated into `mart.sentiment_static` and surfaced via `sentiment_aggregator.py` — raw text is not required for reproducibility.
 
-**Trace preservation:** Pre-DP24 sign-corrected analysis artifacts 
-(e.g., `bridge_global_enhanced.py`, `mediation_bootstrap.json`) are 
-retained as evidence of analytical governance discipline (DP22 
-deprecation pattern + stage4_checkpoint footnote).
+**Trace preservation:** Pre-DP24 sign-corrected analysis artifacts (e.g., `bridge_global_enhanced.py`, `mediation_bootstrap.json`, `triple_comparison_*.png`) are retained as evidence of analytical governance discipline. See `docs/stage7_checkpoint.md` §12.4.4 (DP22 deprecation pattern + stage4_checkpoint footnote).
+
+**Database:** PostgreSQL schema in `database/schema_init.sql` + numbered migrations 003~011. Migrations 001/002 are integrated into `schema_init.sql` (consolidated initial schema). Migration 011 (sign correction retrofit) applied 2026-05-03 — see `docs/stage7_checkpoint.md` §12.4.4 for cascade detail.
+
 ---
 
 ## How to Run
