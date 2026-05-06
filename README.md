@@ -1,6 +1,8 @@
 # Global Sportswear Brand Performance Monitor
 
-A weekly performance monitoring system that integrates search trends, social signals, macro indicators, and financial data across four global sportswear brands (Nike, Adidas, Puma, New Balance) to deliver actionable KPIs for Business Data Coordinator workflows. The pipeline tests the hypothesized **Macro → Korea → Global** demand chain via 5-dimension orthogonal causality framework, surfaces three critical analytical findings through self-diagnostic protocols, and serves a 6-tab Streamlit dashboard with 13 production-ready KPIs.
+> **NB Korea Demand Diagnosis · Competitive Benchmarking · BDC Operational Pipeline**
+
+A weekly performance monitoring system for **New Balance Korea** that triangulates search trends, social signals, macro indicators, and financial data against three global competitors (Nike, Adidas, Puma) to deliver actionable KPIs for Business Data Coordinator workflows. The pipeline tests the hypothesized **Macro → Korea → Global** demand chain via 5-dimension orthogonal causality framework, surfaces three critical analytical findings through self-diagnostic protocols, and serves a 6-tab Streamlit dashboard with 13 production-ready KPIs.
 
 **Live Dashboard:** [https://sportswear-brand-monitor-newbalance.streamlit.app/](https://sportswear-brand-monitor-newbalance.streamlit.app/)
 
@@ -34,12 +36,12 @@ This project addresses four questions that a New Balance Korea Business Data Coo
 
 ### 1. What drives NB Korea's search demand structurally?
 
-Is it Korean macro consumer sentiment, global brand momentum, or autonomous brand inertia? Bidirectional Granger causality testing across 8 brand×region pairs (4 brands × 2 regions, max lag 4) reveals four distinct patterns:
+Is it Korean macro consumer sentiment, global brand momentum, or autonomous brand inertia? Bidirectional Granger causality testing across 8 brand×region pairs (NB + 3 competitors × 2 regions, max lag 4) reveals four distinct patterns:
 
 | Brand | Global | Korea |
 |---|---|---|
-| Adidas | Search → CSI (robust) | Feedback loop |
 | **New Balance** | **CSI → Search** | **CSI → Search** |
+| Adidas | Search → CSI (robust) | Feedback loop |
 | Nike | Independent | Search → CSI |
 | Puma | CSI → Search | Independent |
 
@@ -86,7 +88,7 @@ Ablation analysis isolates **automatic changepoint detection** as the dominant f
 | YouTube Data API | snapshot | 90 videos + 3,235 comments | Cross-sectional social volume (4 brands × 2-3 queries × top results) |
 | Naver Blog/Cafe | snapshot | 10,000 posts | Sentiment corpus (post_date for time series, query_keyword for product-line attribution) |
 | ECOS (한국은행) | 4 years monthly | 52 monthly | Consumer Sentiment Index (CSI), stat_code 511Y002 |
-| Financials | FY2023-2024 | 16 rows | T1 SEC 10-Q (Nike), T1 IR (Adidas, Puma), T4 CEO statement (NB Global), T2 sector estimates (NB Korea) |
+| Financials | FY2023-2024 | 16 rows | T4 CEO statement (NB Global), T2 sector estimates (NB Korea), T1 SEC 10-Q (Nike), T1 IR (Adidas, Puma) |
 
 **Sample period:** 174 weeks for primary search analysis.
 
@@ -168,10 +170,10 @@ staging (11,037 rows) → mart (5 tables + 5 views)
 
 | Brand | avg_sentiment | neutral % |
 |---|---|---|
-| Nike | +0.474 | 13.7% |
-| Adidas | +0.436 | 17.0% |
-| Puma | +0.367 | 27.4% |
 | **New Balance** | **+0.289 (lowest)** | **45.6% (highest)** |
+| Adidas | +0.436 | 17.0% |
+| Nike | +0.474 | 13.7% |
+| Puma | +0.367 | 27.4% |
 
 NB has lowest average sentiment despite highest search over-index (+34.94%), with neutral ratio 45.6% vs others 13-27%. Interpretation: NB blog posts skew toward informational/news content rather than user reviews, suggesting search demand does not convert to deep engagement.
 
@@ -237,7 +239,7 @@ M+IF agreement alone is **not independent cross-validation** because both operat
 - Celebrity endorsement creates search spikes exceeding typical product launches (NB Korea 2024-09-15: 송혜교 + 아이유 + Stone Island simultaneous, z=+2.15)
 - CSI macro events explain multi-brand dips (2024-12 CSI -12.7pt drop matched co-occurring NB+Puma Korea anomalies)
 - Air Max Day creates competitor spillover anomalies (Nike's seasonal model absorbs the predictable annual event, but adidas/NB anomalies appear in the same week)
-- 2024 spring 4-week global spike was Olympics D-100 campaign convergence (Nike On Air, adidas Olympic kit, Puma FOREVER.FASTER, NB "We Got Now")
+- 2024 spring 4-week global spike was Olympics D-100 campaign convergence (NB "We Got Now", adidas Olympic kit, Nike On Air, Puma FOREVER.FASTER)
 
 ### Stage 6 — 4-Way Forecasting Comparison
 
@@ -387,7 +389,7 @@ Across 8 stages, 24 quantified data points form a cumulative diagnosis of NB Kor
 | 2 | SS/FW Ratio reversal | 530 Korea STL ratio 1.18 → MSTL 0.86 (FW-dominant) | Stage 3 |
 | 3 | Korea FW vs Global SS asymmetry | All 5 Korea NB products FW (0.71-0.99), 4/5 Global products SS (1.07-1.44) | Stage 3 |
 | 4 | 574 cross-region anchor | Korea +82.28% divergence vs Global, both regions rank #2 | Stage 2-3 |
-| 5 | NB Shopping Search 4.5% (channel disconnect) | Nike 32.1%, Adidas 24.5%, NB 4.5% — app direct entry | Stage 3 |
+| 5 | NB Shopping Search 4.5% (channel disconnect) | NB 4.5%, Adidas 24.5%, Nike 32.1% — app direct entry | Stage 3 |
 | 6 | D2C decline | slope -0.191/week, p=0.000005 (Stage 0 -0.179 confirmed and intensified) | Stage 0 H5 → Stage 3 |
 | 7 | NB sentiment lowest | +0.289 vs Nike +0.474, neutral 45.6% (highest) | Stage 3 |
 | 8 | Search-sentiment asymmetry | Search +34.94% over-index but sentiment lowest of 4 brands | Stage 2 + 3 |
