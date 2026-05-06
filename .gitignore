@@ -33,3 +33,7 @@ data/batch/sentiment_results.jsonl
 # Sentiment Batch API artifacts (raw blog text — source licensing)
 data/batch/sentiment_batch.jsonl
 data/batch/sentiment_results.jsonl
+
+# Sentiment Batch API artifacts (raw blog text — source licensing)
+data/batch/sentiment_batch.jsonl
+data/batch/sentiment_results.jsonl

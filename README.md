@@ -22,7 +22,7 @@ A weekly performance monitoring system that integrates search trends, social sig
 - [13 Production KPIs](#13-production-kpis)
 - [Project Structure](#project-structure)
 - [Analytical Governance](#analytical-governance)
-- [Cost Governance](#cost-governance)
+- [Data Policy](#Data Policy)
 - [How to Run](#how-to-run)
 - [Dependencies](#dependencies)
 
@@ -649,17 +649,22 @@ These findings would have been invisible without **deliberate self-diagnostic pr
 
 ---
 
-## Cost Governance
+## Data Policy
 
-| Item | Cost | Method |
-|---|---|---|
-| Data collection | 0 KRW | All public/free APIs (Naver, Google Trends, YouTube Data, ECOS) |
-| Sentiment analysis | 35.8 KRW | Hybrid keyword (97.4%) + Claude Batch API (2.6%, 50% discount) |
-| Forecasting (LSTM, Chronos) | 0 KRW | Google Colab free tier + HuggingFace public weights |
-| Database | 0 KRW | PostgreSQL Docker local |
-| Dashboard hosting | 0 KRW | Streamlit Community Cloud |
-| **Total project cost** | **35.8 KRW** | All costs tracked in advisor decision logs |
+**Public artifacts:** Aggregated metrics, anonymized analysis results, 
+and statistical artifacts are committed for portfolio reproducibility.
 
+**Local-only artifacts:** Raw social media text (Naver blog/cafe 
+content) and OpenAI/Anthropic Batch API request payloads are 
+gitignored due to source licensing. Sentiment analysis results are 
+integrated into `mart.sentiment_static` and surfaced via 
+`sentiment_aggregator.py` — raw text is not required for 
+reproducibility.
+
+**Trace preservation:** Pre-DP24 sign-corrected analysis artifacts 
+(e.g., `bridge_global_enhanced.py`, `mediation_bootstrap.json`) are 
+retained as evidence of analytical governance discipline (DP22 
+deprecation pattern + stage4_checkpoint footnote).
 ---
 
 ## How to Run
@@ -797,8 +802,5 @@ Full list in `requirements.txt` (root, for Streamlit Cloud) and `requirements_da
 
 ## Author
 
-**Changyeol (Aiden) Oh** — M.S. Statistics, Stony Brook University AMS
-
-GitHub: [@ChangyeolAidenOh](https://github.com/ChangyeolAidenOh)
-
+**Changyeol (Aiden) Oh**
 This project was independently developed for the New Balance Korea 2026 Business Data Coordinator application.
