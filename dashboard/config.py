@@ -50,20 +50,26 @@ BRAND_COLORS = {
     "puma":        "#2ECC71",  # PUMA green (industry standard)
 }
 
-# Visual hierarchy — NB emphasized via line width + opacity, not color reduction
+# Visual hierarchy — NB emphasized via line width + opacity
 BRAND_LINE_WIDTH = {
     "new_balance": 3.5,
-    "nike":        1.0,
-    "adidas":      1.0,
-    "puma":        1.0,
+    "nike":        1.5,
+    "adidas":      1.5,
+    "puma":        1.5,
 }
 
 BRAND_LINE_OPACITY = {
     "new_balance": 1.0,
-    "nike":        0.55,
-    "adidas":      0.55,
-    "puma":        0.55,
+    "nike":        0.70,
+    "adidas":      0.70,
+    "puma":        0.70,
 }
+
+# Common chart font sizes — applied across all tabs for consistency
+CHART_FONT = dict(size=14)
+CHART_AXIS_TICKFONT = dict(size=12)
+CHART_LEGEND_FONT = dict(size=13)
+CHART_TITLE_FONT = dict(size=16)
 
 BRAND_LABELS = {
     "new_balance": "New Balance",
