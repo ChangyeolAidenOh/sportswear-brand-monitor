@@ -11,7 +11,10 @@ import plotly.graph_objects as go
 import pandas as pd
 
 # local
-from dashboard.config import BRAND_COLORS, BRAND_LABELS, BRAND_LINE_OPACITY
+from dashboard.config import (
+    BRAND_COLORS, BRAND_LABELS, BRAND_LINE_OPACITY,
+    CHART_FONT, CHART_AXIS_TICKFONT, CHART_LEGEND_FONT, CHART_TITLE_FONT,
+)
 from dashboard.data.queries import (
     fetch_brand_kpi,
     fetch_korea_global_comparison,
@@ -49,13 +52,13 @@ def _build_korea_global_trend(df, metric="search_index"):
     fig.add_trace(go.Scatter(
         x=nb["week_start"], y=nb["korea_value"],
         name="Korea",
-        line=dict(color="#E74C3C", width=2),
+        line=dict(color="#E63946", width=2.5),
         hovertemplate="Korea: %{y:.1f}<extra></extra>",
     ))
     fig.add_trace(go.Scatter(
         x=nb["week_start"], y=nb["global_value"],
         name="Global",
-        line=dict(color="#3498DB", width=2),
+        line=dict(color="#C44569", width=2, dash="dot"),
         hovertemplate="Global: %{y:.1f}<extra></extra>",
     ))
 
@@ -64,11 +67,14 @@ def _build_korea_global_trend(df, metric="search_index"):
         "sov_pct": "NB Share of Voice",
     }
     fig.update_layout(
-        title=f"Korea vs Global — {title_map.get(metric, metric)}",
+        title=dict(text=f"Korea vs Global — {title_map.get(metric, metric)}", font=CHART_TITLE_FONT),
         xaxis_title="",
         yaxis_title=metric.replace("_", " ").title(),
         hovermode="x unified",
-        legend=dict(orientation="h", y=-0.15),
+        legend=dict(orientation="h", y=-0.15, font=CHART_LEGEND_FONT),
+        font=CHART_FONT,
+        xaxis=dict(tickfont=CHART_AXIS_TICKFONT),
+        yaxis=dict(tickfont=CHART_AXIS_TICKFONT),
         height=400,
         margin=dict(l=40, r=20, t=50, b=40),
     )
@@ -95,9 +101,12 @@ def _build_divergence_chart(df, metric="search_index"):
     fig.add_hline(y=0, line_color="white", line_width=0.5)
 
     fig.update_layout(
-        title=f"Korea Over-Index — {metric.replace('_', ' ').title()} Divergence %",
+        title=dict(text=f"Korea Over-Index — {metric.replace('_', ' ').title()} Divergence %", font=CHART_TITLE_FONT),
         xaxis_title="",
         yaxis_title="Divergence %",
+        font=CHART_FONT,
+        xaxis=dict(tickfont=CHART_AXIS_TICKFONT),
+        yaxis=dict(tickfont=CHART_AXIS_TICKFONT),
         height=350,
         margin=dict(l=40, r=20, t=50, b=40),
     )
@@ -132,28 +141,34 @@ def _build_sov_comparison_chart(df_kpi):
     labels = [BRAND_LABELS.get(b, b) for b in brands]
     colors = [BRAND_COLORS.get(b, "#888") for b in brands]
     # Per-brand base opacity (NB full, competitors muted)
-    base_opacity = [BRAND_LINE_OPACITY.get(b, 0.65) for b in brands]
-    # Korea = base, Global = base * 0.45 (region distinction)
-    korea_opacity = base_opacity
-    global_opacity = [o * 0.45 for o in base_opacity]
+    base_opacity = [BRAND_LINE_OPACITY.get(b, 0.70) for b in brands]
 
     fig = go.Figure()
+    # Korea: solid fill
     fig.add_trace(go.Bar(
-        name="Korea", x=labels, y=korea_sov,
-        marker=dict(color=colors, opacity=korea_opacity),
+        name="Korea (solid)", x=labels, y=korea_sov,
+        marker=dict(color=colors, opacity=base_opacity),
         text=[f"{v:.1f}%" for v in korea_sov], textposition="inside",
     ))
+    # Global: same color but pattern fill (diagonal stripes)
     fig.add_trace(go.Bar(
-        name="Global", x=labels, y=global_sov,
-        marker=dict(color=colors, opacity=global_opacity),
+        name="Global (striped)", x=labels, y=global_sov,
+        marker=dict(
+            color=colors,
+            opacity=base_opacity,
+            pattern=dict(shape="/", size=8, solidity=0.4, fgcolor="white"),
+        ),
         text=[f"{v:.1f}%" for v in global_sov], textposition="inside",
     ))
 
     fig.update_layout(
-        title=f"SoV Comparison — Korea vs Global (Week of {latest_week.strftime('%Y-%m-%d')})",
+        title=dict(text=f"SoV Comparison — Korea vs Global (Week of {latest_week.strftime('%Y-%m-%d')})", font=CHART_TITLE_FONT),
         yaxis_title="SoV %",
         barmode="group",
-        legend=dict(orientation="h", y=-0.15),
+        legend=dict(orientation="h", y=-0.15, font=CHART_LEGEND_FONT),
+        font=CHART_FONT,
+        xaxis=dict(tickfont=CHART_AXIS_TICKFONT),
+        yaxis=dict(tickfont=CHART_AXIS_TICKFONT),
         height=400,
         margin=dict(l=40, r=20, t=50, b=40),
     )
@@ -194,9 +209,11 @@ def _build_product_divergence_chart(df):
     ))
 
     fig.update_layout(
-        title="Product Divergence — Korea vs Global (Latest Week)",
+        title=dict(text="Product Divergence — Korea vs Global (Latest Week)", font=CHART_TITLE_FONT),
         xaxis_title="Divergence % (positive = Korea over-index)",
-        yaxis=dict(type="category"),
+        yaxis=dict(type="category", tickfont=CHART_AXIS_TICKFONT),
+        xaxis=dict(tickfont=CHART_AXIS_TICKFONT),
+        font=CHART_FONT,
         height=300,
         margin=dict(l=80, r=60, t=50, b=40),
     )

@@ -11,7 +11,10 @@ import plotly.graph_objects as go
 import pandas as pd
 
 # local
-from dashboard.config import BRAND_COLORS, BRAND_LABELS, BRAND_LINE_WIDTH, BRAND_LINE_OPACITY
+from dashboard.config import (
+    BRAND_COLORS, BRAND_LABELS, BRAND_LINE_WIDTH, BRAND_LINE_OPACITY,
+    CHART_FONT, CHART_AXIS_TICKFONT, CHART_LEGEND_FONT, CHART_TITLE_FONT,
+)
 from dashboard.data.queries import fetch_brand_kpi, fetch_product_portfolio
 
 
@@ -107,7 +110,7 @@ def _build_season_overlay_chart(df, brand="new_balance", region="korea"):
             y=season_df["search_index"],
             name=season,
             line=dict(
-                color=BRAND_COLORS.get(brand, "#E74C3C"),
+                color=BRAND_COLORS.get(brand, "#E63946"),
                 width=width,
             ),
             opacity=opacity,
@@ -115,11 +118,14 @@ def _build_season_overlay_chart(df, brand="new_balance", region="korea"):
         ))
 
     fig.update_layout(
-        title=f"{BRAND_LABELS.get(brand, brand)} — {current_type} Season YoY Overlay ({region.title()})",
+        title=dict(text=f"{BRAND_LABELS.get(brand, brand)} — {current_type} Season YoY Overlay ({region.title()})", font=CHART_TITLE_FONT),
         xaxis_title="Week within Season",
         yaxis_title="Search Index",
         hovermode="x unified",
-        legend=dict(orientation="h", y=-0.15),
+        legend=dict(orientation="h", y=-0.15, font=CHART_LEGEND_FONT),
+        font=CHART_FONT,
+        xaxis=dict(tickfont=CHART_AXIS_TICKFONT),
+        yaxis=dict(tickfont=CHART_AXIS_TICKFONT),
         height=400,
         margin=dict(l=40, r=20, t=50, b=40),
     )
@@ -148,7 +154,7 @@ def _build_seasonal_pattern_chart(df, region="korea"):
                 color=BRAND_COLORS.get(brand, "#888"),
                 width=BRAND_LINE_WIDTH.get(brand, 1.5),
             ),
-            opacity=BRAND_LINE_OPACITY.get(brand, 0.65),
+            opacity=BRAND_LINE_OPACITY.get(brand, 0.70),
             hovertemplate="W%{x}: %{y:.1f}<extra></extra>",
         ))
 
@@ -167,11 +173,14 @@ def _build_seasonal_pattern_chart(df, region="korea"):
                   annotation_text="FW (peak)", annotation_position="top left")
 
     fig.update_layout(
-        title=f"Average Weekly Seasonal Pattern — {region.title()}",
+        title=dict(text=f"Average Weekly Seasonal Pattern — {region.title()}", font=CHART_TITLE_FONT),
         xaxis_title="Week of Year",
         yaxis_title="Avg Search Index",
         hovermode="x unified",
-        legend=dict(orientation="h", y=-0.15),
+        legend=dict(orientation="h", y=-0.15, font=CHART_LEGEND_FONT),
+        font=CHART_FONT,
+        xaxis=dict(tickfont=CHART_AXIS_TICKFONT),
+        yaxis=dict(tickfont=CHART_AXIS_TICKFONT),
         height=400,
         margin=dict(l=40, r=20, t=50, b=40),
     )
@@ -217,11 +226,14 @@ def _build_product_season_chart(df_prod, region="korea"):
         ))
 
     fig.update_layout(
-        title=f"NB Product Mix by Season — {region.title()}",
+        title=dict(text=f"NB Product Mix by Season — {region.title()}", font=CHART_TITLE_FONT),
         xaxis_title="",
         yaxis_title="Share within NB (%)",
         barmode="stack",
-        legend=dict(orientation="h", y=-0.15),
+        legend=dict(orientation="h", y=-0.15, font=CHART_LEGEND_FONT),
+        font=CHART_FONT,
+        xaxis=dict(tickfont=CHART_AXIS_TICKFONT),
+        yaxis=dict(tickfont=CHART_AXIS_TICKFONT),
         height=400,
         margin=dict(l=40, r=20, t=50, b=40),
     )

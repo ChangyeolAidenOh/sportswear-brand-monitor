@@ -19,6 +19,7 @@ import pandas as pd
 # local
 from dashboard.config import (
     BRAND_COLORS, PROJECT_ROOT, CHAIN_DIAGRAM_PATH, CHAIN_SUMMARY_PNG,
+    CHART_FONT, CHART_AXIS_TICKFONT, CHART_LEGEND_FONT, CHART_TITLE_FONT,
 )
 from dashboard.data.queries import fetch_brand_kpi, fetch_korea_global_lag
 from dashboard.components.tooltip import render_tooltip
@@ -89,7 +90,7 @@ def _build_prophet_chart(df_forecast, df_actual, region="korea"):
         fig.add_trace(go.Scatter(
             x=nb_actual["week_start"], y=nb_actual["search_index"],
             name="Actual",
-            line=dict(color="#E63946", width=2),
+            line=dict(color="#E63946", width=2.5),
             hovertemplate="%{x|%Y-%m-%d}: %{y:.1f}<extra></extra>",
         ))
 
@@ -97,7 +98,7 @@ def _build_prophet_chart(df_forecast, df_actual, region="korea"):
         fig.add_trace(go.Scatter(
             x=df_forecast["week_start"], y=df_forecast["search_index"],
             name="Test Actual", mode="markers",
-            marker=dict(color="#E63946", size=5),
+            marker=dict(color="#E63946", size=6),
             hovertemplate="%{x|%Y-%m-%d}: %{y:.1f}<extra></extra>",
         ))
         fig.add_trace(go.Scatter(
@@ -122,10 +123,13 @@ def _build_prophet_chart(df_forecast, df_actual, region="korea"):
 
     region_label = "Korea" if region == "korea" else "Global"
     fig.update_layout(
-        title=f"KPI 11: NB {region_label} Prophet 26-Week Forecast",
+        title=dict(text=f"KPI 11: NB {region_label} Prophet 26-Week Forecast", font=CHART_TITLE_FONT),
         xaxis_title="", yaxis_title="Search Index",
         hovermode="x unified",
-        legend=dict(orientation="h", y=-0.15),
+        legend=dict(orientation="h", y=-0.15, font=CHART_LEGEND_FONT),
+        font=CHART_FONT,
+        xaxis=dict(tickfont=CHART_AXIS_TICKFONT),
+        yaxis=dict(tickfont=CHART_AXIS_TICKFONT),
         height=420, margin=dict(l=40, r=20, t=50, b=40),
     )
     return fig
@@ -157,8 +161,11 @@ def _build_model_comparison_chart(df_metrics, region="korea"):
     ))
     region_label = "Korea" if region == "korea" else "Global"
     fig.update_layout(
-        title=f"4-Way Model Comparison — {region_label} RMSE",
+        title=dict(text=f"4-Way Model Comparison — {region_label} RMSE", font=CHART_TITLE_FONT),
         xaxis_title="", yaxis_title="RMSE",
+        font=CHART_FONT,
+        xaxis=dict(tickfont=CHART_AXIS_TICKFONT),
+        yaxis=dict(tickfont=CHART_AXIS_TICKFONT),
         height=420, margin=dict(l=40, r=20, t=50, b=40),
     )
     return fig
@@ -233,10 +240,13 @@ def _build_global_trend_ma_chart(df_actual):
         name="Global 4w MA", line=dict(color="#C44569", width=2.5),
     ))
     fig.update_layout(
-        title="KPI 7: NB Global Trend 4-Week MA (Monitoring Only)",
+        title=dict(text="KPI 7: NB Global Trend 4-Week MA (Monitoring Only)", font=CHART_TITLE_FONT),
         xaxis_title="", yaxis_title="Search Index",
         hovermode="x unified",
-        legend=dict(orientation="h", y=-0.15),
+        legend=dict(orientation="h", y=-0.15, font=CHART_LEGEND_FONT),
+        font=CHART_FONT,
+        xaxis=dict(tickfont=CHART_AXIS_TICKFONT),
+        yaxis=dict(tickfont=CHART_AXIS_TICKFONT),
         height=350, margin=dict(l=40, r=20, t=50, b=40),
     )
     return fig

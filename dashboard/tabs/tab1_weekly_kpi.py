@@ -11,7 +11,10 @@ import pandas as pd
 import plotly.graph_objects as go
 
 # local
-from dashboard.config import BRAND_COLORS, BRAND_LABELS, BRAND_LINE_WIDTH, BRAND_LINE_OPACITY
+from dashboard.config import (
+    BRAND_COLORS, BRAND_LABELS, BRAND_LINE_WIDTH, BRAND_LINE_OPACITY,
+    CHART_FONT, CHART_AXIS_TICKFONT, CHART_LEGEND_FONT, CHART_TITLE_FONT,
+)
 from dashboard.data.queries import fetch_brand_kpi, fetch_product_portfolio, fetch_csi_macro
 from dashboard.components.kpi_card import render_kpi_row
 from dashboard.components.tooltip import render_tooltip
@@ -90,16 +93,19 @@ def _build_search_trend_chart(df, region="korea"):
                 color=BRAND_COLORS.get(brand, "#888"),
                 width=BRAND_LINE_WIDTH.get(brand, 1.5),
             ),
-            opacity=BRAND_LINE_OPACITY.get(brand, 0.65),
+            opacity=BRAND_LINE_OPACITY.get(brand, 0.70),
             hovertemplate="%{x|%Y-%m-%d}: %{y:.1f}<extra></extra>",
         ))
 
     fig.update_layout(
-        title=f"Brand Search Index — {region.title()}",
+        title=dict(text=f"Brand Search Index — {region.title()}", font=CHART_TITLE_FONT),
         xaxis_title="",
         yaxis_title="Search Index",
         hovermode="x unified",
-        legend=dict(orientation="h", y=-0.15),
+        legend=dict(orientation="h", y=-0.15, font=CHART_LEGEND_FONT),
+        font=CHART_FONT,
+        xaxis=dict(tickfont=CHART_AXIS_TICKFONT),
+        yaxis=dict(tickfont=CHART_AXIS_TICKFONT),
         height=400,
         margin=dict(l=40, r=20, t=50, b=40),
     )
@@ -111,26 +117,43 @@ def _build_sov_chart(df, region="korea"):
     fig = go.Figure()
     region_df = df[df["region"] == region].copy()
 
+    # Brand-specific fillcolor with controlled alpha for visual hierarchy
+    # NB gets stronger fill (0.85), competitors muted (0.5)
+    brand_rgb = {
+        "new_balance": "230, 57, 70",
+        "nike":        "255, 107, 0",
+        "adidas":      "52, 152, 219",
+        "puma":        "46, 204, 113",
+    }
+
     for brand in ["new_balance", "nike", "adidas", "puma"]:
         brand_df = region_df[region_df["brand"] == brand].sort_values("week_start")
         sov_vals = brand_df["sov_pct"] * 100 if brand_df["sov_pct"].max() <= 1 else brand_df["sov_pct"]
+        rgb = brand_rgb.get(brand, "136, 136, 136")
+        # NB gets full opacity fill, competitors muted
+        alpha = 0.85 if brand == "new_balance" else 0.5
+        # NB also gets a visible line border to separate from competitors
+        line_width = 2 if brand == "new_balance" else 0
+        line_color = BRAND_COLORS.get(brand, "#888") if brand == "new_balance" else "rgba(0,0,0,0)"
         fig.add_trace(go.Scatter(
             x=brand_df["week_start"],
             y=sov_vals,
             name=BRAND_LABELS.get(brand, brand),
             stackgroup="sov",
-            line=dict(color=BRAND_COLORS.get(brand, "#888"), width=0),
-            opacity=BRAND_LINE_OPACITY.get(brand, 0.65),
+            fillcolor=f"rgba({rgb}, {alpha})",
+            line=dict(color=line_color, width=line_width),
             hovertemplate="%{y:.1f}%<extra></extra>",
         ))
 
     fig.update_layout(
-        title=f"Share of Voice — {region.title()}",
+        title=dict(text=f"Share of Voice — {region.title()}", font=CHART_TITLE_FONT),
         xaxis_title="",
         yaxis_title="SoV %",
-        yaxis=dict(range=[0, 100]),
+        yaxis=dict(range=[0, 100], tickfont=CHART_AXIS_TICKFONT),
+        xaxis=dict(tickfont=CHART_AXIS_TICKFONT),
         hovermode="x unified",
-        legend=dict(orientation="h", y=-0.15),
+        legend=dict(orientation="h", y=-0.15, font=CHART_LEGEND_FONT),
+        font=CHART_FONT,
         height=400,
         margin=dict(l=40, r=20, t=50, b=40),
     )
@@ -155,9 +178,9 @@ def _build_530_dependency_chart(df_prod):
         x=korea_530["week_start"],
         y=share_vals,
         name="530 Share",
-        line=dict(color=BRAND_COLORS["new_balance"], width=2),
+        line=dict(color=BRAND_COLORS["new_balance"], width=2.5),
         fill="tozeroy",
-        fillcolor="rgba(230, 57, 70, 0.1)",
+        fillcolor="rgba(230, 57, 70, 0.15)",
         hovertemplate="%{x|%Y-%m-%d}: %{y:.1f}%<extra></extra>",
     ))
 
@@ -168,10 +191,12 @@ def _build_530_dependency_chart(df_prod):
     )
 
     fig.update_layout(
-        title="KPI 1: 530 Dependency Ratio — Korea",
+        title=dict(text="KPI 1: 530 Dependency Ratio — Korea", font=CHART_TITLE_FONT),
         xaxis_title="",
         yaxis_title="530 Share within NB (%)",
-        yaxis=dict(range=[0, 100]),
+        yaxis=dict(range=[0, 100], tickfont=CHART_AXIS_TICKFONT),
+        xaxis=dict(tickfont=CHART_AXIS_TICKFONT),
+        font=CHART_FONT,
         height=350,
         margin=dict(l=40, r=20, t=50, b=40),
     )
