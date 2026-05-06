@@ -25,3 +25,11 @@ Thumbs.db
 docs/comprehensive_advisor_handoff.md
 docs/comprehensive_advisor_handoff.md
 docs/comprehensive_advisor_handoff.md
+
+# OpenAI/Anthropic Batch API artifacts (raw blog text — copyright)
+data/batch/sentiment_batch.jsonl
+data/batch/sentiment_results.jsonl
+
+# Sentiment Batch API artifacts (raw blog text — source licensing)
+data/batch/sentiment_batch.jsonl
+data/batch/sentiment_results.jsonl
