@@ -1,9 +1,0 @@
-brand,region,zscore_total,mstl_total,both,zscore_only,mstl_only
-adidas,global,8,9,0,8,9
-adidas,korea,9,7,0,9,7
-new_balance,global,6,11,1,5,10
-new_balance,korea,9,7,2,7,5
-nike,global,11,11,0,11,11
-nike,korea,12,9,1,11,8
-puma,global,5,8,0,5,8
-puma,korea,9,8,2,7,6

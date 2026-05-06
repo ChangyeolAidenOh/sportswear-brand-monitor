@@ -1,4 +1,0 @@
-timestamp,stage,n_requests,model,est_cost_usd,est_cost_krw,status
-2026-04-30T15:49:30.847317,B2_batch_submit,261,claude-haiku-4-5-20251001,0.025578,35.8,prepared
-2026-04-30T16:32:04.643913,B2_batch_ingest,261,claude-haiku-4-5-20251001,0.0,0.0,ingested
-2026-04-30T16:36:28.982114,B2_batch_ingest,261,claude-haiku-4-5-20251001,0.0,0.0,ingested

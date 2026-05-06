@@ -1,3 +1,0 @@
-region,n_anomaly_train,n_normal_train,anomaly_mean_abs_resid,normal_mean_abs_resid,anomaly_rmse,normal_rmse,anomaly_to_normal_ratio
-korea,19,129,1.57,1.34,2.32,1.94,1.17
-global,19,129,1.21,0.99,1.95,1.69,1.22

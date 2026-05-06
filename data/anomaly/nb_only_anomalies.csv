@@ -1,6 +1,0 @@
-brand,region,week_start,zscore,mstl,isolation_forest,n_methods
-new_balance,global,2024-03-03,False,True,True,2
-new_balance,global,2024-08-04,False,True,True,2
-new_balance,global,2024-11-24,True,True,False,2
-new_balance,korea,2025-03-23,True,True,True,3
-new_balance,korea,2026-04-19,False,True,True,2
