@@ -1,7 +1,0 @@
-brand,is_core,primary_label,primary_type,primary_mid,primary_avg,primary_2023h1_avg,fallback_label,fallback_type,fallback_mid,resolved_at,notes
-nike,1,나이키 - 기업,entity,/m/0lwkh,,,Nike - 주제,topic,/m/0cnsqjb,2026-04-28,Footwear company. Continuous from 2023-04.
-adidas,1,adidas - 패션 브랜드,entity,/g/1ym_1qtkc,,,아디다스 - 기업,entity,/m/01jtml,2026-04-28,Fashion brand continuous from 2023. Apparel company has no data pre-2024.
-puma,1,PUMA - 신발 회사,entity,/m/03r_n_,82,,PUMA - 주제,topic,/m/010h7hys,2026-04-28,Footwear corporation avg 82. Topic avg 66. Clear winner.
-new_balance,1,New Balance - Topic (둥근 NB 로고),topic,TBD,78,,뉴발란스 - 기업,entity,/m/08dr90,2026-04-28,"Primary avg 78 (continuous from 2023). Fallback (Footwear co.) avg 75. Primary mid is /g/1ymzfbmjx or /g/11bw1_l0nq — verify by icon on trends.google.com."
-lululemon,0,,,,,,,,,,Extended brand. Candidates: /m/0bcwlr and /g/11x4nn4_1 and /g/11r8fct16
-asics,0,,,,,,,,,,Extended brand. Candidates: /m/04xxy1 and /g/1201kqb1q and /g/11bw1zff_m
