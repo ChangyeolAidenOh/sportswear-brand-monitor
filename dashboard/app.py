@@ -78,8 +78,8 @@ with st.sidebar:
 
     st.markdown("---")
     st.caption(
-        "Independent Project | Changyeol (Aiden) Oh  \n"
-        "[GitHub](https://github.com/ChangyeolAidenOh/sportswear-brand-monitor)"
+        ""
+        ""
     )
 
 # ================================================================

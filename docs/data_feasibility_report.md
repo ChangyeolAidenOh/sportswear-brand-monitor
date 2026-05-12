@@ -1,7 +1,7 @@
 # Data Feasibility Spike Report — Final
 
 **Date:** 2026-04-29  
-**Author:** Changyeol Oh  
+
 **Stage:** 0 (Data Feasibility Spike)  
 **Status:** COMPLETED
 

@@ -1,7 +1,7 @@
 # Methodology — Analysis Design Decisions
 
 **Project:** Global Sportswear Brand Performance Monitor
-**Author:** Changyeol Oh
+
 **Last updated:** 2026-05-01 (Prophet Track E added)
 
 ---

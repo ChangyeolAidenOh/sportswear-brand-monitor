@@ -1,7 +1,7 @@
 # Quick Exploratory Pass — Findings Report (Final)
 
 **Date:** 2026-04-29  
-**Author:** Changyeol Oh  
+
 **Stage:** 0 (Quick Exploratory Pass)
 
 ---

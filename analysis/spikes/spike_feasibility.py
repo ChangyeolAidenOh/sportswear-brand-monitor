@@ -426,7 +426,7 @@ def generate_report():
         "# Data Feasibility Spike Report",
         "",
         f"**Date:** {datetime.now().strftime('%Y-%m-%d %H:%M')}",
-        f"**Author:** Changyeol Oh",
+        ""
         f"**Stage:** 0 (Data Feasibility Spike)",
         f"**Query period:** {TWO_YEARS_AGO} ~ {TODAY}",
         "",

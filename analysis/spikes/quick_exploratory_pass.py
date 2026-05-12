@@ -550,7 +550,7 @@ def generate_report():
         "# Quick Exploratory Pass — Findings Report",
         "",
         f"**Date:** {datetime.now().strftime('%Y-%m-%d %H:%M')}",
-        f"**Author:** Changyeol Oh",
+        ""
         f"**Stage:** 0 (Quick Exploratory Pass)",
         "",
         "---",

@@ -37,3 +37,13 @@ data/batch/sentiment_results.jsonl
 # Sentiment Batch API artifacts (raw blog text — source licensing)
 data/batch/sentiment_batch.jsonl
 data/batch/sentiment_results.jsonl
+
+
+# Supplementary Stage 0/4 reports (preserved locally, not tracked)
+docs/check5_gtrends_result.md
+docs/mid_resolution_report.md
+docs/gtrends_download_protocol.md
+docs/brand_topics.csv
+docs/stage4_dtw_report.md
+docs/stage4_robustness_check.md
+docs/stage4_stationarity_report.md
