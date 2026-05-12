@@ -796,7 +796,3 @@ Full list in `requirements.txt` (root, for Streamlit Cloud) and `requirements_da
 
 ---
 
-## Author
-
-**Changyeol (Aiden) Oh**
-This project was independently developed for the New Balance Korea 2026 Business Data Coordinator application.
