@@ -60,9 +60,7 @@ def load_gtrends(filename):
     return df
 
 
-# ================================================================
 # NAVER DATALAB API HELPER
-# ================================================================
 NAVER_CLIENT_ID = os.getenv("NAVER_CLIENT_ID")
 NAVER_CLIENT_SECRET = os.getenv("NAVER_CLIENT_SECRET")
 NAVER_HEADERS = {
@@ -98,9 +96,7 @@ def fetch_naver_datalab(keyword_groups, start_date, end_date):
         return None
 
 
-# ================================================================
 # H1: Korea-Global Season Cycle Alignment
-# ================================================================
 def h1_korea_global_alignment():
     section("H1: Korea-Global Season Cycle Alignment")
     log("**Question:** 한국(530)과 글로벌(9060)의 시즌 사이클이 얼마나 동기화되어 있는가?")
@@ -160,9 +156,7 @@ def h1_korea_global_alignment():
     log("**Verdict:** TBD based on lag values. Positive lag = Korea leads.")
 
 
-# ================================================================
 # H2: 530 vs 992 Season Separation
-# ================================================================
 def h2_season_separation():
     section("H2: 530 vs 992 Season Separation")
     log("**Question:** 530은 SS, 992는 FW 피크를 보이는가?")
@@ -208,9 +202,7 @@ def h2_season_separation():
     log("**Verdict:** SS/FW ratio > 1.2 → SS dominant. < 0.8 → FW dominant.")
 
 
-# ================================================================
 # H3: 530 Dependency Trend
-# ================================================================
 def h3_dependency_trend():
     section("H3: 530 Dependency Trend")
     log("**Question:** NB 한국 제품 검색에서 530 비중이 시간에 따라 심화/완화 중인가?")
@@ -266,9 +258,7 @@ def h3_dependency_trend():
         log(f"**Verdict:** No significant trend (p={p_value:.4f}). 530 dependency is stable.")
 
 
-# ================================================================
 # H4: Instagram Proxy → NB Search Lead
-# ================================================================
 def h4_instagram_lead():
     section("H4: Instagram Proxy → NB Search Lead")
     log("**Question:** Instagram 프록시가 NB 전체 검색을 선행하는가?")
@@ -349,9 +339,7 @@ def h4_instagram_lead():
         log("**Verdict:** NB search leads Instagram proxy. Reverse direction.")
 
 
-# ================================================================
 # H5: D2C Search Share
-# ================================================================
 def h5_d2c_share():
     section("H5: D2C Search Share Trend")
     log("**Question:** NB D2C(공식몰) 검색이 NB 전체 대비 어떤 비중이고, 추세가 있는가?")
@@ -420,9 +408,7 @@ def h5_d2c_share():
         log("**Verdict:** No significant trend. D2C share is stable.")
 
 
-# ================================================================
 # H6: Padding Season Start Timing — NB vs North Face
-# ================================================================
 def h6_padding_timing():
     section("H6: Padding Season Start Timing — NB vs North Face")
     log("**Question:** NB 패딩은 노스페이스 대비 시즌 시작이 빠른가, 늦은가?")
@@ -542,9 +528,7 @@ def h6_padding_timing():
         log("**Verdict:** Insufficient data for timing comparison.")
 
 
-# ================================================================
 # REPORT GENERATOR
-# ================================================================
 def generate_report():
     header = [
         "# Quick Exploratory Pass — Findings Report",
@@ -590,9 +574,7 @@ def generate_report():
     print(f"\nReport saved: {REPORT_PATH}")
 
 
-# ================================================================
 # MAIN
-# ================================================================
 def main():
     print("=" * 60)
     print("Quick Exploratory Pass — 6 Hypotheses")

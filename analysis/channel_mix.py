@@ -14,13 +14,11 @@ Usage:
     python -m analysis.channel_mix --dry-run
 """
 
-# stdlib
 import argparse
 import os
 import warnings
 from datetime import datetime
 
-# third-party
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
@@ -28,12 +26,9 @@ import numpy as np
 import pandas as pd
 from scipy import stats
 
-# local
 from database.connection import get_conn
 
-# ================================================================
 # CONSTANTS
-# ================================================================
 
 FIG_DIR = "figures/channel_mix"
 os.makedirs(FIG_DIR, exist_ok=True)
@@ -64,9 +59,7 @@ SEARCH_TYPE_COLORS = {
 }
 
 
-# ================================================================
 # PART 1: SEARCH TYPE MIX
-# ================================================================
 
 def fetch_search_type_mix():
     """Fetch weekly search interest by brand, search_type from staging."""
@@ -116,7 +109,6 @@ def analyze_search_type_mix(df):
         print(f"  {brand}:")
         for st in sorted(avg_shares.index):
             print(f"    {st:<15} {avg_shares[st]:>6.2f}%")
-        print()
 
         results[brand] = {
             "pivot": pivot,
@@ -186,9 +178,7 @@ def plot_search_type_trend(results):
     print(f"  Saved: {fig_path}")
 
 
-# ================================================================
 # PART 2: D2C TREND RE-VERIFICATION
-# ================================================================
 
 def fetch_d2c_raw():
     """Fetch NB D2C (공식몰) search data from raw.naver_datalab_raw."""
@@ -260,7 +250,6 @@ def analyze_d2c_trend(d2c_df, nb_total_df):
             print(f"    Verdict: {direction} (significant)")
         else:
             print(f"    Verdict: No significant trend")
-        print()
 
     return d2c_df
 
@@ -312,9 +301,7 @@ def plot_d2c_trend(d2c_df, nb_total_df):
     print(f"  Saved: {fig_path}")
 
 
-# ================================================================
 # CLI / MAIN
-# ================================================================
 
 def parse_args():
     parser = argparse.ArgumentParser(

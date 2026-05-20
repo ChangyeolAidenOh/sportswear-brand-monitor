@@ -19,11 +19,9 @@ Usage:
     python -m analysis.forecast_sarimax_order
 """
 
-# stdlib
 import os
 import warnings
 
-# third-party
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
@@ -45,18 +43,14 @@ plt.rcParams.update({
     "grid.alpha": 0.3,
 })
 
-# ================================================================
 # Constants
-# ================================================================
 DATA_DIR = "data/forecast"
 FIG_DIR = "figures/forecast"
 REGIONS = ["korea", "global"]
 FOURIER_CONFIG = {52: 2, 13: 2}  # {period: K}
 
 
-# ================================================================
 # Fourier terms construction
-# ================================================================
 def make_fourier_terms(n, period_k_map):
     """Generate Fourier sin/cos terms for given periods and harmonics.
 
@@ -76,9 +70,7 @@ def make_fourier_terms(n, period_k_map):
     return pd.DataFrame(cols)
 
 
-# ================================================================
 # ADF stationarity test
-# ================================================================
 def run_adf_test(series, label):
     """Run Augmented Dickey-Fuller test and print result."""
     result = adfuller(series.dropna(), autolag="AIC")
@@ -87,9 +79,7 @@ def run_adf_test(series, label):
     return result[1] < 0.05
 
 
-# ================================================================
 # Differenced ACF/PACF plot
-# ================================================================
 def plot_diff_acf_pacf(series, region):
     """Generate ACF/PACF plots for d=1 differenced series."""
     diff = series.diff().dropna()
@@ -112,9 +102,7 @@ def plot_diff_acf_pacf(series, region):
     print(f"  Saved: {fig_path}")
 
 
-# ================================================================
 # auto_arima search
-# ================================================================
 def run_auto_arima(train_y, train_exog, region):
     """Run pmdarima auto_arima with seasonal=False, d=1."""
     print(f"  Running auto_arima (seasonal=False, d=1, max_p=5, max_q=5)...")
@@ -136,9 +124,7 @@ def run_auto_arima(train_y, train_exog, region):
     return model
 
 
-# ================================================================
 # Manual candidate AIC comparison
-# ================================================================
 def compare_manual_orders(train_y, train_exog, candidates, region):
     """Fit ARIMA with manual candidate orders and compare AIC."""
     from statsmodels.tsa.arima.model import ARIMA
@@ -159,9 +145,7 @@ def compare_manual_orders(train_y, train_exog, candidates, region):
     return result_df
 
 
-# ================================================================
 # Main
-# ================================================================
 if __name__ == "__main__":
     for region in REGIONS:
         print(f"\n{'='*60}")

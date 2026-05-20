@@ -101,9 +101,7 @@ plt.rcParams.update({
 })
 
 
-# =========================================================================
 # Data preparation
-# =========================================================================
 
 def build_korea_dataset():
     """Build NB Korea forecast dataset.
@@ -129,9 +127,7 @@ def add_lagged_global_search(df, lag):
     return out
 
 
-# =========================================================================
 # Prophet builders (sign-corrected: Korea is endogenous, Global is exogenous)
-# =========================================================================
 
 def build_prophet_baseline():
     m = Prophet(
@@ -158,9 +154,7 @@ def build_prophet_with_csi_and_global(lag):
     return m
 
 
-# =========================================================================
 # Train/test evaluation (Prophet, single split)
-# =========================================================================
 
 def evaluate_prophet(model_builder, df_full, exog_cols, label):
     """Fit on first TRAIN_WEEKS, forecast TEST_WEEKS, return dict of metrics + arrays."""
@@ -222,9 +216,7 @@ def evaluate_prophet(model_builder, df_full, exog_cols, label):
     }
 
 
-# =========================================================================
 # SARIMAX parallel comparison (advisor spec: Stage 6 Korea reproduction)
-# =========================================================================
 
 def add_fourier_terms(df_train, df_test, k_yearly, k_quarterly):
     fourier_cols = []
@@ -315,9 +307,7 @@ def evaluate_sarimax(df_full, exog_cols, label, order=SARIMAX_ORDER):
     }
 
 
-# =========================================================================
 # Lag grid paired-fold CV (Decision 5)
-# =========================================================================
 
 def lag_grid_paired_cv(df_korea):
     """Run Prophet CV across lag grid 6-14w with same fold structure.
@@ -407,9 +397,7 @@ def find_best_lag_with_uncertainty(df_lag_cv):
     }
 
 
-# =========================================================================
 # Diebold-Mariano test (paired forecast comparison)
-# =========================================================================
 
 def diebold_mariano_test(residuals_a, residuals_b, h=1):
     """Diebold-Mariano test on squared error loss differential.
@@ -439,9 +427,7 @@ def diebold_mariano_test(residuals_a, residuals_b, h=1):
     return float(dm_stat), float(p_value)
 
 
-# =========================================================================
 # Auto-classification (HARKing prevention)
-# =========================================================================
 
 def classify_a3_outcome(baseline_rmse, treatment_rmse, dm_p_value, model_family):
     """Auto-commit Track A3 outcome with proper sign handling.
@@ -505,9 +491,7 @@ def classify_a3_outcome(baseline_rmse, treatment_rmse, dm_p_value, model_family)
         )
     return outcome, narrative, delta_pct
 
-# =========================================================================
 # B1 nested -- seasonal lead asymmetry
-# =========================================================================
 
 def seasonal_lead_analysis(df_korea, lag_star):
     """B1 nested in A3: split lag estimation by FW (week 40-13) vs SS (week 14-39).
@@ -579,9 +563,7 @@ def seasonal_lead_analysis(df_korea, lag_star):
     return pd.DataFrame(rows)
 
 
-# =========================================================================
 # Output writers (advisor schema)
-# =========================================================================
 
 def write_triple_comparison_csv(prophet_results, sarimax_results, lag_star, path):
     """Write korea_forecast_triple_comparison.csv per advisor schema.
@@ -614,9 +596,7 @@ def write_triple_comparison_csv(prophet_results, sarimax_results, lag_star, path
     return rows
 
 
-# =========================================================================
 # Visualization
-# =========================================================================
 
 def plot_lag_grid_cv(df_lag_cv, fig_path):
     fig, ax = plt.subplots(figsize=(10, 5))
@@ -704,9 +684,7 @@ def plot_seasonal_lead(df_seasonal, fig_path):
     plt.close(fig)
 
 
-# =========================================================================
 # Main
-# =========================================================================
 
 def main():
     print(f"# Stage 7 Track A3 sign-corrected -- Korea forecast with Global lagged exogenous")

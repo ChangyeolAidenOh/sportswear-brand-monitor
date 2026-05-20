@@ -24,11 +24,9 @@ Usage:
     python -m analysis.forecast_lstm
 """
 
-# stdlib
 import os
 import warnings
 
-# third-party
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
@@ -62,9 +60,7 @@ plt.rcParams.update({
     "grid.alpha": 0.3,
 })
 
-# ================================================================
 # Constants
-# ================================================================
 DATA_DIR = "data/forecast"
 FIG_DIR = "figures/forecast"
 REGIONS = ["korea", "global"]
@@ -82,9 +78,7 @@ SEED = 42
 torch.manual_seed(SEED)
 np.random.seed(SEED)
 
-# ================================================================
 # Sequence creation
-# ================================================================
 def create_sequences(data, target_col_idx, lookback):
     """Create input sequences and targets for LSTM.
 
@@ -104,9 +98,7 @@ def create_sequences(data, target_col_idx, lookback):
     return np.array(X), np.array(y)
 
 
-# ================================================================
 # LSTM Model
-# ================================================================
 class LSTMForecaster(nn.Module):
     """2-layer LSTM for time series forecasting."""
 
@@ -127,9 +119,7 @@ class LSTMForecaster(nn.Module):
         return self.fc(last_hidden).squeeze(-1)
 
 
-# ================================================================
 # Training loop with early stopping
-# ================================================================
 def train_model(model, X_train, y_train, X_val, y_val):
     """Train LSTM with early stopping on validation loss."""
     optimizer = torch.optim.Adam(model.parameters(), lr=LEARNING_RATE)
@@ -181,9 +171,7 @@ def train_model(model, X_train, y_train, X_val, y_val):
     return model, pd.DataFrame(history)
 
 
-# ================================================================
 # Recursive multi-step forecast
-# ================================================================
 def recursive_forecast(model, last_sequence, n_steps, scaler, feature_data, target_col_idx):
     """Generate n_steps forecast recursively.
 
@@ -219,9 +207,7 @@ def recursive_forecast(model, last_sequence, n_steps, scaler, feature_data, targ
     return inv[:, target_col_idx]
 
 
-# ================================================================
 # Evaluation metrics
-# ================================================================
 def compute_metrics(actual, predicted, label=""):
     """Compute RMSE, MAE, MAPE (excluding zeros)."""
     residuals = actual - predicted
@@ -237,9 +223,7 @@ def compute_metrics(actual, predicted, label=""):
     return {"label": label, "rmse": rmse, "mae": mae, "mape_pct": mape}
 
 
-# ================================================================
 # Plot: forecast
-# ================================================================
 def plot_forecast(train_df, test_df, forecast_values, region, metrics):
     """Plot actual vs LSTM forecast."""
     fig, ax = plt.subplots(figsize=(14, 5))
@@ -273,9 +257,7 @@ def plot_forecast(train_df, test_df, forecast_values, region, metrics):
     print(f"  Saved: {fig_path}")
 
 
-# ================================================================
 # Plot: training loss
-# ================================================================
 def plot_loss(history_df, region):
     """Plot training and validation loss curves."""
     fig, ax = plt.subplots(figsize=(10, 4))
@@ -294,9 +276,7 @@ def plot_loss(history_df, region):
     print(f"  Saved: {fig_path}")
 
 
-# ================================================================
 # Main
-# ================================================================
 if __name__ == "__main__":
     all_metrics = []
     feature_cols = ["search_index", "csi",

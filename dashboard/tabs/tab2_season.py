@@ -5,12 +5,10 @@ Visualizations: season position indicator, YoY overlay, seasonal heatmap.
 Usage: tab2_season.render() called from app.py
 """
 
-# third-party
 import streamlit as st
 import plotly.graph_objects as go
 import pandas as pd
 
-# local
 from dashboard.config import (
     BRAND_COLORS, BRAND_LABELS, BRAND_LINE_WIDTH, BRAND_LINE_OPACITY,
     CHART_FONT, CHART_AXIS_TICKFONT, CHART_LEGEND_FONT, CHART_TITLE_FONT,
@@ -18,9 +16,7 @@ from dashboard.config import (
 from dashboard.data.queries import fetch_brand_kpi, fetch_product_portfolio
 
 
-# ================================================================
 # Data loading (cached)
-# ================================================================
 @st.cache_data(ttl=600)
 def load_brand_kpi():
     """Load and cache brand KPI data."""
@@ -33,9 +29,7 @@ def load_product_portfolio():
     return fetch_product_portfolio()
 
 
-# ================================================================
 # Season helpers
-# ================================================================
 def _get_current_season(df):
     """Extract current season label and week number for NB Korea."""
     if df is None or df.empty:
@@ -71,9 +65,7 @@ def _extract_season_year(label):
     return None
 
 
-# ================================================================
 # Chart builders
-# ================================================================
 def _build_season_overlay_chart(df, brand="new_balance", region="korea"):
     """Build YoY season overlay — same season across years on shared x-axis."""
     brand_df = df[
@@ -240,9 +232,7 @@ def _build_product_season_chart(df_prod, region="korea"):
     return fig
 
 
-# ================================================================
 # Render
-# ================================================================
 def render():
     """Render Tab 2 content."""
     st.header("Season Tracker")

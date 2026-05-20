@@ -19,12 +19,10 @@ Usage:
     python -m analysis.forecast_chronos
 """
 
-# stdlib
 import os
 import time
 import warnings
 
-# third-party
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
@@ -44,9 +42,7 @@ plt.rcParams.update({
     "grid.alpha": 0.3,
 })
 
-# ================================================================
 # Constants
-# ================================================================
 DATA_DIR = "data/forecast"
 FIG_DIR = "figures/forecast"
 REGIONS = ["korea", "global"]
@@ -63,9 +59,7 @@ DEVICE = "cpu"
 DTYPE = torch.float32
 
 
-# ================================================================
 # Evaluation metrics
-# ================================================================
 def compute_metrics(actual, predicted, label=""):
     """Compute RMSE, MAE, MAPE (excluding zeros)."""
     residuals = actual - predicted
@@ -81,9 +75,7 @@ def compute_metrics(actual, predicted, label=""):
     return {"label": label, "rmse": rmse, "mae": mae, "mape_pct": mape}
 
 
-# ================================================================
 # Forecast plot (overlays both model sizes)
-# ================================================================
 def plot_forecast(train_df, test_df, forecasts_dict, region, metrics_dict):
     """Plot actual vs Chronos forecasts for all model sizes."""
     fig, ax = plt.subplots(figsize=(14, 5))
@@ -125,9 +117,7 @@ def plot_forecast(train_df, test_df, forecasts_dict, region, metrics_dict):
     print(f"  Saved: {fig_path}")
 
 
-# ================================================================
 # Main
-# ================================================================
 if __name__ == "__main__":
     all_metrics = []
 

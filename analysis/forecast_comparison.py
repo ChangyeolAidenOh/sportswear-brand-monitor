@@ -28,11 +28,9 @@ Usage:
     python -m analysis.forecast_comparison
 """
 
-# stdlib
 import os
 import warnings
 
-# third-party
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
@@ -52,9 +50,7 @@ plt.rcParams.update({
     "grid.alpha": 0.3,
 })
 
-# ================================================================
 # Constants
-# ================================================================
 DATA_DIR = "data/forecast"
 FIG_DIR = "figures/forecast"
 REGIONS = ["korea", "global"]
@@ -73,9 +69,7 @@ MODEL_COLORS = {
 }
 
 
-# ================================================================
 # Evaluation metrics
-# ================================================================
 def compute_metrics(actual, predicted, model, region, subset="all"):
     """Compute RMSE, MAE, MAPE."""
     residuals = actual - predicted
@@ -95,9 +89,7 @@ def compute_metrics(actual, predicted, model, region, subset="all"):
     }
 
 
-# ================================================================
 # Fourier terms (identical to SARIMAX/LSTM)
-# ================================================================
 def make_fourier_terms(n, period_k_map, start_idx=0):
     """Generate Fourier sin/cos terms."""
     t = np.arange(start_idx, start_idx + n)
@@ -109,9 +101,7 @@ def make_fourier_terms(n, period_k_map, start_idx=0):
     return pd.DataFrame(cols)
 
 
-# ================================================================
 # Load and merge forecasts
-# ================================================================
 def load_forecasts(region):
     """Load all model forecasts for a region and merge on week_start."""
     base = pd.read_csv(
@@ -145,9 +135,7 @@ def load_forecasts(region):
     return train, merged
 
 
-# ================================================================
 # D2: Train in-sample SARIMAX residual analysis
-# ================================================================
 def train_insample_residual_analysis(region):
     """Re-fit SARIMAX on train and compare in-sample residuals for anomaly vs normal weeks."""
     df = pd.read_csv(
@@ -192,9 +180,7 @@ def train_insample_residual_analysis(region):
     return result, train[["week_start", "search_index", "is_anomaly_week", "insample_residual", "abs_residual"]]
 
 
-# ================================================================
 # Plot: 3-way forecast overlay (Chronos-small as representative)
-# ================================================================
 def plot_3way(train, test_merged, region):
     """Overlay actual vs 3 model forecasts."""
     fig, ax = plt.subplots(figsize=(14, 5))
@@ -235,9 +221,7 @@ def plot_3way(train, test_merged, region):
     print(f"Saved: {fig_path}")
 
 
-# ================================================================
 # Plot: error distribution box plot — 3-way
-# ================================================================
 def plot_error_distribution(all_errors):
     """Box plot of forecast errors by model and region."""
     fig, axes = plt.subplots(1, 2, figsize=(14, 5))
@@ -271,9 +255,7 @@ def plot_error_distribution(all_errors):
     print(f"Saved: {fig_path}")
 
 
-# ================================================================
 # Plot: train anomaly residual scatter
-# ================================================================
 def plot_train_anomaly_residuals(train_residuals_dict):
     """Scatter: train in-sample |residual| colored by anomaly flag."""
     fig, axes = plt.subplots(1, 2, figsize=(14, 5))
@@ -311,9 +293,7 @@ def plot_train_anomaly_residuals(train_residuals_dict):
     print(f"Saved: {fig_path}")
 
 
-# ================================================================
 # Plot: test anomaly error bar chart (with n=1 caveat)
-# ================================================================
 def plot_test_anomaly_error(metrics_df):
     """Bar chart: test RMSE anomaly vs normal weeks."""
     fig, axes = plt.subplots(1, 2, figsize=(14, 5))
@@ -362,9 +342,7 @@ def plot_test_anomaly_error(metrics_df):
     print(f"Saved: {fig_path}")
 
 
-# ================================================================
 # Main
-# ================================================================
 if __name__ == "__main__":
     all_metrics = []
     all_errors = {}
@@ -462,7 +440,6 @@ if __name__ == "__main__":
 
     # Ranking
     print(f"\n{'='*60}")
-    print("RANKING BY RMSE")
     print(f"{'='*60}")
     for region in REGIONS:
         region_overall = three_way[three_way["region"] == region].sort_values("rmse")
@@ -473,7 +450,6 @@ if __name__ == "__main__":
 
     # Caveat
     print(f"\n{'='*60}")
-    print("ANOMALY ANALYSIS CAVEAT")
     print(f"{'='*60}")
     print("  Test set anomaly weeks: n=1 per region — not statistically meaningful.")
     print("  Train in-sample analysis above provides more robust anomaly vs normal comparison.")

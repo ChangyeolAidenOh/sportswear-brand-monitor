@@ -20,22 +20,17 @@ Usage:
     python analysis/anomaly_comparison.py --inspect   # show Stage 2 anomaly_log contents
 """
 
-# stdlib
 import argparse
 import os
 import sys
 
-# third-party
 import pandas as pd
 import numpy as np
 
-# local
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from database.connection import get_conn
 
-# ================================================================
 # CONSTANTS
-# ================================================================
 
 ZSCORE_THRESHOLD = 2.0
 MSTL_CSV = "data/anomaly/mstl_residual_anomalies_2.0.csv"
@@ -46,9 +41,7 @@ os.makedirs(FIG_DIR, exist_ok=True)
 os.makedirs(OUT_DIR, exist_ok=True)
 
 
-# ================================================================
 # PREFLIGHT
-# ================================================================
 
 def inspect_stage2(conn):
     """Show Stage 2 anomaly_log contents for region identification."""
@@ -85,9 +78,7 @@ def inspect_stage2(conn):
     print(f"\nMetric names:\n{metric_sample.to_string(index=False)}")
 
 
-# ================================================================
 # DATA LOADING
-# ================================================================
 
 def rederive_zscore_anomalies(conn, threshold=ZSCORE_THRESHOLD):
     """
@@ -156,9 +147,7 @@ def load_if_anomalies():
     return df
 
 
-# ================================================================
 # CONFUSION MATRIX: Z-score vs MSTL
-# ================================================================
 
 def build_universe(conn):
     """Build full universe of (brand, region, week_start) from brand_kpi_weekly."""
@@ -205,7 +194,6 @@ def build_confusion_matrix(universe, zscore_anom, mstl_anom):
     print(f"  MSTL only (new discovery):     {len(mstl_only):5d}")
     print(f"  Neither (true negative):       {len(neither):5d}")
     print(f"  Total:                         {len(all_keys):5d}")
-    print()
     print(f"  Z-score false positive rate: "
           f"{len(zscore_only)}/{len(zscore_keys)} = "
           f"{len(zscore_only)/max(len(zscore_keys),1)*100:.1f}% of Stage 2 anomalies "
@@ -263,9 +251,7 @@ def build_confusion_matrix(universe, zscore_anom, mstl_anom):
     return cm_df, both, zscore_only, mstl_only
 
 
-# ================================================================
 # 3-WAY COMPARISON
-# ================================================================
 
 def three_way_comparison(universe, zscore_anom, mstl_anom, if_anom):
     """Build 3-way agreement table across methods."""
@@ -333,9 +319,7 @@ def three_way_comparison(universe, zscore_anom, mstl_anom, if_anom):
     return comp_df
 
 
-# ================================================================
 # CO-OCCURRING & BRAND-SPECIFIC ANOMALIES
-# ================================================================
 
 def find_co_occurring(comp_df):
     """Find weeks where multiple brands have anomalies (macro event candidates)."""
@@ -404,9 +388,7 @@ def find_nb_only(comp_df):
     return nb_only
 
 
-# ================================================================
 # VISUALIZATION
-# ================================================================
 
 def plot_comparison_heatmap(comp_df):
     """Plot method agreement heatmap per series."""
@@ -493,9 +475,7 @@ def plot_confusion_venn(cm_df, both, zscore_only, mstl_only):
     print(f"Saved: {fig_path}")
 
 
-# ================================================================
 # SAVE OUTPUTS
-# ================================================================
 
 def save_outputs(cm_df, comp_df, co_occurring, nb_only):
     """Save comparison tables as CSV."""
@@ -512,9 +492,7 @@ def save_outputs(cm_df, comp_df, co_occurring, nb_only):
     print(f"\nComparison outputs saved to {OUT_DIR}/")
 
 
-# ================================================================
 # MAIN
-# ================================================================
 
 def parse_args():
     parser = argparse.ArgumentParser(

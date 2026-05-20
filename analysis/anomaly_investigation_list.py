@@ -9,17 +9,13 @@ Usage:
     python analysis/anomaly_investigation_list.py
 """
 
-# stdlib
 import os
 import sys
 
-# third-party
 import pandas as pd
 import numpy as np
 
-# ================================================================
 # CONSTANTS
-# ================================================================
 
 COMP_CSV = "data/anomaly/three_way_comparison.csv"
 MSTL_CSV = "data/anomaly/mstl_residual_anomalies_2.0.csv"
@@ -27,9 +23,7 @@ IF_CSV = "data/anomaly/isolation_forest_anomalies.csv"
 OUT_DIR = "data/anomaly"
 
 
-# ================================================================
 # MAIN
-# ================================================================
 
 def main():
     # Load 3-way comparison
@@ -62,16 +56,12 @@ def main():
     )
     multi["abs_z"] = multi["mstl_z"].abs()
 
-    # ============================================================
     # TIER 1: Z-score included in agreement (independent cross-validation)
-    # ============================================================
     tier1 = multi.loc[multi["zscore"] == True].copy()
     tier1["tier"] = 1
 
-    # ============================================================
     # TIER 2: M+IF only, macro_event or multi_brand weeks only
     # (brand_specific excluded — no independent cross-validation)
-    # ============================================================
     mif_only = multi.loc[multi["zscore"] == False].copy()
 
     # Count unique brands per week among M+IF anomalies
@@ -86,9 +76,7 @@ def main():
     tier2 = mif_only.loc[mif_only["n_brands_in_week"] >= 2].copy()
     tier2["tier"] = 2
 
-    # ============================================================
     # Combine and classify
-    # ============================================================
     targets = pd.concat([tier1, tier2], ignore_index=True)
 
     # Classify investigation type
@@ -154,7 +142,6 @@ def main():
 
     # ============================================================       <-- 여기부터
     # WEEK-GROUPED INVESTIGATION PLAN
-    # ============================================================
     print("\n" + "=" * 80)
     print("INVESTIGATION PLAN (grouped by week_start)")
     print("=" * 80)

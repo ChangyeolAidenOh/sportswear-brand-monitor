@@ -19,19 +19,16 @@ Usage:
 import os as _os, sys as _sys
 _sys.path.insert(0, _os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))))
 
-# stdlib
 import argparse
 import os
 from datetime import datetime
 
-# third-party
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-# local
 from database.connection import get_conn
 
 plt.rcParams.update({
@@ -42,9 +39,7 @@ plt.rcParams.update({
     "grid.alpha": 0.3,
 })
 
-# ================================================================
 # CONSTANTS
-# ================================================================
 
 BRANDS = ["nike", "adidas", "puma", "new_balance"]
 BRAND_COLORS = {
@@ -74,9 +69,7 @@ def section(title):
     log("")
 
 
-# ================================================================
 # STEP B1: Time Series Extraction
-# ================================================================
 
 def extract_brand_search():
     """Extract search_index from mart.brand_kpi_weekly (4 brands x 2 regions)."""
@@ -139,9 +132,7 @@ def step_b1():
     return {"merged": merged}
 
 
-# ================================================================
 # STEP B2: DTW Distance + Warping Path
-# ================================================================
 
 def compute_dtw_pair(korea_series, global_series):
     """Compute DTW distance and warping path between Korea and Global series."""
@@ -262,9 +253,7 @@ def step_b2(data, deseason="search_index"):
     return data
 
 
-# ================================================================
 # STEP B3: Visualization
-# ================================================================
 
 def plot_dtw_alignment(korea_vals, global_vals, path, brand, weeks, deseason, fig_dir):
     """Plot DTW alignment between Korea and Global series."""
@@ -356,9 +345,7 @@ def step_b3(data):
     return data
 
 
-# ================================================================
 # STEP B4: Mart Table Output for Stage 7
-# ================================================================
 
 def step_b4(data):
     """Execute Step B4: write DTW metrics to mart.korea_global_lag."""
@@ -446,9 +433,7 @@ CREATE TABLE IF NOT EXISTS mart.korea_global_lag (
     return data
 
 
-# ================================================================
 # REPORT GENERATION
-# ================================================================
 
 def generate_report():
     """Write DTW results to markdown."""
@@ -468,9 +453,7 @@ def generate_report():
     print(f"\nReport saved: {report_path}")
 
 
-# ================================================================
 # MAIN
-# ================================================================
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Stage 4 Track B: DTW Korea-Global")

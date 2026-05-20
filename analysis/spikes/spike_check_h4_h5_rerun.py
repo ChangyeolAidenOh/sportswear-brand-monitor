@@ -95,9 +95,7 @@ def compute_ccf(s1, s2, max_lag=12):
     return lags, ccf
 
 
-# ================================================================
 # H4 RERUN: Instagram Lead (Separated Groups)
-# ================================================================
 def h4_rerun():
     print("\n" + "=" * 60)
     print("H4 RERUN: Instagram Proxy -> NB Search (Separated Groups)")
@@ -198,9 +196,7 @@ def h4_rerun():
     }
 
 
-# ================================================================
 # H5 RERUN: D2C Share (Separated Groups)
-# ================================================================
 def h5_rerun():
     print("\n" + "=" * 60)
     print("H5 RERUN: D2C Search Share (Separated Groups)")
@@ -308,9 +304,7 @@ def h5_rerun():
     }
 
 
-# ================================================================
 # MAIN
-# ================================================================
 def main():
     print("=" * 60)
     print("H4/H5 RERUN — Group Separation Fix")
@@ -323,7 +317,6 @@ def main():
 
     # Summary
     print("\n" + "=" * 60)
-    print("SUMMARY")
     print("=" * 60)
 
     if h4_result:

@@ -16,11 +16,9 @@ Usage:
     python -m analysis.forecast_data_prep
 """
 
-# stdlib
 import os
 import warnings
 
-# third-party
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
@@ -28,7 +26,6 @@ import numpy as np
 import pandas as pd
 from statsmodels.graphics.tsaplots import plot_acf, plot_pacf
 
-# local
 from database.connection import get_conn
 
 warnings.filterwarnings("ignore", message=".*pandas only supports SQLAlchemy.*")
@@ -42,9 +39,7 @@ plt.rcParams.update({
     "grid.alpha": 0.3,
 })
 
-# ================================================================
 # Constants
-# ================================================================
 DATA_DIR = "data/forecast"
 FIG_DIR = "figures/forecast"
 TEST_WEEKS = 26
@@ -54,9 +49,7 @@ os.makedirs(DATA_DIR, exist_ok=True)
 os.makedirs(FIG_DIR, exist_ok=True)
 
 
-# ================================================================
 # Data extraction
-# ================================================================
 def fetch_search_index(conn):
     """Fetch NB Korea/Global weekly search_index."""
     query = """
@@ -111,9 +104,7 @@ def fetch_anomaly_weeks(conn):
     return df
 
 
-# ================================================================
 # CSI forward-fill: monthly -> weekly
-# ================================================================
 def forward_fill_csi(csi_df, week_range):
     """Forward-fill monthly CSI to weekly granularity.
 
@@ -133,9 +124,7 @@ def forward_fill_csi(csi_df, week_range):
     return merged[["week_start", "csi"]]
 
 
-# ================================================================
 # Train / Test split
-# ================================================================
 def split_train_test(df, test_weeks=TEST_WEEKS):
     """Split time series into train and test sets."""
     cutoff = df["week_start"].max() - pd.Timedelta(weeks=test_weeks - 1)
@@ -144,9 +133,7 @@ def split_train_test(df, test_weeks=TEST_WEEKS):
     return train, test
 
 
-# ================================================================
 # Visualization: search_index + CSI overlay
-# ================================================================
 def plot_search_csi(df, region, train_end):
     """Plot search_index with CSI overlay and train/test split line."""
     fig, ax1 = plt.subplots(figsize=(14, 5))
@@ -177,9 +164,7 @@ def plot_search_csi(df, region, train_end):
     print(f"Saved: {fig_path}")
 
 
-# ================================================================
 # ACF / PACF plots
-# ================================================================
 def plot_acf_pacf(series, region):
     """Generate ACF and PACF plots for order identification."""
     fig, axes = plt.subplots(1, 2, figsize=(14, 4))
@@ -200,9 +185,7 @@ def plot_acf_pacf(series, region):
     print(f"Saved: {fig_path}")
 
 
-# ================================================================
 # Main
-# ================================================================
 if __name__ == "__main__":
     with get_conn() as conn:
         # Extract

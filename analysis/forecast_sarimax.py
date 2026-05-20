@@ -19,11 +19,9 @@ Usage:
     python -m analysis.forecast_sarimax
 """
 
-# stdlib
 import os
 import warnings
 
-# third-party
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
@@ -43,9 +41,7 @@ plt.rcParams.update({
     "grid.alpha": 0.3,
 })
 
-# ================================================================
 # Constants
-# ================================================================
 DATA_DIR = "data/forecast"
 FIG_DIR = "figures/forecast"
 FOURIER_CONFIG = {52: 2, 13: 2}
@@ -58,9 +54,7 @@ ORDERS = {
 REGIONS = ["korea", "global"]
 
 
-# ================================================================
 # Fourier terms (must match A2 exactly)
-# ================================================================
 def make_fourier_terms(n, period_k_map, start_idx=0):
     """Generate Fourier sin/cos terms.
 
@@ -78,9 +72,7 @@ def make_fourier_terms(n, period_k_map, start_idx=0):
     return pd.DataFrame(cols)
 
 
-# ================================================================
 # Build exogenous matrix
-# ================================================================
 def build_exog(df, start_idx=0):
     """Build exogenous matrix: Fourier terms + CSI."""
     n = len(df)
@@ -92,9 +84,7 @@ def build_exog(df, start_idx=0):
     return exog
 
 
-# ================================================================
 # Evaluation metrics
-# ================================================================
 def compute_metrics(actual, predicted, label=""):
     """Compute RMSE, MAE, MAPE (excluding zeros)."""
     residuals = actual - predicted
@@ -111,9 +101,7 @@ def compute_metrics(actual, predicted, label=""):
     return {"label": label, "rmse": rmse, "mae": mae, "mape_pct": mape}
 
 
-# ================================================================
 # Forecast plot
-# ================================================================
 def plot_forecast(train, test, forecast_values, conf_int, region, metrics):
     """Plot actual vs forecast with confidence interval."""
     fig, ax = plt.subplots(figsize=(14, 5))
@@ -159,9 +147,7 @@ def plot_forecast(train, test, forecast_values, conf_int, region, metrics):
     print(f"  Saved: {fig_path}")
 
 
-# ================================================================
 # Main
-# ================================================================
 if __name__ == "__main__":
     all_metrics = []
 

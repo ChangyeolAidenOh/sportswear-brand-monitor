@@ -26,11 +26,9 @@ Usage:
     python -m analysis.forecast_comparison_4way
 """
 
-# stdlib
 import os
 import warnings
 
-# third-party
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
@@ -48,9 +46,7 @@ plt.rcParams.update({
     "grid.alpha": 0.3,
 })
 
-# ================================================================
 # Constants
-# ================================================================
 DATA_DIR = "data/forecast"
 FIG_DIR = "figures/forecast"
 REGIONS = ["korea", "global"]
@@ -66,9 +62,7 @@ MODEL_COLORS = {
 MODEL_ORDER = ["SARIMAX", "Prophet", "LSTM", "Chronos-small"]
 
 
-# ================================================================
 # Evaluation metrics
-# ================================================================
 def compute_metrics(actual, predicted, model, region, subset="all"):
     """Compute RMSE, MAE, MAPE."""
     residuals = actual - predicted
@@ -88,9 +82,7 @@ def compute_metrics(actual, predicted, model, region, subset="all"):
     }
 
 
-# ================================================================
 # Load and merge all forecasts
-# ================================================================
 def load_forecasts(region):
     """Load all 4 model forecasts for a region."""
     base = pd.read_csv(
@@ -114,9 +106,7 @@ def load_forecasts(region):
     return train, merged
 
 
-# ================================================================
 # Plot: 4-way forecast overlay
-# ================================================================
 def plot_4way(train, test_merged, region):
     """Overlay actual vs all 4 model forecasts."""
     fig, ax = plt.subplots(figsize=(14, 5))
@@ -158,9 +148,7 @@ def plot_4way(train, test_merged, region):
     print(f"Saved: {fig_path}")
 
 
-# ================================================================
 # Plot: 4-way error distribution
-# ================================================================
 def plot_error_distribution(all_errors):
     """Box plot of forecast errors — 4 models."""
     fig, axes = plt.subplots(1, 2, figsize=(14, 5))
@@ -193,9 +181,7 @@ def plot_error_distribution(all_errors):
     print(f"Saved: {fig_path}")
 
 
-# ================================================================
 # Main
-# ================================================================
 if __name__ == "__main__":
     all_metrics = []
     all_errors = {}

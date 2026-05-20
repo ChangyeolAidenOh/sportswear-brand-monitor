@@ -6,19 +6,15 @@ Data: mart.anomaly_log (detected_date, no region column — parsed from descript
 Usage: tab4_anomaly.render() called from app.py
 """
 
-# third-party
 import streamlit as st
 import plotly.graph_objects as go
 import pandas as pd
 
-# local
 from dashboard.config import BRAND_COLORS, BRAND_LABELS
 from dashboard.data.queries import fetch_anomaly_log, fetch_events_calendar
 
 
-# ================================================================
 # Data loading (cached)
-# ================================================================
 @st.cache_data(ttl=600)
 def load_anomaly_log():
     """Load anomaly log and extract region from description."""
@@ -37,9 +33,7 @@ def load_events():
     return fetch_events_calendar()
 
 
-# ================================================================
 # Chart builders
-# ================================================================
 def _build_anomaly_timeline(df, brand="new_balance", region="korea"):
     """Build anomaly detection timeline — dots colored by method."""
     subset = df[
@@ -248,9 +242,7 @@ def _build_event_stacking_chart(df_events):
     return fig
 
 
-# ================================================================
 # Render
-# ================================================================
 def render():
     """Render Tab 4 content."""
     st.header("Anomaly")

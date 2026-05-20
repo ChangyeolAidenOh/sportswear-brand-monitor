@@ -20,24 +20,19 @@ Usage:
     python -m collectors.collector_financials --csv-path data/raw/financials/custom.csv
 """
 
-# stdlib
 import argparse
 import os
 import re
 import sys
 
-# third-party
 import pandas as pd
 from dotenv import load_dotenv
 
 load_dotenv()
 
-# local
 from database.connection import get_conn
 
-# ================================================================
 # Constants
-# ================================================================
 
 DEFAULT_CSV_PATH = "data/raw/financials/financials_seed.csv"
 
@@ -62,9 +57,7 @@ SOURCE_TIER_MAP = {
 }
 
 
-# ================================================================
 # Schema migration (idempotent)
-# ================================================================
 
 ENSURE_SCHEMA_SQL = """
 -- Add source_tier if not exists
@@ -151,9 +144,7 @@ def ensure_schema():
         print("  Schema verified: source_tier + note + uq_fin_brand_period_metric_source")
 
 
-# ================================================================
 # CSV loading and validation
-# ================================================================
 
 def load_seed_csv(csv_path):
     """Load financials seed CSV into DataFrame."""
@@ -258,9 +249,7 @@ def validate_rows(df):
     return all_pass
 
 
-# ================================================================
 # DB insert
-# ================================================================
 
 def upsert_to_db(df):
     """Batch upsert validated rows with auto-assigned source_tier."""
@@ -294,9 +283,7 @@ def upsert_to_db(df):
             return 0
 
 
-# ================================================================
 # CLI
-# ================================================================
 
 def parse_args():
     """Parse CLI arguments."""

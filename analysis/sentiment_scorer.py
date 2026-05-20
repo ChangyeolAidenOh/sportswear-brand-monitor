@@ -18,30 +18,25 @@ Usage:
 
 import matplotlib
 
-# stdlib
 import argparse
 import json
 import os
 import warnings
 from datetime import datetime
 
-# third-party
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-# local
 from database.connection import get_conn
 from analysis.sentiment_dictionary import (
     score_text, classify_sentiment, detect_sponsorship,
     BRAND_COLORS,
 )
 
-# ================================================================
 # CONSTANTS
-# ================================================================
 
 FIG_DIR = "figures/sentiment"
 BATCH_DIR = "data/batch"
@@ -74,9 +69,7 @@ Respond with ONLY a JSON object: {"label": "positive|negative|neutral", "confide
 No other text."""
 
 
-# ================================================================
 # DATA FETCH
-# ================================================================
 
 def fetch_all_blog_cafe():
     """Fetch all blog/cafe texts from raw."""
@@ -93,9 +86,7 @@ def fetch_all_blog_cafe():
     return df
 
 
-# ================================================================
 # KEYWORD SCORING (1ST PASS)
-# ================================================================
 
 def score_all(df):
     """Apply keyword scoring to all rows."""
@@ -139,9 +130,7 @@ def score_all(df):
     return df
 
 
-# ================================================================
 # DATABASE WRITE
-# ================================================================
 
 def save_to_db(df):
     """Insert scoring results into staging.blog_sentiment."""
@@ -172,9 +161,7 @@ def save_to_db(df):
             print(f"  Inserted {total} rows into staging.blog_sentiment")
 
 
-# ================================================================
 # BATCH API JSONL GENERATION
-# ================================================================
 
 def generate_batch_jsonl(df):
     """Generate JSONL for uncertain + non-sponsored cases."""
@@ -254,9 +241,7 @@ def generate_batch_jsonl(df):
     return n_uncertain
 
 
-# ================================================================
 # INGEST API RESULTS
-# ================================================================
 
 def ingest_results(results_path):
     """Ingest Batch API results and update staging.blog_sentiment."""
@@ -335,9 +320,7 @@ def ingest_results(results_path):
     log_df.to_csv(COST_LOG_PATH, index=False)
 
 
-# ================================================================
 # SUMMARY
-# ================================================================
 
 def print_summary(df):
     """Print full corpus scoring summary."""
@@ -388,9 +371,7 @@ def print_summary(df):
         print(f"  {st:<15} n={sn:>5}  avg={avg:>+.4f}")
 
 
-# ================================================================
 # VISUALIZATION
-# ================================================================
 
 def plot_full_distribution(df):
     """Score distribution for full corpus."""
@@ -413,9 +394,7 @@ def plot_full_distribution(df):
     print(f"\n  Saved: {fig_path}")
 
 
-# ================================================================
 # CLI / MAIN
-# ================================================================
 
 def parse_args():
     parser = argparse.ArgumentParser(

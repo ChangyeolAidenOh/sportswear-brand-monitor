@@ -18,13 +18,11 @@ Usage:
     python -m analysis.product_decomposer --dry-run
 """
 
-# stdlib
 import argparse
 import os
 import warnings
 from datetime import datetime
 
-# third-party
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
@@ -32,12 +30,9 @@ import numpy as np
 import pandas as pd
 from statsmodels.tsa.seasonal import MSTL
 
-# local
 from database.connection import get_conn
 
-# ================================================================
 # CONSTANTS
-# ================================================================
 
 FIG_DIR = "figures/seasonal/products"
 os.makedirs(FIG_DIR, exist_ok=True)
@@ -74,9 +69,7 @@ PRODUCT_COLORS = {
 }
 
 
-# ================================================================
 # DATA FETCH
-# ================================================================
 
 def fetch_product_lines():
     """Fetch distinct product lines per region with observation counts."""
@@ -116,9 +109,7 @@ def fetch_product_series(product_line, region):
     return df
 
 
-# ================================================================
 # MSTL DECOMPOSITION
-# ================================================================
 
 def run_mstl(series, periods=None):
     """Run MSTL decomposition with multiple seasonal periods."""
@@ -139,9 +130,7 @@ def run_mstl(series, periods=None):
     return result
 
 
-# ================================================================
 # SS/FW RATIO CALCULATION
-# ================================================================
 
 def compute_ss_fw_ratio(seasonal_annual):
     """Compute SS/FW seasonal amplitude ratio from annual component."""
@@ -158,9 +147,7 @@ def compute_ss_fw_ratio(seasonal_annual):
     return ratio, ss_amp, fw_amp
 
 
-# ================================================================
 # DECOMPOSE ALL PRODUCTS
-# ================================================================
 
 def decompose_all():
     """Decompose all product lines across both regions."""
@@ -179,7 +166,6 @@ def decompose_all():
             eligible.append((row["product_line"], row["region"]))
 
     print(f"\n  Eligible: {len(eligible)} / {len(inventory)} product-region pairs")
-    print()
 
     # Run MSTL decomposition
     results = {}
@@ -251,9 +237,7 @@ def decompose_all():
     return results
 
 
-# ================================================================
 # DATABASE WRITE
-# ================================================================
 
 def save_to_db(results):
     """Insert product decomposition results into mart.seasonal_components."""
@@ -291,9 +275,7 @@ def save_to_db(results):
             print(f"  Inserted {total} rows into mart.seasonal_components (products)")
 
 
-# ================================================================
 # VISUALIZATION
-# ================================================================
 
 def plot_product_decomposition(product_line, region, result, series):
     """5-panel MSTL decomposition: observed, trend, annual, quarterly, residual."""
@@ -385,9 +367,7 @@ def plot_all(results):
     plot_product_overlay(results)
 
 
-# ================================================================
 # SUMMARY
-# ================================================================
 
 def print_summary(results):
     """Print summary with season strength and SS/FW ratio re-verification."""
@@ -411,15 +391,11 @@ def print_summary(results):
               f"{data['resid_std']:>10.4f} "
               f"{data['ss_fw_ratio']:>7.4f} {ref_str:>10}")
 
-    print()
     print("  SS/FW ratio: > 1.0 = SS-dominant, < 1.0 = FW-dominant")
     print("  S0_H2_Ref: Stage 0 Hypothesis 2 reference value (single-season STL)")
-    print()
 
 
-# ================================================================
 # CLI / MAIN
-# ================================================================
 
 def parse_args():
     parser = argparse.ArgumentParser(

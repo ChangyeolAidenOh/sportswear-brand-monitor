@@ -4,13 +4,10 @@ Each function queries PostgreSQL or falls back to CSV based on config.
 Usage: from dashboard.data.queries import fetch_brand_kpi
 """
 
-# stdlib
 import os
 
-# third-party
 import pandas as pd
 
-# local
 from dashboard.config import CSV_DIR, USE_CSV_FALLBACK
 
 if not USE_CSV_FALLBACK:
@@ -20,9 +17,7 @@ if not USE_CSV_FALLBACK:
         USE_CSV_FALLBACK = True
 
 
-# ================================================================
 # Helpers
-# ================================================================
 def _read_csv_fallback(filename):
     """Read a CSV file from data/exports/ directory."""
     path = os.path.join(CSV_DIR, filename)
@@ -54,9 +49,7 @@ def _query_or_csv(query, csv_filename, parse_dates=None):
         return df
 
 
-# ================================================================
 # KPI 1, 2, 3: mart.brand_kpi_weekly
-# ================================================================
 BRAND_KPI_SQL = """
 SELECT
     week_start,
@@ -83,9 +76,7 @@ def fetch_brand_kpi():
     )
 
 
-# ================================================================
 # Product portfolio (530 dependency, Tab 1)
-# ================================================================
 PRODUCT_PORTFOLIO_SQL = """
 SELECT
     week_start,
@@ -109,9 +100,7 @@ def fetch_product_portfolio():
     )
 
 
-# ================================================================
 # KPI 4, 5: mart.sentiment_quarterly
-# ================================================================
 SENTIMENT_SQL = """
 SELECT *
 FROM mart.sentiment_quarterly
@@ -127,9 +116,7 @@ def fetch_sentiment_quarterly():
     )
 
 
-# ================================================================
 # KPI 6, 10: CSI from staging.macro_monthly
-# ================================================================
 CSI_MACRO_SQL = """
 SELECT
     period AS year_month,
@@ -149,9 +136,7 @@ def fetch_csi_macro():
     )
 
 
-# ================================================================
 # KPI 7: mart.korea_global_lag (Migration 011 sign-corrected)
-# ================================================================
 KOREA_GLOBAL_LAG_SQL = """
 SELECT *
 FROM mart.korea_global_lag
@@ -167,9 +152,7 @@ def fetch_korea_global_lag():
     )
 
 
-# ================================================================
 # KPI 8: staging.events_calendar
-# ================================================================
 EVENTS_CALENDAR_SQL = """
 SELECT *
 FROM staging.events_calendar
@@ -186,9 +169,7 @@ def fetch_events_calendar():
     )
 
 
-# ================================================================
 # KPI 9: mart.anomaly_log
-# ================================================================
 ANOMALY_LOG_SQL = """
 SELECT
     id,
@@ -216,9 +197,7 @@ def fetch_anomaly_log():
     )
 
 
-# ================================================================
 # KPI 11: mart.forecast_results
-# ================================================================
 FORECAST_SQL = """
 SELECT *
 FROM mart.forecast_results
@@ -235,9 +214,7 @@ def fetch_forecast_results():
     )
 
 
-# ================================================================
 # Korea vs Global comparison
-# ================================================================
 KOREA_GLOBAL_COMP_SQL = """
 SELECT *
 FROM mart.korea_global_comparison
@@ -254,9 +231,7 @@ def fetch_korea_global_comparison():
     )
 
 
-# ================================================================
 # Table existence check
-# ================================================================
 REQUIRED_TABLES = [
     "mart.brand_kpi_weekly",
     "mart.product_portfolio_weekly",

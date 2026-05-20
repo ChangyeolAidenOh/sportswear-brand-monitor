@@ -15,25 +15,20 @@ Usage:
     python -m analysis.sentiment_aggregator --dry-run
 """
 
-# stdlib
 import argparse
 import os
 import warnings
 from datetime import datetime
 
-# third-party
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-# local
 from database.connection import get_conn
 
-# ================================================================
 # CONSTANTS
-# ================================================================
 
 FIG_DIR = "figures/sentiment"
 os.makedirs(FIG_DIR, exist_ok=True)
@@ -66,9 +61,7 @@ plt.rcParams.update({
 })
 
 
-# ================================================================
 # DATA FETCH
-# ================================================================
 
 def fetch_sentiment_summary():
     """Fetch brand-level sentiment summary from staging.blog_sentiment."""
@@ -100,9 +93,7 @@ def fetch_organic_scores():
     return df
 
 
-# ================================================================
 # B4: BRAND SENTIMENT DISTRIBUTION
-# ================================================================
 
 def compute_brand_sentiment(organic_df):
     """Compute brand-level sentiment metrics."""
@@ -148,9 +139,7 @@ def compute_brand_sentiment(organic_df):
     return brand_stats
 
 
-# ================================================================
 # B5: SAMPLE VS FULL COMPARISON
-# ================================================================
 
 def compare_sample_vs_full(brand_stats):
     """Compare B1 1K sample averages with B2 10K full corpus."""
@@ -172,12 +161,9 @@ def compare_sample_vs_full(brand_stats):
 
         print(f"  {brand:<15} {b1:>+8.4f} {b2:>+8.4f} {delta:>+8.4f} {status:>15}")
 
-    print()
 
 
-# ================================================================
 # B5: COST VERIFICATION
-# ================================================================
 
 def verify_cost():
     """Print routing and cost summary."""
@@ -216,12 +202,9 @@ def verify_cost():
         total_est = cost_df["est_cost_krw"].sum()
         print(f"\n  Estimated total cost: ~{total_est:.1f} KRW")
         print(f"  Cost per text: ~{total_est/total:.4f} KRW")
-    print()
 
 
-# ================================================================
 # MART UPDATE
-# ================================================================
 
 def update_mart(brand_stats):
     """Broadcast organic sentiment average into mart.brand_kpi_weekly."""
@@ -245,12 +228,9 @@ def update_mart(brand_stats):
 
             conn.commit()
 
-    print()
 
 
-# ================================================================
 # VISUALIZATION
-# ================================================================
 
 def plot_sentiment_distribution(brand_stats):
     """Bar chart of sentiment distribution by brand."""
@@ -319,9 +299,7 @@ def plot_sample_vs_full(brand_stats):
     print(f"  Saved: {fig_path}")
 
 
-# ================================================================
 # CLI / MAIN
-# ================================================================
 
 def parse_args():
     parser = argparse.ArgumentParser(

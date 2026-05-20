@@ -27,7 +27,6 @@ Usage:
 import os as _os, sys as _sys
 _sys.path.insert(0, _os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))))
 
-# stdlib
 import os
 import sys
 
@@ -35,18 +34,14 @@ import argparse
 import warnings
 from datetime import datetime
 
-# third-party
 import numpy as np
 import pandas as pd
 from statsmodels.tsa.stattools import adfuller, kpss, grangercausalitytests, coint
 from statsmodels.tsa.api import VAR
 
-# local
 from database.connection import get_conn
 
-# ================================================================
 # CONSTANTS
-# ================================================================
 
 BRANDS = ["nike", "adidas", "puma", "new_balance"]
 REGIONS = ["korea", "global"]
@@ -73,9 +68,7 @@ def section(title):
     log("")
 
 
-# ================================================================
 # STEP A1: Data Extraction
-# ================================================================
 
 def extract_search_weekly():
     """Extract brand-level search_index from mart.brand_kpi_weekly."""
@@ -166,9 +159,7 @@ def step_a1():
     }
 
 
-# ================================================================
 # STEP A2: MSTL Residual -> Monthly + CSI Alignment
-# ================================================================
 
 def aggregate_residual_to_monthly(residual_df):
     """Aggregate weekly MSTL residual to monthly mean per brand x region.
@@ -241,9 +232,7 @@ def step_a2(data):
     return data
 
 
-# ================================================================
 # STEP A3: Stationarity Tests (ADF + KPSS)
-# ================================================================
 
 def run_adf(series, name):
     """Run Augmented Dickey-Fuller test."""
@@ -371,9 +360,7 @@ def step_a3(data):
     return data
 
 
-# ================================================================
 # STEP A4: Bidirectional Granger Causality
-# ================================================================
 
 def prepare_granger_pair(search_series, csi_series, csi_transform):
     """Prepare paired stationary series for Granger test.
@@ -549,9 +536,7 @@ def step_a4(data):
     return data
 
 
-# ================================================================
 # STEP A5: VAR + Impulse Response Function
-# ================================================================
 
 def step_a5(data):
     """Execute Step A5: VAR model fitting + IRF plots."""
@@ -635,9 +620,7 @@ def step_a5(data):
     return data
 
 
-# ================================================================
 # STEP A6: Shopping Search Sub-analysis
-# ================================================================
 
 def step_a6(data):
     """Execute Step A6: shopping search as purchase-intent Granger input."""
@@ -708,9 +691,7 @@ def step_a6(data):
     return data
 
 
-# ================================================================
 # MART INSERT: granger_results
-# ================================================================
 
 def insert_granger_to_mart(data):
     """Write Granger results to mart.granger_results table."""
@@ -777,9 +758,7 @@ CREATE TABLE IF NOT EXISTS mart.granger_results (
     return data
 
 
-# ================================================================
 # REPORT GENERATION
-# ================================================================
 
 def generate_report():
     """Write full Stage 4 Track A report to markdown."""
@@ -806,9 +785,7 @@ def generate_report():
     print(f"\nReport saved: {REPORT_PATH}")
 
 
-# ================================================================
 # MAIN
-# ================================================================
 
 def parse_args():
     parser = argparse.ArgumentParser(

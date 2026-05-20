@@ -4,17 +4,14 @@ Stage 8 sportswear-brand-monitor project.
 Usage: streamlit run dashboard/app.py
 """
 
-# stdlib
 import os
 import sys
 
 # Add project root to Python path
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-# third-party
 import streamlit as st
 
-# local
 from dashboard.config import USE_CSV_FALLBACK, STYLE_CSS
 from dashboard.tabs import tab1_weekly_kpi
 from dashboard.tabs import tab2_season
@@ -23,9 +20,7 @@ from dashboard.tabs import tab4_anomaly
 from dashboard.tabs import tab5_forecast_bridge
 from dashboard.tabs import methodology_doc
 
-# ================================================================
 # Page config
-# ================================================================
 st.set_page_config(
     page_title="NB Korea BDC Monitor",
     page_icon="NB",
@@ -33,16 +28,12 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# ================================================================
 # Custom CSS
-# ================================================================
 if os.path.exists(STYLE_CSS):
     with open(STYLE_CSS, "r") as f:
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
-# ================================================================
 # Sidebar — About + data source
-# ================================================================
 with st.sidebar:
     st.markdown("### NB Korea BDC Monitor")
     st.caption("Sportswear Brand Demand & Competitive Intelligence")
@@ -82,9 +73,7 @@ with st.sidebar:
         ""
     )
 
-# ================================================================
 # Main — 6-tab layout
-# ================================================================
 tab1, tab2, tab3, tab4, tab5, tab_method = st.tabs([
     "Weekly KPI",
     "Season",

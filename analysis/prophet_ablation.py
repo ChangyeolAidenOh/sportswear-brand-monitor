@@ -9,20 +9,16 @@ Usage:
     python -m analysis.prophet_ablation
 """
 
-# stdlib
 import os
 import warnings
 
-# third-party
 import numpy as np
 import pandas as pd
 from prophet import Prophet
 
 warnings.filterwarnings("ignore")
 
-# ================================================================
 # Constants
-# ================================================================
 DATA_DIR = "data/forecast"
 REGIONS = ["korea", "global"]
 

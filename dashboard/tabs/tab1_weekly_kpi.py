@@ -5,12 +5,10 @@ KPI coverage: 1 (530 dependency), 2 (D2C search), 3 (category gap),
 Usage: tab1_weekly_kpi.render() called from app.py
 """
 
-# third-party
 import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
 
-# local
 from dashboard.config import (
     BRAND_COLORS, BRAND_LABELS, BRAND_LINE_WIDTH, BRAND_LINE_OPACITY,
     CHART_FONT, CHART_AXIS_TICKFONT, CHART_LEGEND_FONT, CHART_TITLE_FONT,
@@ -20,9 +18,7 @@ from dashboard.components.kpi_card import render_kpi_row
 from dashboard.components.tooltip import render_tooltip
 
 
-# ================================================================
 # Data loading (cached)
-# ================================================================
 @st.cache_data(ttl=600)
 def load_brand_kpi():
     """Load and cache brand KPI data."""
@@ -41,9 +37,7 @@ def load_csi():
     return fetch_csi_macro()
 
 
-# ================================================================
 # KPI card helpers
-# ================================================================
 def _format_pct(val):
     """Format a percentage value for display."""
     if val is None:
@@ -75,9 +69,7 @@ def _get_530_dependency(df_prod):
     return share, latest.get("week_start")
 
 
-# ================================================================
 # Chart builders
-# ================================================================
 def _build_search_trend_chart(df, region="korea"):
     """Build 4-brand search index line chart."""
     fig = go.Figure()
@@ -203,9 +195,7 @@ def _build_530_dependency_chart(df_prod):
     return fig
 
 
-# ================================================================
 # Render
-# ================================================================
 def render():
     """Render Tab 1 content."""
     st.header("Weekly KPI Summary")

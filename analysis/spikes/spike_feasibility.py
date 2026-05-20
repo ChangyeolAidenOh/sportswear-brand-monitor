@@ -41,9 +41,7 @@ def section(title):
     log("")
 
 
-# ================================================================
 # CHECK 1: Naver DataLab Search Trend API - response format
-# ================================================================
 def check_naver_datalab_api():
     section("Check 1: Naver DataLab Search Trend API")
 
@@ -94,9 +92,7 @@ def check_naver_datalab_api():
         return None
 
 
-# ================================================================
 # CHECK 2: NB product line search volume sufficiency
-# ================================================================
 def check_nb_product_lines():
     section("Check 2: NB Product Line Search Volume (530/992/2002R/327)")
 
@@ -154,9 +150,7 @@ def check_nb_product_lines():
         return None
 
 
-# ================================================================
 # CHECK 3: TikTok proxy search volume
-# ================================================================
 def check_tiktok_proxy():
     section("Check 3: TikTok Proxy Search Volume")
 
@@ -204,9 +198,7 @@ def check_tiktok_proxy():
         return None
 
 
-# ================================================================
 # CHECK 4: Naver Shopping Insight - channel data availability
-# ================================================================
 def check_shopping_insight():
     section("Check 4: Naver Shopping Insight - Channel Data Availability (Plan A/B/C)")
 
@@ -289,9 +281,7 @@ def check_shopping_insight():
     return cat_ok
 
 
-# ================================================================
 # CHECK 4d: Plan B - channel proxy search volume validation
-# ================================================================
 def check_channel_proxy():
     section("Check 4d: Plan B Channel Proxy Search Volume")
 
@@ -345,9 +335,7 @@ def check_channel_proxy():
         return None
 
 
-# ================================================================
 # CHECK 5: pytrends rate limit
-# ================================================================
 def check_pytrends_rate_limit():
     section("Check 5: pytrends Rate Limit Test")
 
@@ -415,9 +403,7 @@ def check_pytrends_rate_limit():
         log("- Cache all responses to data/raw/ as CSV.")
 
 
-# ================================================================
 # REPORT GENERATOR
-# ================================================================
 def generate_report():
     os.makedirs("docs", exist_ok=True)
     report_path = "docs/data_feasibility_report.md"
@@ -440,9 +426,7 @@ def generate_report():
     print(f"\nReport saved: {report_path}")
 
 
-# ================================================================
 # MAIN
-# ================================================================
 def main():
     log("# Data Feasibility Spike - Execution Log")
     log(f"Timestamp: {datetime.now().isoformat()}")

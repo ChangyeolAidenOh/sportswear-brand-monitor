@@ -17,23 +17,18 @@ Usage:
     python analysis/anomaly_mstl_residual.py --dry-run     # run detection, no insert
 """
 
-# stdlib
 import argparse
 import os
 import sys
 
-# third-party
 import pandas as pd
 import numpy as np
 from scipy import stats as sp_stats
 
-# local
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from database.connection import get_conn
 
-# ================================================================
 # CONSTANTS
-# ================================================================
 
 THRESHOLDS = [2.0, 3.0]
 PRIMARY_THRESHOLD = 2.0
@@ -41,9 +36,7 @@ FIG_DIR = "figures/anomaly"
 os.makedirs(FIG_DIR, exist_ok=True)
 
 
-# ================================================================
 # PREFLIGHT: Schema inspection
-# ================================================================
 
 def inspect_schema(conn):
     """Print mart.seasonal_components column names and sample row."""
@@ -81,9 +74,7 @@ def inspect_schema(conn):
     print(f"Product lines: {pl['product_line'].tolist()}")
 
 
-# ================================================================
 # DATA EXTRACTION
-# ================================================================
 
 def fetch_mstl_residuals(conn):
     """Fetch MSTL residuals for brand-level (product_line IS NULL) series."""
@@ -117,9 +108,7 @@ def fetch_stage2_anomalies(conn):
     return df
 
 
-# ================================================================
 # ANOMALY DETECTION
-# ================================================================
 
 def compute_residual_stats(df):
     """Compute per-series residual statistics for advisor reference."""
@@ -196,9 +185,7 @@ def build_anomaly_log_rows(anomalies_df, threshold):
     return pd.DataFrame(rows)
 
 
-# ================================================================
 # DATABASE INSERT
-# ================================================================
 
 def clear_existing_mstl_anomalies(conn):
     """Remove prior MSTL residual anomaly rows (idempotent re-run)."""
@@ -238,14 +225,11 @@ def insert_anomaly_log(conn, log_df):
     return len(log_df)
 
 
-# ================================================================
 # SUMMARY & COMPARISON PREP
-# ================================================================
 
 def print_summary(anomalies_2, anomalies_3, stats_df):
     """Print detection summary for both thresholds."""
     print("\n" + "=" * 64)
-    print("MSTL RESIDUAL ANOMALY DETECTION SUMMARY")
     print("=" * 64)
 
     for threshold, anom_df in [(2.0, anomalies_2), (3.0, anomalies_3)]:
@@ -299,9 +283,7 @@ def save_anomaly_csv(anomalies_2, anomalies_3):
         print(f"Saved: {path_3}")
 
 
-# ================================================================
 # VISUALIZATION
-# ================================================================
 
 def plot_residual_anomalies(df, anomalies_2, anomalies_3):
     """Plot 8 residual time series with anomaly points marked."""
@@ -376,9 +358,7 @@ def plot_residual_anomalies(df, anomalies_2, anomalies_3):
     print(f"Saved: {fig_path}")
 
 
-# ================================================================
 # MAIN
-# ================================================================
 
 def parse_args():
     parser = argparse.ArgumentParser(

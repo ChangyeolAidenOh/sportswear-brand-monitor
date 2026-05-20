@@ -17,18 +17,14 @@ Usage:
     python analysis/anomaly_event_matching.py
 """
 
-# stdlib
 import os
 import sys
 from datetime import timedelta
 
-# third-party
 import pandas as pd
 import numpy as np
 
-# ================================================================
 # CONSTANTS
-# ================================================================
 
 EVENTS_CSV = "data/events_calendar.csv"
 TARGETS_CSV = "data/anomaly/investigation_targets.csv"
@@ -44,9 +40,7 @@ COVERAGE_START = pd.Timestamp("2024-02-01")
 COVERAGE_END = pd.Timestamp("2025-04-30")
 
 
-# ================================================================
 # DATA LOADING
-# ================================================================
 
 def load_events():
     """Load events_calendar.csv."""
@@ -77,9 +71,7 @@ def load_all_anomalies():
     return df
 
 
-# ================================================================
 # MATCHING ENGINE
-# ================================================================
 
 def match_anomaly_to_events(anomaly_row, events_df):
     """
@@ -154,9 +146,7 @@ def run_matching(targets, events):
     return result_df
 
 
-# ================================================================
 # COVERAGE PERIOD FILTER
-# ================================================================
 
 def filter_coverage_period(df):
     """Filter anomalies within events_calendar coverage period."""
@@ -170,9 +160,7 @@ def filter_coverage_period(df):
     return filtered
 
 
-# ================================================================
 # PRECISION CALCULATION
-# ================================================================
 
 def compute_precision(matched_df, label):
     """Compute Precision variants for a given anomaly set."""
@@ -209,9 +197,7 @@ def compute_precision(matched_df, label):
     }
 
 
-# ================================================================
 # EVENT DETECTION RATE
-# ================================================================
 
 def compute_event_detection_rate(events, all_anomalies):
     """
@@ -222,7 +208,6 @@ def compute_event_detection_rate(events, all_anomalies):
       - all events (upper bound, caveat: anomaly-driven construction)
     """
     print("\n" + "=" * 64)
-    print("EVENT DETECTION RATE")
     print("=" * 64)
 
     results = []
@@ -303,14 +288,11 @@ def compute_event_detection_rate(events, all_anomalies):
     return results
 
 
-# ================================================================
 # REPORTING
-# ================================================================
 
 def print_report(precision_results, edr_results):
     """Print final 2x2 reporting matrix."""
     print("\n" + "=" * 64)
-    print("FINAL REPORTING MATRIX")
     print("=" * 64)
     print(f"Coverage: {COVERAGE_START.strftime('%Y-%m')} ~ "
           f"{COVERAGE_END.strftime('%Y-%m')} (14/40 months)")
@@ -333,9 +315,7 @@ def print_report(precision_results, edr_results):
           "overestimating true Recall.")
 
 
-# ================================================================
 # VISUALIZATION
-# ================================================================
 
 def plot_matching_summary(matched_df, events):
     """Plot matching result summary."""
@@ -396,9 +376,7 @@ def plot_matching_summary(matched_df, events):
     print(f"Saved: {fig_path}")
 
 
-# ================================================================
 # SAVE OUTPUTS
-# ================================================================
 
 def save_outputs(matched_df, precision_results, edr_results):
     """Save matching results and evaluation metrics."""
@@ -415,9 +393,7 @@ def save_outputs(matched_df, precision_results, edr_results):
     print(f"Saved: {OUT_DIR}/evaluation_metrics.csv")
 
 
-# ================================================================
 # MAIN
-# ================================================================
 
 def main():
     # Load data
@@ -435,7 +411,6 @@ def main():
 
     # Precision: Tier 1 only
     print("\n" + "=" * 64)
-    print("PRECISION")
     print("=" * 64)
 
     precision_results = []

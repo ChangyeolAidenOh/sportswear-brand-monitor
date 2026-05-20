@@ -7,16 +7,13 @@ Layout: Top row = Prophet forecast + 4-way comparison (region-dependent).
 Usage: tab5_forecast_bridge.render() called from app.py
 """
 
-# stdlib
 import json
 import os
 
-# third-party
 import streamlit as st
 import plotly.graph_objects as go
 import pandas as pd
 
-# local
 from dashboard.config import (
     BRAND_COLORS, PROJECT_ROOT, CHAIN_DIAGRAM_PATH, CHAIN_SUMMARY_PNG,
     CHART_FONT, CHART_AXIS_TICKFONT, CHART_LEGEND_FONT, CHART_TITLE_FONT,
@@ -25,9 +22,7 @@ from dashboard.data.queries import fetch_brand_kpi, fetch_korea_global_lag
 from dashboard.components.tooltip import render_tooltip
 
 
-# ================================================================
 # Data loading (cached)
-# ================================================================
 FORECAST_DIR = os.path.join(PROJECT_ROOT, "data", "forecast")
 
 
@@ -75,9 +70,7 @@ def load_chain_diagram():
         return json.load(f)
 
 
-# ================================================================
 # Top row: Prophet forecast
-# ================================================================
 def _build_prophet_chart(df_forecast, df_actual, region="korea"):
     """Build Prophet forecast chart with actual + forecast + CI band."""
     fig = go.Figure()
@@ -171,9 +164,7 @@ def _build_model_comparison_chart(df_metrics, region="korea"):
     return fig
 
 
-# ================================================================
 # Bottom row: Chain diagram + Global MA
-# ================================================================
 def _render_chain_diagram_visual(chain_data):
     """Render Stage 7 chain diagram as structured visualization."""
     if chain_data is None:
@@ -252,9 +243,7 @@ def _build_global_trend_ma_chart(df_actual):
     return fig
 
 
-# ================================================================
 # Render
-# ================================================================
 def render():
     """Render Tab 5 content."""
     st.header("Forecast & Bridge")

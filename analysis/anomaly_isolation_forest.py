@@ -10,23 +10,18 @@ Usage:
     python analysis/anomaly_isolation_forest.py --dry-run     # run detection, no insert
 """
 
-# stdlib
 import argparse
 import os
 import sys
 
-# third-party
 import pandas as pd
 import numpy as np
 from sklearn.ensemble import IsolationForest
 
-# local
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from database.connection import get_conn
 
-# ================================================================
 # CONSTANTS
-# ================================================================
 
 CONTAMINATION = 0.05
 RANDOM_STATE = 42
@@ -34,9 +29,7 @@ FIG_DIR = "figures/anomaly"
 os.makedirs(FIG_DIR, exist_ok=True)
 
 
-# ================================================================
 # DATA EXTRACTION
-# ================================================================
 
 def fetch_mstl_residuals(conn):
     """Fetch MSTL residuals for brand-level series."""
@@ -54,9 +47,7 @@ def fetch_mstl_residuals(conn):
     return df
 
 
-# ================================================================
 # ISOLATION FOREST DETECTION
-# ================================================================
 
 def run_isolation_forest(df):
     """Run Isolation Forest per series. Returns DataFrame of all anomalies."""
@@ -112,9 +103,7 @@ def run_isolation_forest(df):
     return result
 
 
-# ================================================================
 # DATABASE INSERT
-# ================================================================
 
 def clear_existing_if_anomalies(conn):
     """Remove prior Isolation Forest anomaly rows."""
@@ -158,9 +147,7 @@ def insert_anomaly_log(conn, anomalies_df):
     return len(anomalies_df)
 
 
-# ================================================================
 # VISUALIZATION
-# ================================================================
 
 def plot_if_anomalies(df, anomalies):
     """Plot 8-panel residual series with IF anomaly markers."""
@@ -222,14 +209,11 @@ def plot_if_anomalies(df, anomalies):
     print(f"Saved: {fig_path}")
 
 
-# ================================================================
 # SUMMARY
-# ================================================================
 
 def print_summary(anomalies, df):
     """Print IF detection summary."""
     print("\n" + "=" * 64)
-    print("ISOLATION FOREST ANOMALY DETECTION SUMMARY")
     print("=" * 64)
 
     total_weeks = len(df.dropna(subset=["residual"]))
@@ -260,9 +244,7 @@ def save_anomaly_csv(anomalies):
     print(f"Saved: {path}")
 
 
-# ================================================================
 # MAIN
-# ================================================================
 
 def parse_args():
     parser = argparse.ArgumentParser(

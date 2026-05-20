@@ -4,21 +4,16 @@ Visually optimized for 30-second interview impression.
 Usage: methodology_doc.render() called from app.py
 """
 
-# stdlib
 import os
 
-# third-party
 import streamlit as st
 import plotly.graph_objects as go
 import pandas as pd
 
-# local
 from dashboard.config import CHAIN_SUMMARY_PNG
 
 
-# ================================================================
 # Visual builders
-# ================================================================
 def _build_5dim_heatmap():
     """Build 5-dim null test as clean heatmap — all red = all reject."""
     dimensions = [
@@ -173,9 +168,7 @@ def _build_signature_chart():
     return fig
 
 
-# ================================================================
 # Render
-# ================================================================
 def render():
     """Render Methodology Documentation tab content."""
     st.header("Methodology Documentation")

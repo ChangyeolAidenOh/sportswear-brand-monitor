@@ -3,13 +3,10 @@ Tooltip component for Stage 7 narrative and operational context.
 Usage: from dashboard.components.tooltip import render_tooltip
 """
 
-# third-party
 import streamlit as st
 
 
-# ================================================================
 # Tooltip definitions
-# ================================================================
 TOOLTIPS = {
     "monitoring_vs_predictive": (
         "Global signal serves as monitoring leading indicator "
@@ -37,9 +34,7 @@ TOOLTIPS = {
 }
 
 
-# ================================================================
 # Render helper
-# ================================================================
 def render_tooltip(key):
     """Render a tooltip text by key. Returns the tooltip string."""
     return TOOLTIPS.get(key, "")

@@ -55,9 +55,7 @@ def section(title):
     log("")
 
 
-# =========================================================================
 # Data extraction
-# =========================================================================
 
 def extract_data():
     """Return weekly-aligned DataFrame with 5 columns on shared week_start index."""
@@ -147,9 +145,7 @@ def forward_fill_csi(df_csi_monthly, week_grid):
     return merged.set_index("week_start")["csi"]
 
 
-# =========================================================================
 # Statistical tests
-# =========================================================================
 
 def adf_kpss(series, label):
     """ADF + KPSS joint test. Returns dict with both p-values and combined verdict."""
@@ -201,9 +197,7 @@ def coint_test(y0, y1, label):
     }
 
 
-# =========================================================================
 # Decision logic + escalation
-# =========================================================================
 
 def make_decisions(univariate):
     """Map test results to per-variable transformation choice."""
@@ -280,9 +274,7 @@ def check_escalation_triggers(univariate, coint_results, decisions):
     return triggers
 
 
-# =========================================================================
 # Main
-# =========================================================================
 
 def main():
     log(f"# Stage 7 Step 0 -- Weekly Stationarity Re-Test")

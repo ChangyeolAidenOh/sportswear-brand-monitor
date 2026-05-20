@@ -81,9 +81,7 @@ plt.rcParams.update({
 })
 
 
-# =========================================================================
 # Data preparation
-# =========================================================================
 
 def build_global_dataset():
     """Build NB Global forecast dataset matching Stage 6 split.
@@ -109,9 +107,7 @@ def add_lagged_korea_trend(df, lag):
     return out
 
 
-# =========================================================================
 # Prophet builders
-# =========================================================================
 
 def build_prophet_baseline():
     m = Prophet(
@@ -138,9 +134,7 @@ def build_prophet_with_csi_and_korea(lag):
     return m
 
 
-# =========================================================================
 # Train/test evaluation
-# =========================================================================
 
 def evaluate_prophet(model_builder, df_full, exog_cols, label):
     """Fit on first TRAIN_WEEKS, forecast next TEST_WEEKS, return RMSE/MAE/MAPE.
@@ -257,9 +251,7 @@ def evaluate_sarimax(df_full, exog_cols, label):
     }
 
 
-# =========================================================================
 # Lag grid paired-fold CV (Decision 5)
-# =========================================================================
 
 def lag_grid_paired_cv(df_global):
     """Run Prophet CV across lag grid 6-14w with same fold structure.
@@ -354,9 +346,7 @@ def find_best_lag_with_uncertainty(df_lag_cv):
     }
 
 
-# =========================================================================
 # Visualization
-# =========================================================================
 
 def plot_lag_grid_cv(df_lag_cv, fig_path):
     fig, ax = plt.subplots(figsize=(10, 5))
@@ -416,9 +406,7 @@ def plot_triple_forecasts(triple_results, df_global, fig_path):
     plt.close(fig)
 
 
-# =========================================================================
 # Main
-# =========================================================================
 
 def main():
     print(f"# Stage 7 Track A3 -- Prophet triple comparison + lag grid CV")

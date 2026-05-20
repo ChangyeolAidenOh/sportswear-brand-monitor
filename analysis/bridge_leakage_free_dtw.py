@@ -76,9 +76,7 @@ os.makedirs(DATA_DIR, exist_ok=True)
 os.makedirs(FIG_DIR, exist_ok=True)
 
 
-# =========================================================================
 # Trend extraction methods
-# =========================================================================
 
 def expanding_window_mstl_trend(series, periods=(13, 52), min_history=MIN_HISTORY_WEEKS):
     """At each t, fit MSTL on data[:t+1], record last trend value.
@@ -102,9 +100,7 @@ def trailing_rolling_mean(series, window=ROLLING_WINDOW):
     return series.rolling(window=window, min_periods=window).mean().values
 
 
-# =========================================================================
 # Lead-lag estimators (Stage 4 protocol)
-# =========================================================================
 
 def z_normalize(x):
     x = np.asarray(x, dtype=float)
@@ -195,9 +191,7 @@ def cross_correlation_lag(korea_arr, global_arr, max_lag=CC_MAX_LAG):
     }
 
 
-# =========================================================================
 # Comparison + classification
-# =========================================================================
 
 def classify_replication(method_results, stage4_dtw=10.4, stage4_cc=9.0,
                          tolerance=2.0):
@@ -242,9 +236,7 @@ def classify_replication(method_results, stage4_dtw=10.4, stage4_cc=9.0,
     return "scenario_y_revised", flags
 
 
-# =========================================================================
 # Visualization
-# =========================================================================
 
 def plot_methods(df_global, trend_dict, fig_path):
     fig, axes = plt.subplots(len(trend_dict), 1, figsize=(13, 4 * len(trend_dict)),
@@ -270,9 +262,7 @@ def plot_methods(df_global, trend_dict, fig_path):
     plt.close(fig)
 
 
-# =========================================================================
 # Main
-# =========================================================================
 
 def main():
     print(f"# Stage 7 Track A3 follow-up -- Leakage-free DTW + CC")

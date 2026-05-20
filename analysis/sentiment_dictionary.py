@@ -15,14 +15,12 @@ Usage:
     python -m analysis.sentiment_dictionary --sample-test --threshold 0.5
 """
 
-# stdlib
 import argparse
 import os
 import warnings
 from collections import Counter
 from datetime import datetime
 
-# third-party
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
@@ -30,12 +28,9 @@ import numpy as np
 import pandas as pd
 from scipy import stats
 
-# local
 from database.connection import get_conn
 
-# ================================================================
 # CONSTANTS
-# ================================================================
 
 FIG_DIR = "figures/sentiment"
 os.makedirs(FIG_DIR, exist_ok=True)
@@ -58,9 +53,7 @@ BRAND_COLORS = {
     "puma": "#2ECC71",
 }
 
-# ================================================================
 # SPONSORSHIP FILTER
-# ================================================================
 
 SPONSORSHIP_PATTERNS = [
     "협찬", "체험단", "제공받", "소정의 원고료", "원고료",
@@ -80,12 +73,9 @@ def detect_sponsorship(text):
     return False
 
 
-# ================================================================
 # SENTIMENT DICTIONARY — 3-WAY CATEGORY
-# ================================================================
 # Each keyword: (weight, category)
 # Categories: 'product', 'channel', 'resale'
-# ================================================================
 
 POSITIVE_KEYWORDS = {
     # --- Product: comfort & fit ---
@@ -177,9 +167,7 @@ NEGATIVE_KEYWORDS = {
 SENTIMENT_DICT = {**POSITIVE_KEYWORDS, **NEGATIVE_KEYWORDS}
 
 
-# ================================================================
 # SCORING FUNCTION
-# ================================================================
 
 def score_text(text, category_filter="product"):
     """
@@ -225,9 +213,7 @@ def classify_sentiment(score, threshold=0.3):
         return "uncertain", "needs_api"
 
 
-# ================================================================
 # DATA FETCH
-# ================================================================
 
 def fetch_blog_cafe_sample(n_samples=DEFAULT_N_SAMPLES):
     """Fetch random sample from raw.naver_blog_raw."""
@@ -246,9 +232,7 @@ def fetch_blog_cafe_sample(n_samples=DEFAULT_N_SAMPLES):
     return df
 
 
-# ================================================================
 # SAMPLE TEST
-# ================================================================
 
 def run_sample_test(n_samples=DEFAULT_N_SAMPLES, threshold=0.3):
     """Run keyword scoring on random sample with sponsorship detection."""
@@ -383,9 +367,7 @@ def run_sample_test(n_samples=DEFAULT_N_SAMPLES, threshold=0.3):
     return df
 
 
-# ================================================================
 # VISUALIZATION
-# ================================================================
 
 def plot_score_distribution(df, threshold=0.3):
     """Score distribution with threshold line."""
@@ -524,9 +506,7 @@ def plot_brand_comparison(df):
     print(f"  Saved: {fig_path}")
 
 
-# ================================================================
 # DICTIONARY INFO
-# ================================================================
 
 def show_dict():
     """Print dictionary summary by category."""
@@ -544,17 +524,13 @@ def show_dict():
         print(f"  [{cat.upper()}] {len(items)} total ({len(pos)} pos, {len(neg)} neg)")
         for kw, w in sorted(items, key=lambda x: -x[1]):
             print(f"    {kw:<15} {w:+.1f}")
-        print()
 
     print(f"  === Sponsorship Filter Patterns ===")
     for p in SPONSORSHIP_PATTERNS:
         print(f"    {p}")
-    print()
 
 
-# ================================================================
 # CLI / MAIN
-# ================================================================
 
 def parse_args():
     parser = argparse.ArgumentParser(

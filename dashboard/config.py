@@ -3,26 +3,20 @@ Dashboard configuration — DB connection, CSV fallback, constants.
 Usage: imported by app.py and data/queries.py
 """
 
-# stdlib
 import os
 
-# third-party
 from dotenv import load_dotenv
 
 load_dotenv()
 
-# ================================================================
 # Data source configuration
-# ================================================================
 # When True, read from data/exports/ CSV instead of PostgreSQL.
 # Streamlit Cloud deploy uses CSV; local dev uses PostgreSQL.
 USE_CSV_FALLBACK = os.getenv("USE_CSV_FALLBACK", "false").lower() == "true"
 
 CSV_DIR = os.path.join(os.path.dirname(__file__), "..", "data", "exports")
 
-# ================================================================
 # PostgreSQL connection
-# ================================================================
 DB_CONFIG = {
     "host": os.getenv("DB_HOST", "localhost"),
     "port": int(os.getenv("DB_PORT", "5433")),
@@ -31,18 +25,14 @@ DB_CONFIG = {
     "password": os.getenv("DB_PASSWORD", ""),
 }
 
-# ================================================================
 # Project paths
-# ================================================================
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 CHAIN_DIAGRAM_PATH = os.path.join(PROJECT_ROOT, "data", "bridge", "chain_diagram_data.json")
 CHAIN_SUMMARY_PNG = os.path.join(PROJECT_ROOT, "figures", "bridge", "chain_summary.png")
 STAGE7_BRIDGE_REPORT = os.path.join(PROJECT_ROOT, "docs", "stage7_bridge_report.md")
 STYLE_CSS = os.path.join(os.path.dirname(__file__), "assets", "style.css")
 
-# ================================================================
 # Brand constants
-# ================================================================
 BRAND_COLORS = {
     "new_balance": "#E63946",  # NB Red — primary subject
     "nike":        "#FF6B00",  # Nike orange (industry standard)
@@ -78,9 +68,7 @@ BRAND_LABELS = {
     "puma": "PUMA",
 }
 
-# ================================================================
 # KPI registry — 13 KPIs mapped to tabs
-# ================================================================
 # KPI 1-11: operational metrics (Tabs 1-5)
 # KPI 12-13: governance assets (Methodology Doc tab)
 KPI_TAB_MAP = {

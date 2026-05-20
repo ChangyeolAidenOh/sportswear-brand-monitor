@@ -5,12 +5,10 @@ Data sources: mart.korea_global_comparison, staging.search_weekly (search_type).
 Usage: tab3_channel.render() called from app.py
 """
 
-# third-party
 import streamlit as st
 import plotly.graph_objects as go
 import pandas as pd
 
-# local
 from dashboard.config import (
     BRAND_COLORS, BRAND_LABELS, BRAND_LINE_OPACITY,
     CHART_FONT, CHART_AXIS_TICKFONT, CHART_LEGEND_FONT, CHART_TITLE_FONT,
@@ -21,9 +19,7 @@ from dashboard.data.queries import (
 )
 
 
-# ================================================================
 # Data loading (cached)
-# ================================================================
 @st.cache_data(ttl=600)
 def load_brand_kpi():
     """Load and cache brand KPI data."""
@@ -36,9 +32,7 @@ def load_korea_global():
     return fetch_korea_global_comparison()
 
 
-# ================================================================
 # Chart builders
-# ================================================================
 def _build_korea_global_trend(df, metric="search_index"):
     """Build Korea vs Global dual-axis trend for NB."""
     nb = df[
@@ -220,9 +214,7 @@ def _build_product_divergence_chart(df):
     return fig
 
 
-# ================================================================
 # Render
-# ================================================================
 def render():
     """Render Tab 3 content."""
     st.header("Channel")

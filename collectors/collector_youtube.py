@@ -22,14 +22,12 @@ Usage:
     python -m collectors.collector_youtube --max-videos 5 --max-comments 50
 """
 
-# stdlib
 import argparse
 import os
 import sys
 import time
 from datetime import datetime
 
-# third-party
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -40,12 +38,9 @@ except ImportError:
     print("[ERROR] google-api-python-client not installed. Run: pip install google-api-python-client")
     sys.exit(1)
 
-# local
 from database.connection import get_conn
 
-# ================================================================
 # Constants
-# ================================================================
 
 YOUTUBE_API_KEY = os.getenv("YOUTUBE_API_KEY")
 
@@ -76,9 +71,7 @@ DEFAULT_MAX_COMMENTS = 100
 RATE_LIMIT_DELAY = 0.3
 
 
-# ================================================================
 # YouTube API helpers
-# ================================================================
 
 def build_youtube_client():
     """Build YouTube Data API v3 client."""
@@ -186,9 +179,7 @@ def get_comments(youtube, video_id, max_results=100):
     return comments[:max_results]
 
 
-# ================================================================
 # DB operations
-# ================================================================
 
 INSERT_SQL = """
 INSERT INTO raw.youtube_raw
@@ -232,9 +223,7 @@ def clear_brand(brand):
         return deleted
 
 
-# ================================================================
 # Main collection logic
-# ================================================================
 
 def collect_brand(youtube, brand, queries, max_videos, max_comments, dry_run=False):
     """Collect videos and comments for a single brand."""
@@ -333,9 +322,7 @@ def collect_all(target_brand=None, max_videos=DEFAULT_MAX_VIDEOS,
     return total_rows
 
 
-# ================================================================
 # CLI
-# ================================================================
 
 def parse_args():
     """Parse CLI arguments."""

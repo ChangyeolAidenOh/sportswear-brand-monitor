@@ -27,7 +27,6 @@ Usage:
     python -m collectors.collector_naver_datalab --start-date 2024-01-01
 """
 
-# stdlib
 import argparse
 import json
 import os
@@ -35,18 +34,14 @@ import sys
 import time
 from datetime import datetime, timedelta
 
-# third-party
 import requests
 from dotenv import load_dotenv
 
 load_dotenv()
 
-# local
 from database.connection import get_conn
 
-# ================================================================
 # Constants
-# ================================================================
 
 NAVER_DATALAB_URL = "https://openapi.naver.com/v1/datalab/search"
 
@@ -94,9 +89,7 @@ KEYWORD_GROUPS = {
 DEFAULT_START_DATE = "2024-04-01"
 
 
-# ================================================================
 # Schema migration (idempotent — adds UNIQUE constraint only)
-# ================================================================
 
 ENSURE_CONSTRAINT_SQL = """
 DO $$
@@ -138,9 +131,7 @@ def ensure_schema():
         print("  Constraint verified: uq_ndl_type_group_kw_period")
 
 
-# ================================================================
 # API fetch
-# ================================================================
 
 def fetch_naver_single_group(group_id, keyword_groups, start_date, end_date):
     """Fetch a single keyword group from Naver DataLab (independent scale).
@@ -205,9 +196,7 @@ def fetch_naver_single_group(group_id, keyword_groups, start_date, end_date):
     return rows
 
 
-# ================================================================
 # DB insert (single transaction per group)
-# ================================================================
 
 def insert_rows(rows):
     """Batch upsert rows into raw.naver_datalab_raw in one transaction."""
@@ -225,9 +214,7 @@ def insert_rows(rows):
             return 0
 
 
-# ================================================================
 # Main collection logic
-# ================================================================
 
 def collect_all(start_date, end_date, dry_run=False):
     """Fetch all 4 keyword groups and insert into DB."""
@@ -261,9 +248,7 @@ def collect_all(start_date, end_date, dry_run=False):
     return total_rows
 
 
-# ================================================================
 # CLI
-# ================================================================
 
 def parse_args():
     """Parse CLI arguments."""

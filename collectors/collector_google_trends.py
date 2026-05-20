@@ -26,24 +26,19 @@ Usage:
     python -m collectors.collector_google_trends --file brands_kr_web.csv
 """
 
-# stdlib
 import argparse
 import os
 import sys
 from datetime import datetime
 
-# third-party
 import pandas as pd
 from dotenv import load_dotenv
 
 load_dotenv()
 
-# local
 from database.connection import get_conn
 
-# ================================================================
 # Constants
-# ================================================================
 
 GTRENDS_DIR = "data/raw/google_trends"
 
@@ -60,9 +55,7 @@ CSV_CONFIG = {
 }
 
 
-# ================================================================
 # Schema migration (idempotent — adds UNIQUE constraint only)
-# ================================================================
 
 ENSURE_CONSTRAINT_SQL = """
 DO $$
@@ -99,9 +92,7 @@ def ensure_schema():
         print("  Constraint verified: uq_gtr_layer_kw_region_type_week")
 
 
-# ================================================================
 # CSV parsing
-# ================================================================
 
 def parse_csv(filepath, layer, region, search_type):
     """Parse a stitched Google Trends CSV into row tuples for UPSERT.
@@ -154,9 +145,7 @@ def parse_csv(filepath, layer, region, search_type):
     return rows
 
 
-# ================================================================
 # DB insert
-# ================================================================
 
 def insert_rows(rows):
     """Batch upsert rows into raw.google_trends_raw in one transaction."""
@@ -174,9 +163,7 @@ def insert_rows(rows):
             return 0
 
 
-# ================================================================
 # Main collection logic
-# ================================================================
 
 def collect_all(target_file=None, dry_run=False):
     """Parse CSV files and insert into DB."""
@@ -214,9 +201,7 @@ def collect_all(target_file=None, dry_run=False):
     return total_rows
 
 
-# ================================================================
 # CLI
-# ================================================================
 
 def parse_args():
     """Parse CLI arguments."""

@@ -17,13 +17,11 @@ Usage:
     python -m analysis.seasonal_decomposer --dry-run
 """
 
-# stdlib
 import argparse
 import os
 import warnings
 from datetime import datetime
 
-# third-party
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
@@ -31,12 +29,9 @@ import numpy as np
 import pandas as pd
 from statsmodels.tsa.seasonal import STL, MSTL
 
-# local
 from database.connection import get_conn
 
-# ================================================================
 # CONSTANTS
-# ================================================================
 
 FIG_DIR = "figures/seasonal"
 os.makedirs(FIG_DIR, exist_ok=True)
@@ -71,9 +66,7 @@ BRAND_COLORS = {
 }
 
 
-# ================================================================
 # DATA FETCH
-# ================================================================
 
 def fetch_brand_kpi(brand, region):
     """Fetch weekly search_index for a single brand-region pair."""
@@ -96,9 +89,7 @@ def fetch_brand_kpi(brand, region):
     return df
 
 
-# ================================================================
 # STL DECOMPOSITION
-# ================================================================
 
 def run_stl(series, period=STL_PERIOD, seasonal=STL_SEASONAL, robust=STL_ROBUST):
     """Run STL decomposition on a pandas Series, handling missing values."""
@@ -120,9 +111,7 @@ def run_stl(series, period=STL_PERIOD, seasonal=STL_SEASONAL, robust=STL_ROBUST)
     return result
 
 
-# ================================================================
 # MSTL DECOMPOSITION
-# ================================================================
 
 def run_mstl(series, periods=None):
     """Run MSTL decomposition with multiple seasonal periods."""
@@ -146,9 +135,7 @@ def run_mstl(series, periods=None):
     return result
 
 
-# ================================================================
 # DECOMPOSE ALL
-# ================================================================
 
 def decompose_all(method="STL"):
     """Decompose all 8 brand-region time series with specified method."""
@@ -227,9 +214,7 @@ def decompose_all(method="STL"):
     return results
 
 
-# ================================================================
 # DATABASE WRITE
-# ================================================================
 
 def save_to_db(results, method="STL"):
     """Insert decomposition results into mart.seasonal_components."""
@@ -267,9 +252,7 @@ def save_to_db(results, method="STL"):
             print(f"  Inserted {total} rows into mart.seasonal_components ({method})")
 
 
-# ================================================================
 # VISUALIZATION
-# ================================================================
 
 def plot_decomposition(brand, region, result, series, method="STL"):
     """4-panel decomposition plot for a single brand-region pair."""
@@ -361,9 +344,7 @@ def plot_all(results, method="STL"):
     plot_seasonal_overlay(method)
 
 
-# ================================================================
 # SUMMARY / COMPARISON
-# ================================================================
 
 def print_summary(results, method="STL"):
     """Print summary table of decomposition metrics."""
@@ -383,7 +364,6 @@ def print_summary(results, method="STL"):
 
         print(f"  {brand:<15} {region:<8} {n:>5} {trend_std:>10.4f} {seas_amp:>10.4f} {resid_std:>10.4f} {sn_ratio:>10.4f}")
 
-    print()
 
 
 def print_comparison(stl_results, mstl_results):
@@ -413,15 +393,11 @@ def print_comparison(stl_results, mstl_results):
 
         print(f"  {brand:<15} {region:<8} {stl_var:>10.4f} {mstl_var:>10.4f} {reduction:>10.2f}% {verdict:>22}")
 
-    print()
     print("  Threshold: reduction > 5% = sub-annual seasonality detected")
     print("  Conclusion: if all reductions < 5%, single annual season structure confirmed.")
-    print()
 
 
-# ================================================================
 # CLI / MAIN
-# ================================================================
 
 def parse_args():
     parser = argparse.ArgumentParser(

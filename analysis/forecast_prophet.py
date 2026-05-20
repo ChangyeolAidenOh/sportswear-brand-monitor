@@ -19,11 +19,9 @@ Usage:
     python -m analysis.forecast_prophet
 """
 
-# stdlib
 import os
 import warnings
 
-# third-party
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
@@ -43,17 +41,13 @@ plt.rcParams.update({
     "grid.alpha": 0.3,
 })
 
-# ================================================================
 # Constants
-# ================================================================
 DATA_DIR = "data/forecast"
 FIG_DIR = "figures/forecast"
 REGIONS = ["korea", "global"]
 
 
-# ================================================================
 # Evaluation metrics
-# ================================================================
 def compute_metrics(actual, predicted, label=""):
     """Compute RMSE, MAE, MAPE (excluding zeros)."""
     residuals = actual - predicted
@@ -69,9 +63,7 @@ def compute_metrics(actual, predicted, label=""):
     return {"label": label, "rmse": rmse, "mae": mae, "mape_pct": mape}
 
 
-# ================================================================
 # Build Prophet dataframe
-# ================================================================
 def build_prophet_df(df):
     """Convert forecast data to Prophet format (ds, y, csi)."""
     pdf = pd.DataFrame({
@@ -82,9 +74,7 @@ def build_prophet_df(df):
     return pdf
 
 
-# ================================================================
 # Forecast plot
-# ================================================================
 def plot_forecast(train_df, test_df, forecast_values, lower, upper, region, metrics):
     """Plot actual vs Prophet forecast."""
     fig, ax = plt.subplots(figsize=(14, 5))
@@ -120,9 +110,7 @@ def plot_forecast(train_df, test_df, forecast_values, lower, upper, region, metr
     print(f"  Saved: {fig_path}")
 
 
-# ================================================================
 # Main
-# ================================================================
 if __name__ == "__main__":
     all_metrics = []
 

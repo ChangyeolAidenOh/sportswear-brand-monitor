@@ -18,25 +18,20 @@ Usage:
     python -m collectors.collector_ecos --start-period 202201
 """
 
-# stdlib
 import argparse
 import os
 import sys
 import time
 from datetime import datetime
 
-# third-party
 import requests
 from dotenv import load_dotenv
 
 load_dotenv()
 
-# local
 from database.connection import get_conn
 
-# ================================================================
 # Constants
-# ================================================================
 
 ECOS_API_KEY = os.getenv("ECOS_API_KEY")
 ECOS_BASE_URL = "https://ecos.bok.or.kr/api/StatisticSearch"
@@ -57,9 +52,7 @@ INDICATORS = [
 DEFAULT_START_PERIOD = "202201"  # Jan 2022
 
 
-# ================================================================
 # Schema migration (idempotent)
-# ================================================================
 
 ENSURE_CONSTRAINT_SQL = """
 DO $$
@@ -99,9 +92,7 @@ def ensure_schema():
         print("  Constraint verified: uq_ecos_stat_item_period")
 
 
-# ================================================================
 # ECOS API fetch
-# ================================================================
 
 def fetch_ecos_indicator(stat_code, item_code, item_code2, start_period, end_period):
     """Fetch monthly data from ECOS API for a single indicator.
@@ -164,9 +155,7 @@ def fetch_ecos_indicator(stat_code, item_code, item_code2, start_period, end_per
     return rows
 
 
-# ================================================================
 # DB insert
-# ================================================================
 
 def insert_rows(rows):
     """Batch upsert rows into raw.ecos_raw in one transaction."""
@@ -184,9 +173,7 @@ def insert_rows(rows):
             return 0
 
 
-# ================================================================
 # Main collection logic
-# ================================================================
 
 def collect_all(start_period, end_period, dry_run=False):
     """Fetch all configured ECOS indicators and insert into DB."""
@@ -224,9 +211,7 @@ def collect_all(start_period, end_period, dry_run=False):
     return total_rows
 
 
-# ================================================================
 # CLI
-# ================================================================
 
 def parse_args():
     """Parse CLI arguments."""

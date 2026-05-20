@@ -4,17 +4,13 @@ Loads chain_diagram_data.json and provides operational_use branching.
 Usage: from dashboard.data.chain_diagram import load_chain_diagram
 """
 
-# stdlib
 import json
 import os
 
-# local
 from dashboard.config import CHAIN_DIAGRAM_PATH
 
 
-# ================================================================
 # Loader
-# ================================================================
 def load_chain_diagram():
     """Load chain_diagram_data.json. Returns dict or None if missing."""
     if not os.path.exists(CHAIN_DIAGRAM_PATH):
@@ -23,9 +19,7 @@ def load_chain_diagram():
         return json.load(f)
 
 
-# ================================================================
 # Operational use helpers
-# ================================================================
 def get_nodes(data):
     """Extract node list from chain diagram data."""
     if data is None:

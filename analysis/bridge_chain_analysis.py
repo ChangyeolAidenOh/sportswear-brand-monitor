@@ -112,9 +112,7 @@ def section(title):
     log("")
 
 
-# =========================================================================
 # Data preparation
-# =========================================================================
 
 def build_varx_inputs():
     """Construct endogenous (search diff1) and exogenous (CSI diff1 distributed lag)."""
@@ -141,9 +139,7 @@ def build_varx_inputs():
     return combined[endog.columns], combined[exog.columns]
 
 
-# =========================================================================
 # Lag selection (Decision 3)
-# =========================================================================
 
 def select_lag_order(endog, exog):
     """VAR.select_order(maxlags=13) reporting all four ICs. BIC primary."""
@@ -196,9 +192,7 @@ def plot_lag_selection(sel, selected, fig_path):
         log(f"  [WARN] lag selection plot skipped: {e}")
 
 
-# =========================================================================
 # Fit + Granger + joint LR
-# =========================================================================
 
 def fit_varx(endog, exog, p):
     model = VAR(endog, exog=exog)
@@ -275,9 +269,7 @@ def csi_per_lag_pvalues(fit, exog_cols, endog_cols):
     return rows
 
 
-# =========================================================================
 # IRF (Cholesky: Korea ordered first per Stage 4 lead hypothesis)
-# =========================================================================
 
 def plot_and_extract_irf(fit, periods, out_dir):
     """Orthogonalized IRF + cumulative effects. Returns cumulative array."""
@@ -305,13 +297,9 @@ def plot_and_extract_irf(fit, periods, out_dir):
     return irf.cum_effects
 
 
-# =========================================================================
 # Main
-# =========================================================================
 
-# =========================================================================
 # A1' Mediation -- helpers (point estimate)
-# =========================================================================
 
 def mediation_point_estimate(df, mediator_col, outcome_col, treatment_cols):
     """Run 3-regression Baron-Kenny mediation, return a, b, c, c', a*b.
@@ -365,9 +353,7 @@ def _indirect_only(df, mediator_col, outcome_col, treatment_cols):
     return a * b
 
 
-# =========================================================================
 # A1' Mediation -- block bootstrap + BCa
-# =========================================================================
 
 def joint_block_bootstrap(df, mediator_col, outcome_col, treatment_cols,
                           bootstrap_cls, bootstrap_kwargs, n_iter, seed, label):
@@ -453,9 +439,7 @@ def bca_ci(samples, point, df, mediator_col, outcome_col, treatment_cols, alpha=
     }
 
 
-# =========================================================================
 # A1' Mediation -- DataFrame builders
-# =========================================================================
 
 def build_trend_df(weekly_df, lag):
     """Mediator = Korea trend lagged. Outcome = Global trend.
@@ -573,9 +557,7 @@ def plot_mediation_distributions(results, fig_path):
     log(f"  Distribution figure saved: {fig_path}")
 
 
-# =========================================================================
 # A1' Entry point
-# =========================================================================
 
 def run_a1_prime():
     # Reset report buffer so this entry point has its own markdown output.

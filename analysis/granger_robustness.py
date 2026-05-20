@@ -11,21 +11,16 @@ Usage:
 import os as _os, sys as _sys
 _sys.path.insert(0, _os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))))
 
-# stdlib
 import warnings
 from datetime import datetime
 
-# third-party
 import numpy as np
 import pandas as pd
 from statsmodels.tsa.stattools import adfuller, grangercausalitytests
 
-# local
 from database.connection import get_conn
 
-# ================================================================
 # CONSTANTS
-# ================================================================
 
 MAX_LAG = 4
 NON_STATIONARY_PAIRS = [
@@ -47,9 +42,7 @@ def section(title):
     log("")
 
 
-# ================================================================
 # DATA EXTRACTION (reuse from main script)
-# ================================================================
 
 def load_aligned_data():
     """Load MSTL residual monthly + CSI aligned data."""
@@ -86,9 +79,7 @@ def load_aligned_data():
     return aligned
 
 
-# ================================================================
 # ROBUSTNESS CHECK
-# ================================================================
 
 def robustness_check(aligned):
     """Apply 1st diff to non-stationary residuals, re-run Granger."""
@@ -194,9 +185,7 @@ def robustness_check(aligned):
                 log(f"  Verdict: remains Independent after differencing (consistent)")
 
 
-# ================================================================
 # REPORT
-# ================================================================
 
 def generate_report():
     """Write robustness check report."""
@@ -216,9 +205,7 @@ def generate_report():
     print(f"\nReport saved: {report_path}")
 
 
-# ================================================================
 # MAIN
-# ================================================================
 
 def main():
     log(f"Stage 4 Track A: Robustness Check")

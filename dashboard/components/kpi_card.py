@@ -3,13 +3,10 @@ Reusable KPI card component for dashboard metrics display.
 Usage: from dashboard.components.kpi_card import render_kpi_card
 """
 
-# third-party
 import streamlit as st
 
 
-# ================================================================
 # KPI card
-# ================================================================
 def render_kpi_card(label, value, delta=None, delta_color="normal", help_text=None):
     """Render a single KPI metric card using st.metric.
 

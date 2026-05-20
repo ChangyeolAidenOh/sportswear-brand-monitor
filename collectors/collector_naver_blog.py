@@ -21,7 +21,6 @@ Usage:
     python -m collectors.collector_naver_blog --clear --max-pages 3
 """
 
-# stdlib
 import argparse
 import os
 import re
@@ -29,18 +28,14 @@ import sys
 import time
 from datetime import datetime
 
-# third-party
 import requests
 from dotenv import load_dotenv
 
 load_dotenv()
 
-# local
 from database.connection import get_conn
 
-# ================================================================
 # Constants
-# ================================================================
 
 NAVER_CLIENT_ID = os.getenv("NAVER_CLIENT_ID")
 NAVER_CLIENT_SECRET = os.getenv("NAVER_CLIENT_SECRET")
@@ -82,9 +77,7 @@ BRAND_QUERIES = {
 SOURCES = ["blog", "cafearticle"]
 
 
-# ================================================================
 # Naver Search API
-# ================================================================
 
 def strip_html(text):
     """Remove HTML tags from Naver API response text."""
@@ -166,9 +159,7 @@ def collect_posts(brand, query, source, max_pages):
     return rows
 
 
-# ================================================================
 # DB operations
-# ================================================================
 
 INSERT_SQL = """
 INSERT INTO raw.naver_blog_raw
@@ -208,9 +199,7 @@ def clear_brand(brand):
         return deleted
 
 
-# ================================================================
 # Main collection logic
-# ================================================================
 
 def collect_all(target_brand=None, target_source=None,
                 max_pages=DEFAULT_MAX_PAGES, clear=False, dry_run=False):
@@ -257,9 +246,7 @@ def collect_all(target_brand=None, target_source=None,
     return total_rows
 
 
-# ================================================================
 # CLI
-# ================================================================
 
 def parse_args():
     """Parse CLI arguments."""
