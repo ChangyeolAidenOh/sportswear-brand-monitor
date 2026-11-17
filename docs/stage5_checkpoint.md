@@ -56,7 +56,7 @@ Observations: nike korea has highest variance (std=4.51), puma global lowest (st
 | \|z\| > 2.0 | 70 | 5.0% | 47 | 23 |
 | \|z\| > 3.0 | 11 | 0.8% | 8 | 3 |
 
-Threshold 2.0 matches Stage 2 rate by design (advisor decision #2).
+Threshold 2.0 matches Stage 2 rate by design.
 
 Top 5 spikes (|z| > 2.0): NB korea 2025-04-20 (+4.24), adidas korea 2024-08-25 (+3.70), adidas korea 2024-08-18 (+3.30), adidas global 2024-07-14 (+3.27), adidas korea 2024-09-15 (+3.15).
 
@@ -79,9 +79,9 @@ Per-brand: nike had most z-score false positives (korea 11, global 11). NB korea
 ### C1: Configuration
 
 - Algorithm: sklearn IsolationForest
-- contamination: 0.05 (matching Stage 2 anomaly rate, advisor decision #2)
+- contamination: 0.05 (matching Stage 2 anomaly rate)
 - n_estimators: 100, random_state: 42
-- Per-series independent models (advisor decision #4)
+- Per-series independent models
 
 ### C2: Results
 
@@ -147,7 +147,7 @@ All 5 are Korea-only — consistent with Stage 4's finding that Korea series hav
 
 ### D1: events_calendar
 
-25 events curated via anomaly-driven manual investigation (advisor decision #1: "anomaly first → calendar retroactive").
+25 events curated via anomaly-driven manual investigation ("anomaly first → calendar retroactive").
 
 | event_type | Count |
 |---|---|

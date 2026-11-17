@@ -8,7 +8,7 @@ Two thresholds applied:
   - |z| > 2.0 (primary, matches Stage 2 z-score baseline for fair comparison)
   - |z| > 3.0 (sensitivity analysis)
 
-Each of the 8 brand x region series is analyzed independently (advisor decision #4).
+Each of the 8 brand x region series is analyzed independently.
 Results INSERT to mart.anomaly_log with detection_method = 'mstl_residual'.
 
 Usage:
@@ -111,7 +111,7 @@ def fetch_stage2_anomalies(conn):
 # ANOMALY DETECTION
 
 def compute_residual_stats(df):
-    """Compute per-series residual statistics for advisor reference."""
+    """Compute per-series residual statistics for reference."""
     stats_rows = []
     for (brand, region), grp in df.groupby(["brand", "region"]):
         r = grp["residual"].dropna()
@@ -389,7 +389,7 @@ def main():
             print("[ERROR] No MSTL residuals found. Check mart.seasonal_components.")
             sys.exit(1)
 
-        # Residual statistics (useful for advisor threshold review)
+        # Residual statistics (useful for threshold review)
         stats_df = compute_residual_stats(df)
 
         # Step B2: Anomaly detection at both thresholds

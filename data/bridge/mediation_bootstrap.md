@@ -46,7 +46,7 @@
   Running diff1_sb: n_iter=5000, blocks=(13,), n_obs=161
   diff1_sb: point=-0.0047  BCa 95% CI=[-0.0352, +0.0029]  (skipped 0/5000)
 
-## 5. Scenario Classification (Decision 7 + advisor matrix)
+## 5. Scenario Classification (Decision 7 matrix)
 
   Matrix row: row_3_full_parallel
   Narrative:  Full parallel structure -- Scenario B confirmed, 'early reactor' pivot

@@ -7,17 +7,17 @@ Entry points (selected via --stage CLI arg):
   - a1_prime               : Mediation Korea_{t-lag} -> Global (original direction).
                              Result preserved for paired comparison after sign correction.
   - a1_prime_sign_corrected: Mediation Global_{t-lag} -> Korea (sign-corrected direction
-                             per advisor cascade decision post-Stage-4 sign convention
+                             per cascade decision post-Stage-4 sign convention
                              discovery -- see DP24).
 
-Track A1 (Decision 3 + Option 6, advisor approved):
+Track A1 (Decision 3 + Option 6):
   - Endogenous: (korea_search_d1, global_search_d1)
   - Exogenous: CSI diff1 distributed lag {0, 4, 8, 12}, lag 0 mandatory
   - Lag selection: VAR.select_order(maxlags=13), BIC primary
   - Bidirectional Granger within VARX, joint LR test for CSI exogenous
   - IRF: orthogonalized + cumulative, Cholesky order Korea first
 
-Track A1' (Decision 4 + advisor verdict post Step 0 + A1):
+Track A1' (Decision 4 + verdict post Step 0 + A1):
   - Primary    : trend mediation Korea_trend_{t-10w} -> Global_trend_t
   - Robustness : diff1 mediation Korea_d1_{t-10w} -> Global_d1_t
   - Bootstrap  : MovingBlockBootstrap (block=13w) + StationaryBootstrap robustness
@@ -78,7 +78,7 @@ MEDIATION_JSON_PATH = os.path.join(DATA_DIR, "mediation_bootstrap.json")
 MEDIATION_MD_PATH = os.path.join(DATA_DIR, "mediation_bootstrap.md")
 MEDIATION_FIG_PATH = os.path.join(FIG_DIR, "mediation_distribution.png")
 
-# A1' sign-corrected (Global -> Korea direction; advisor cascade decision)
+# A1' sign-corrected (Global -> Korea direction; cascade decision)
 MEDIATION_SC_JSON_PATH = os.path.join(DATA_DIR, "mediation_bootstrap_sign_corrected.json")
 MEDIATION_SC_MD_PATH = os.path.join(DATA_DIR, "mediation_bootstrap_sign_corrected.md")
 MEDIATION_SC_FIG_PATH = os.path.join(FIG_DIR, "mediation_distribution_sign_corrected.png")
@@ -164,7 +164,7 @@ def select_lag_order(endog, exog):
     if aic_bic_gap >= AIC_BIC_ESCALATION_GAP:
         log(
             f"  [ESCALATION CANDIDATE] |AIC - BIC| = {aic_bic_gap} "
-            f"(Decision 3: report both; advisor decision needed)"
+            f"(Decision 3: report both; decision needed)"
         )
 
     return sel, selected, p_primary, aic_bic_gap
@@ -445,7 +445,7 @@ def build_trend_df(weekly_df, lag):
     """Mediator = Korea trend lagged. Outcome = Global trend.
     Treatment = CSI level distributed lags.
 
-    NOTE: trend regression carries spurious risk (advisor verdict);
+    NOTE: trend regression carries spurious risk;
     diff1 robustness is the safety net.
     """
     csi_lags = pd.DataFrame(
@@ -604,7 +604,7 @@ def run_a1_prime():
             SEED + abs(hash(label)) % 10000, label,
         )
 
-    section("5. Scenario Classification (Decision 7 + advisor matrix)")
+    section("5. Scenario Classification (Decision 7 matrix)")
     trend_sig = results["trend_mbb"]["ci_excludes_zero"]
     diff1_sig = results["diff1_mbb"]["ci_excludes_zero"]
 
@@ -621,7 +621,7 @@ def run_a1_prime():
     else:
         matrix_row = "row_4_diff1_only_contradiction"
         narrative = ("Contradiction: VARX null + diff1 mediation significant "
-                     "but trend null -- advisor escalation required")
+                     "but trend null -- review required")
 
     log(f"  Matrix row: {matrix_row}")
     log(f"  Narrative:  {narrative}")
@@ -677,7 +677,7 @@ def run_a1_prime():
 def run_a1_prime_sign_corrected():
     """Mediation re-run with sign-corrected direction (Global -> Korea).
 
-    Per advisor cascade decision following Stage 4 sign convention discovery
+    Per cascade decision following Stage 4 sign convention discovery
     (DP24). Stage 4 +10.4w DTW lag in original labeling actually means Global
     leads Korea by ~10w. Mediation re-run with mediator/outcome swapped to
     test whether common-driver chain operates in the sign-corrected direction.
@@ -753,8 +753,8 @@ def run_a1_prime_sign_corrected():
                      "monthly Granger + lagged cointegration).")
     else:
         matrix_row = "row_4_diff1_only_contradiction"
-        narrative = ("Sign-corrected: diff1 significant + trend null - advisor "
-                     "escalation (contradicts spurious regression diagnostic).")
+        narrative = ("Sign-corrected: diff1 significant + trend null - review "
+                     "required (contradicts spurious regression diagnostic).")
 
     log(f"  Matrix row: {matrix_row}")
     log(f"  Narrative:  {narrative}")
@@ -831,7 +831,7 @@ def run_a1():
     log("# Stage 7 Track A1 -- VARX on Search diff1 with CSI Distributed-Lag Exogenous")
     log("")
     log(f"**Date:** {datetime.now():%Y-%m-%d %H:%M}")
-    log(f"**Endogenous:** (korea_d1, global_d1)  -- Step 0 + Option 6 advisor decision")
+    log(f"**Endogenous:** (korea_d1, global_d1)  -- Step 0 + Option 6 decision")
     log(f"**Exogenous CSI lags:** {CSI_LAGS}")
     log(f"**Cholesky ordering:** Korea first (Stage 4 +10.4w lead hypothesis)")
     log(f"**Significance:** alpha = {SIGNIFICANCE}")

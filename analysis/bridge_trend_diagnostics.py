@@ -1,8 +1,8 @@
 """
-Stage 7 Step 0 follow-up -- Trend stationarity diagnostics for advisor handoff.
+Stage 7 Step 0 follow-up -- Trend stationarity diagnostics.
 
 Step 0 escalated AMBIGUOUS_TRANSFORM for korea_trend, global_trend.
-This script gathers additional evidence to inform advisor's transformation choice:
+This script gathers additional evidence to inform the transformation choice:
   - ADF with regression='ct' (deterministic trend in test eqn)
   - KPSS with regression='ct' (trend-stationary null)
   - 2nd differencing

@@ -235,7 +235,7 @@ def make_decisions(univariate):
 
 
 def check_escalation_triggers(univariate, coint_results, decisions):
-    """Identify advisor-escalation conditions per Stage 7 concerns list."""
+    """Identify escalation conditions per Stage 7 concerns list."""
     triggers = []
     uv = {r["label"]: r for r in univariate}
     coint_dict = {r["label"]: r for r in coint_results}
@@ -321,10 +321,10 @@ def main():
     for var, d in decisions.items():
         log(f"  {var:<14}  {d['transform']:<6}  ({d['rationale']})")
 
-    section("5. Advisor Escalation Triggers")
+    section("5. Escalation Triggers")
     triggers = check_escalation_triggers(univariate, coint_results, decisions)
     if triggers:
-        log("**ESCALATION REQUIRED -- return to advisor before Track A1:**")
+        log("**ESCALATION REQUIRED -- review before Track A1:**")
         for t in triggers:
             log(f"  - {t}")
     else:

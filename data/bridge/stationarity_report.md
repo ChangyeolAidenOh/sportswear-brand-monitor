@@ -48,9 +48,9 @@ Loading data from PostgreSQL...
   global_trend    review  (Neither level nor diff1 cleanly stationary (level: trend_stationary, diff1: unit_root))
   csi             diff1   (Level non-stationary (ADF p=0.2395, KPSS p=0.0100); diff1 stationary)
 
-## 5. Advisor Escalation Triggers
+## 5. Escalation Triggers
 
-**ESCALATION REQUIRED -- return to advisor before Track A1:**
+**ESCALATION REQUIRED -- review before Track A1:**
   - AMBIGUOUS_TRANSFORM: ['korea_trend', 'global_trend'] -- neither level nor diff1 cleanly stationary
 
 JSON saved:     data/bridge/stationarity_report.json

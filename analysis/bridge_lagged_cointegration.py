@@ -1,7 +1,7 @@
 """
 Stage 7 supplementary -- Lagged cointegration test (Engle-Granger, lag grid 9/10/11)
 
-Per Stage 7 Decision 4 (advisor):
+Per Stage 7 Decision 4:
   Direction primary  : Global_trend_t = a + b * Korea_trend_{t-lag} + e_t
                        (LHS = Global; Stage 6 Global ARIMA(0,1,0) -> endogenous side)
   Direction robustness: Korea_trend_t = a + b * Global_trend_{t+lag} + e_t
@@ -86,7 +86,7 @@ def classify_robustness(results_by_lag):
 
     All cointegrated  -> robust_cointegrated
     All not          -> robust_no_cointegration
-    Mixed            -> lag_sensitive (advisor caveat in section 12.6)
+    Mixed            -> lag_sensitive (caveat in section 12.6)
     """
     verdicts = {lag: r["cointegrated"] for lag, r in results_by_lag.items()}
     n_cointegrated = sum(verdicts.values())

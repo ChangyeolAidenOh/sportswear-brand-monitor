@@ -34,7 +34,7 @@
 --
 -- Trace preservation:
 --   stage4_checkpoint.md body preserved with header footnote referencing
---   this migration + DP24 detection (per advisor decision 4).
+--   this migration + DP24 detection.
 --
 -- Verification:
 --   Pre-migration row count: 12 (all 4 brands × 3 deseason_method)
@@ -113,7 +113,7 @@ ORDER BY brand, deseason_method;
 -- ----------------------------------------------------------------------------
 -- 4. Commit decision
 -- ----------------------------------------------------------------------------
--- Applied 2026-05-03 (advisor decision 4, post-Track-A3 Stage 7 close).
+-- Applied 2026-05-03 (post-Track-A3 Stage 7 close).
 -- Dry-run verification confirmed:
 --   - 12 rows correctly sign-flipped (mean_lag_weeks, median_lag_weeks,
 --     cc_best_lag_weeks)

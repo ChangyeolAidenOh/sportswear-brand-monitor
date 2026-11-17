@@ -1,7 +1,7 @@
 """
 Stage 7 Track A3 -- Prophet triple comparison + Korea trend lag grid CV
 
-Per Stage 7 Decision 5 + 6 (advisor approved):
+Per Stage 7 Decision 5 + 6:
   - 3 Prophet specs: baseline / +CSI / +CSI + Korea_trend@lag*
   - Lag grid 6-14w paired-fold CV (initial=52w, period=13w, horizon=13w)
   - Same 148w/26w train/test split as Stage 6 (comparison preserved)
@@ -527,7 +527,7 @@ def main():
         narrative_slot = (
             f"Cross-model outcome asymmetric in unexpected direction "
             f"(prophet={prophet_outcome}, sarimax={sarimax_outcome}). "
-            f"Advisor escalation."
+            f"Review required."
         )
     print(f"\n  Section 12.4 narrative slot: {narrative_slot}")
 

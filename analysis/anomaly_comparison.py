@@ -6,7 +6,7 @@ Compares three anomaly detection methods:
   2. MSTL residual z-score (Track B)
   3. Isolation Forest on MSTL residuals (Track C)
 
-Core deliverable: Stage 2 vs MSTL confusion matrix (advisor decision #5).
+Core deliverable: Stage 2 vs MSTL confusion matrix.
 Also produces:
   - 3-way agreement table (8 series x method)
   - Co-occurring anomalies across brands (macro event candidates)

@@ -158,7 +158,7 @@ The sentiment dictionary (112 keywords) is divided into three categories to isol
 
 Keyword scoring (product category only) resolves 97.4% of texts at threshold |s| ≥ 0.3. The remaining 2.6% (261 uncertain cases) are routed to Anthropic Batch API (claude-haiku-4-5, 50% batch discount). Total cost: 35.8 KRW for 10,000 texts.
 
-This design is intentional: BDC-relevant "case-appropriate tool + cost governance" thinking. The keyword dictionary provides transparency and reproducibility; the LLM handles edge cases where lexical rules are insufficient.
+This design is intentional: "case-appropriate tool + cost governance" thinking. The keyword dictionary provides transparency and reproducibility; the LLM handles edge cases where lexical rules are insufficient.
 
 ### 6.4 social_sentiment_static: Intentional Denormalization
 
@@ -187,7 +187,7 @@ Original framing: "Search → Sales". Revised to:
 
 > Does brand-level micro search demand serve as a leading indicator for macro consumer sentiment (CSI), or vice versa?
 
-CSI is not a sales proxy but a meaningful dependent variable in its own right. For an unlisted company (NB), public sales data is structurally unavailable — this is a project constraint, not a defect. The search ↔ macro-sentiment relationship itself is an actionable BDC question: "does consumer search behavior anticipate or respond to market-wide consumption temperature?"
+CSI is not a sales proxy but a meaningful dependent variable in its own right. For an unlisted company (NB), public sales data is structurally unavailable — this is a project constraint, not a defect. The search ↔ macro-sentiment relationship itself is an actionable question: "does consumer search behavior anticipate or respond to market-wide consumption temperature?"
 
 ### 7.2 Asymmetric Preprocessing
 
@@ -307,7 +307,7 @@ The primary hypothesis — "brand search Granger-causes CSI" — was supported i
 
 A uniform result (all brands showing Search→CSI) would have validated the hypothesis but provided limited practical insight — if all brands behave identically, the finding is not brand-differentiating. The observed 4-pattern classification provides brand-specific actionable intelligence:
 
-| Pattern | Brands | BDC Implication |
+| Pattern | Brands | Operational Implication |
 |---|---|---|
 | Search→CSI | adidas/global, nike/korea | Monitor as market movers — their search can signal macro shifts |
 | CSI→Search | NB (both), puma/global | Macro-reactive — watch CSI as demand leading indicator |
@@ -316,7 +316,7 @@ A uniform result (all brands showing Search→CSI) would have validated the hypo
 
 ### 9.3 NB-Specific Actionable Insight
 
-For BDC's NB Korea focus, CSI→Search is the most important finding: NB Korea search demand is a lagging indicator of consumer sentiment. This means:
+For the NB Korea focus, CSI→Search is the most important finding: NB Korea search demand is a lagging indicator of consumer sentiment. This means:
 
 1. **Forecasting:** CSI (publicly available monthly) can be used as a ~2–4 month leading indicator for NB search demand.
 2. **Campaign timing:** Search demand defense campaigns should be triggered proactively when CSI trends downward, not reactively after search declines are observed.
@@ -325,7 +325,7 @@ For BDC's NB Korea focus, CSI→Search is the most important finding: NB Korea s
 ### 9.4 Limitations and Future Extensions
 
 1. **CSI as single macro proxy:** CSI reflects overall consumer sentiment, not sportswear-specific demand. Sector-specific indicators (e.g., clothing/footwear retail index) would sharpen the analysis. Currently unavailable in the ECOS collection scope.
-2. **Sales data gap:** NB is unlisted, making public revenue data structurally unavailable. If BDC provides internal sales figures, the Search→Sales hop can be directly tested — the current pipeline architecture (mart.granger_results) supports this extension without schema changes.
+2. **Sales data gap:** NB is unlisted, making public revenue data structurally unavailable. If internal sales figures become available, the Search→Sales hop can be directly tested — the current pipeline architecture (mart.granger_results) supports this extension without schema changes.
 3. **40-month observation window:** Marginal for Granger with 4 lags. Continued data collection will improve statistical power and enable re-testing with longer horizons.
 
 ---
@@ -346,7 +346,7 @@ Stage 5 quantifies this problem: 91.3% of Stage 2 anomalies were seasonal artifa
 | MSTL Residual Z-score | MSTL residual (trend + season removed) | \|residual / std\| > 2.0 | Deseasonalized anomaly detection |
 | Isolation Forest | MSTL residual | contamination=0.05 | Non-parametric, distribution-free |
 
-All three methods use identical threshold/rate parameters (|z| > 2.0 or contamination=0.05) to enable fair comparison. Per advisor decision, brand-specific thresholds were explicitly avoided — uniform thresholds allow anomaly rate differences between brands to emerge as findings rather than artifacts of parameter tuning.
+All three methods use identical threshold/rate parameters (|z| > 2.0 or contamination=0.05) to enable fair comparison. Brand-specific thresholds were explicitly avoided — uniform thresholds allow anomaly rate differences between brands to emerge as findings rather than artifacts of parameter tuning.
 
 ### 10.3 Per-Series Independent Analysis
 
@@ -524,7 +524,7 @@ Cross-reference: `stage7_checkpoint.md` Track A1' + Decision 4.
 
 ### 12.3.5 Stage 7 as Methodology Validation Stage
 
-Stage 7 was designed to verify the 3-stage chain hypothesis (CSI → NB Korea → NB Global). Execution surfaced three cumulative self-diagnostic findings, each detected without external review through internal sanity checks:
+Stage 7 was designed to verify the 3-stage chain hypothesis (CSI → NB Korea → NB Global). Execution surfaced three cumulative self-diagnostic findings, each detected through internal sanity checks:
 
 **DP20 — Mediation spurious correlation pre-emption.** Step 0 stationarity re-check identified that monthly-aggregated trend components produce non-stationary regression inputs, which would generate spurious mediation coefficients regardless of true causal structure. Alternative specifications (diff1, residual) were committed pre-execution, preventing post-hoc result chasing.
 
@@ -532,7 +532,7 @@ Stage 7 was designed to verify the 3-stage chain hypothesis (CSI → NB Korea �
 
 **DP24 — Stage 4 sign convention inversion.** Leakage-free DTW + CC re-computation classified results as direction_flipped relative to Stage 4 labels. Synthetic test data (Korea leads Global by 5w) confirmed Stage 4 code returns CC −5, DTW −4.57 — magnitude correct, sign convention inverted. Mediation re-run with corrected direction validated: inconsistent mediation signature dissipated (% indirect 120% → 11%), CI width narrowed 47%, both quantitative signatures of correct directional specification.
 
-**Cumulative implication.** Stage 7's value lies less in the hypothesis test result (chain rejected) than in the verification process. For BDC roles requiring internal data analysis, the demonstrated competency is **self-skepticism + multi-method validation**. Three critical findings were surfaced without external reviewer, indicating the analytical discipline transferable to enterprise contexts where external validation is rare.
+**Cumulative implication.** Stage 7's value lies less in the hypothesis test result (chain rejected) than in the verification process, which relied on **self-skepticism + multi-method validation**. Three critical findings were surfaced through internal sanity checks.
 
 ### 12.4 Korea Trend / Global Trend Exogenous (Sign-Corrected, Track A3)
 
@@ -548,7 +548,7 @@ Cross-reference: `stage7_checkpoint.md` Track B1.
 
 ### 12.6 Mechanism — Three Plausible Hypotheses (Sign-Corrected Direction)
 
-Stage 7 quantitative analysis confirms Global → Korea lead of ~10w with magnitude robustness. The mechanism — **why** Global precedes Korea — cannot be tested with the project's data scope. Three face-validity hypotheses are documented for future verification with BDC internal data:
+Stage 7 quantitative analysis confirms Global → Korea lead of ~10w with magnitude robustness. The mechanism — **why** Global precedes Korea — cannot be tested with the project's data scope. Three face-validity hypotheses are documented for future verification with internal company data:
 
 **Hypothesis 1 — Global brand attention precedence (cultural/demographic).** US/EU markets are NB's primary consumer base. Global brand-level search demand responds to product launches, marketing campaigns, and category trends earlier because the demographic concentration drives signal magnitude. Korea search demand follows after diffusion through K-fashion intermediaries.
 
@@ -556,11 +556,11 @@ Stage 7 quantitative analysis confirms Global → Korea lead of ~10w with magnit
 
 **Hypothesis 3 — Differential reactivity to common drivers (structural).** Both Korea and Global respond to common shocks (CSI, cultural events) but with different reactivity speeds. Global market's larger sample size enables faster signal detection, while Korea market's smaller scale produces noisier short-term response, manifesting as apparent lag.
 
-**Distinction not testable in current scope.** All three hypotheses produce observationally equivalent ~10w Global-leads-Korea pattern in aggregate search data. Discriminating mechanism requires BDC internal data: campaign timeline records, market-level demographic decomposition, region-specific sentiment lag. This delineation defines the boundary between this project's contribution and in-role analytical extension.
+**Distinction not testable in current scope.** All three hypotheses produce observationally equivalent ~10w Global-leads-Korea pattern in aggregate search data. Discriminating mechanism requires internal company data: campaign timeline records, market-level demographic decomposition, region-specific sentiment lag. This delineation defines the boundary between this project's contribution and analysis that would need internal data.
 
 ### 12.7 Stage 7 → Stage 8 Handoff: Forecast & Bridge Tab Integration
 
-Stage 8 implements a unified BDC analytics dashboard (Streamlit primary + Power BI Service auxiliary) consuming Stage 7's quantitative outputs. The handoff has five operational components.
+Stage 8 implements a unified analytics dashboard (Streamlit primary + Power BI Service auxiliary) consuming Stage 7's quantitative outputs. The handoff has five operational components.
 
 #### 12.7.1 Forecast Model Selection (Stage 6 + Stage 7 cascade)
 
@@ -568,7 +568,7 @@ Stage 6 4-way comparison established Prophet as primary forecast model for both 
 
 #### 12.7.2 Bridge Tab Right-Panel Integration
 
-Stage 8 dashboard adopts a "Forecast & Bridge" tab consolidating Stage 6's forecasting output with Stage 7's chain diagram visualization (Track C). The right panel surfaces three artifacts: (1) Global trend MA as monitoring leading indicator visualization (KPI 7 redefinition), (2) `chain_diagram_data.json` node/edge structure rendering CSI/Global/Korea relationships with sign-corrected direction labels and `operational_use` metadata distinguishing monitoring vs predictive scope, (3) Mirror Sentinel + Differential Reactivity narrative tooltip surfacing the BDC operational interpretation. Korea Prophet forecast chart occupies the left panel; the right panel does not feed into the forecast model — operational asymmetry between visualization and prediction is itself documented in the dashboard tooltip as design rationale.
+Stage 8 dashboard adopts a "Forecast & Bridge" tab consolidating Stage 6's forecasting output with Stage 7's chain diagram visualization (Track C). The right panel surfaces three artifacts: (1) Global trend MA as monitoring leading indicator visualization (KPI 7 redefinition), (2) `chain_diagram_data.json` node/edge structure rendering CSI/Global/Korea relationships with sign-corrected direction labels and `operational_use` metadata distinguishing monitoring vs predictive scope, (3) Mirror Sentinel + Differential Reactivity narrative tooltip surfacing the operational interpretation. Korea Prophet forecast chart occupies the left panel; the right panel does not feed into the forecast model — operational asymmetry between visualization and prediction is itself documented in the dashboard tooltip as design rationale.
 
 #### 12.7.3 KPI 7 Operational Implementation
 
@@ -580,12 +580,12 @@ Migration 011 (`011_korea_global_lag_sign_correction.sql`) applied 2026-05-03 to
 
 #### 12.7.5 Methodology Asset Propagation (KPI 12, KPI 13)
 
-Two new KPIs from Stage 7 represent governance assets transferable to future analyses: KPI 12 (5-Dimension Orthogonal Null Verification Pattern) and KPI 13 (Methodology Validation Stage Pattern). These are surfaced in the Stage 8 Methodology Documentation tab (6th tab) as governance assets, separated from operational metrics (Tab 1-5) by design. Implementation includes 5-dim null heatmap (11/11 REJECT visualization), DP20→DP23→DP24 cascade flow diagram, and DP24 before/after signature chart. Interview narrative: KPI 12/13 represent transferable analytical discipline — Stage 7's value extends beyond project-specific findings to enterprise-grade analytical governance protocols. For interview narrative, KPI 12/13 represent the "transferable analytical discipline" framing — Stage 7's value extends beyond project-specific findings to enterprise-grade analytical governance protocols.
+Two new KPIs from Stage 7 represent governance assets transferable to future analyses: KPI 12 (5-Dimension Orthogonal Null Verification Pattern) and KPI 13 (Methodology Validation Stage Pattern). These are surfaced in the Stage 8 Methodology Documentation tab (6th tab) as governance assets, separated from operational metrics (Tab 1-5) by design. Implementation includes 5-dim null heatmap (11/11 REJECT visualization), DP20→DP23→DP24 cascade flow diagram, and DP24 before/after signature chart.
 
 
 ### 12.8 Stage 8 Dashboard Implementation Record (2026-05-03)
 
-Stage 8 implemented the BDC analytics dashboard as Streamlit web application, deployed to Streamlit Cloud. Live URL: https://sportswear-brand-monitor-newbalance.streamlit.app/
+Stage 8 implemented the analytics dashboard as Streamlit web application, deployed to Streamlit Cloud. Live URL: https://sportswear-brand-monitor-newbalance.streamlit.app/
 
 **Architecture:** Dual data source design — PostgreSQL (local development via `database.connection.get_conn()` context manager) with automatic CSV fallback (Streamlit Cloud deployment, zero infrastructure cost). Toggle: `USE_CSV_FALLBACK` environment variable or auto-fallback on `psycopg2` import failure.
 

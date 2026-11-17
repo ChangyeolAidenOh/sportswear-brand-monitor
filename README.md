@@ -288,7 +288,7 @@ The originally planned analytical objective was **quantitative validation of the
 
 **Null hypothesis result: chain rejected** across all 5 dimensions, all 11 tests.
 
-**However, the verification process surfaced three critical findings without external review:**
+**However, the verification process surfaced three critical findings:**
 
 #### DP20 — Pre-emptive design block
 
@@ -323,7 +323,7 @@ Stage 4's headline finding "NB Korea leads Global by ~10 weeks" was direction-in
 
 **Stage 7 climax narrative:**
 
-> "Stage 7's value lies less in the hypothesis test result (chain rejected) than in the verification process. Three critical findings were surfaced without external reviewer, indicating analytical discipline transferable to enterprise contexts."
+> "Stage 7's value lies less in the hypothesis test result (chain rejected) than in the verification process. Three critical findings were surfaced through internal sanity checks."
 
 This is a **methodology validation stage** — its primary deliverable is the analytical governance pattern (DP20 → DP23 → DP24 cascade) itself, registered as KPI 13 (governance asset).
 
@@ -468,7 +468,7 @@ Layer 4: Methodology Validation Stage Pattern (KPI 13 — governance asset)
          ↓ Final deliverable: Analytical governance discipline transferable to enterprise contexts
 ```
 
-> "Stage 7's value lies less in the hypothesis test result (chain rejected) than in the verification process. Three critical findings were surfaced without external reviewer, indicating analytical discipline transferable to enterprise contexts."
+> "Stage 7's value lies less in the hypothesis test result (chain rejected) than in the verification process. Three critical findings were surfaced through internal sanity checks."
 
 ---
 
@@ -526,7 +526,6 @@ KPIs 12 and 13 are not weekly monitoring metrics but **transferable analytical a
 sportswear-brand-monitor/
 ├── README.md                                    # this file
 ├── docs/
-│   ├── sportswear_brand_monitor_project_plan_v3.md
 │   ├── methodology.md                           # §1-12 analytical decisions narrative
 │   ├── exploratory_findings.md                  # 24 data points + diagnoses
 │   ├── data_feasibility_report.md               # Stage 0 spike report
@@ -647,7 +646,7 @@ This produces a self-documenting audit trail. Each stage's checkpoint references
 
 ### Self-Diagnostic Discipline (Stage 7 Climax)
 
-Stage 7 represents the project's analytical governance climax. Three critical findings were surfaced through self-diagnostic without external review:
+Stage 7 represents the project's analytical governance climax. Three critical findings were surfaced through self-diagnostic:
 
 | Finding | Type | Detection Method |
 |---|---|---|

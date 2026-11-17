@@ -1,7 +1,7 @@
 """
 Stage 7 supplementary check -- Monthly Granger NB Korea -> Global search.
 
-Per advisor decision 2:
+Per decision 2:
   Stage 4 monthly Granger covered Search<->CSI in 8 brand x region pairs but did
   not test Korea_NB_search -> Global_NB_search. This script fills that gap.
 
@@ -143,13 +143,13 @@ def main():
         verdict = "monthly_global_to_korea_only"
         print(
             "  Monthly global_to_korea only -> contradicts Stage 4 lead direction; "
-            "advisor escalation"
+            "review required"
         )
     else:
         verdict = "monthly_bidirectional_significant"
         print(
             "  Monthly bidirectional significance -> feedback emerges at monthly "
-            "frequency; advisor escalation"
+            "frequency; review required"
         )
 
     output = {

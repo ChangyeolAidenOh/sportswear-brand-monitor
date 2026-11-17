@@ -207,7 +207,7 @@ def classify_replication(method_results, stage4_dtw=10.4, stage4_cc=9.0,
         Revised (Scenario Y): direction preserved (both positive) but magnitude
         materially different.
 
-        Direction-flip: any negative lag -> advisor escalation (large decision).
+        Direction-flip: any negative lag -> review required (large decision).
         """
     dtw_stats = method_results.get("dtw_stats")
     dtw_lag = dtw_stats["mean_lag"] if dtw_stats is not None else None
@@ -221,7 +221,7 @@ def classify_replication(method_results, stage4_dtw=10.4, stage4_cc=9.0,
         direction_preserved = (dtw_lag > 0) and (cc_lag > 0)
 
     if not direction_preserved:
-        return "direction_flipped", flags + ["direction_flip_advisor_escalation"]
+        return "direction_flipped", flags + ["direction_flip_review_required"]
 
     if dtw_lag is None:
         if abs(cc_lag - stage4_cc) <= tolerance:
@@ -368,8 +368,8 @@ def main():
         )
     else:  # direction_flipped
         slot = (
-            "Leakage-free replication produced direction-flipped result -- advisor "
-            "escalation. Stage 4 +10.4w lead is not robust to leakage correction; "
+            "Leakage-free replication produced direction-flipped result -- review "
+            "required. Stage 4 +10.4w lead is not robust to leakage correction; "
             "original DTW finding may be artifact of MSTL forward-looking smoothing."
         )
     print(f"  {slot}")
@@ -402,7 +402,7 @@ def main():
         json.dump(output, f, indent=2, ensure_ascii=False, default=str)
     print(f"  Saved: {JSON_PATH}")
 
-    # Save trends for Track B1 reuse (advisor decision)
+    # Save trends for Track B1 reuse
     np.savez(
         os.path.join(DATA_DIR, "leakage_free_trends.npz"),
         korea_expanding_mstl=korea_rt,

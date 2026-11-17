@@ -30,7 +30,7 @@ Prophet (K=2) is the representative configuration — feature parity with SARIMA
 | Target | NB Korea / NB Global search_index (mart.brand_kpi_weekly) |
 | Series length | 174 weeks (2022-12-25 ~ 2026-04-19), 0 missing |
 | Exogenous — CSI | raw.ecos_raw stat_code=511Y002, 52 months, forward-fill monthly→weekly |
-| Train / Test | 148w / 26w (test = 2 quarterly cycles, advisor decision) |
+| Train / Test | 148w / 26w (test = 2 quarterly cycles) |
 | Anomaly tagging | mstl_residual_2.0 ∪ isolation_forest from mart.anomaly_log |
 
 ### A2: Order Selection
@@ -44,7 +44,7 @@ Stationarity (ADF):
 
 Korea raw is borderline stationary but auto_arima selected d=1 with lower AIC; d=1 retained for both.
 
-**Fourier terms design (advisor decision):**
+**Fourier terms design:**
 - Seasonal ARIMA s=52 infeasible — 148w train insufficient for seasonal AR/MA parameter estimation
 - Quarterly dummy rejected — search seasonality is smooth sinusoidal, not abrupt level shift
 - Fourier K=2 for 52w (annual) + K=2 for 13w (quarterly) = 8 exogenous columns
@@ -93,7 +93,7 @@ Korea MAPE 22.8% is high but represents realistic baseline for event-driven seri
 | Hidden size | 64 | Balance capacity vs overfitting risk |
 | Dropout | 0.3 | Regularization for small sample |
 | Lookback | 13 weeks | One quarterly cycle; longer reduces sequence count |
-| Attention | None | 174w insufficient for attention learning (advisor decision) |
+| Attention | None | 174w insufficient for attention learning |
 | Features | search_index + CSI + 8 Fourier | Identical to SARIMAX for fair comparison |
 
 ### B2: Training Dynamics
@@ -334,9 +334,8 @@ figures/forecast/
 
 - `methodology.md` §11: Forecasting methodology — DONE (§11.5 Prophet + ablation added)
 - `exploratory_findings.md`: Data Points 15-18 — DONE
-- `comprehensive_advisor_handoff.md`: Stage 6 Prophet update — DONE
 - `sportswear_brand_monitor_project_plan_v3.md`: §5.1 inline annotation — DONE
-- Advisor decisions recorded: train/test split (26w), Fourier over dummy, no Attention, Chronos small+base, feature parity, Prophet K=2 as representative
+- Decisions recorded: train/test split (26w), Fourier over dummy, no Attention, Chronos small+base, feature parity, Prophet K=2 as representative
 
 ---
 

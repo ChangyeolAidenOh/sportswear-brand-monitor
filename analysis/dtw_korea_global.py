@@ -465,7 +465,7 @@ def parse_args():
     parser.add_argument(
         "--deseason", type=str, default="search_index",
         choices=["search_index", "trend", "detrended", "residual"],
-        help="Which series to use for DTW (awaiting advisor decision)",
+        help="Which series to use for DTW",
     )
     return parser.parse_args()
 

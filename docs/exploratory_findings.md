@@ -27,7 +27,7 @@ Stage 0 Data Feasibility Spike에서 수집한 Google Trends 8개 CSV + Naver Da
 
 **Verdict:** 통계적으로 유의한 추세 (p=0.0213). NB 한국 제품 검색에서 530 의존도가 매 분기 심화 중. 2023년 ~45%에서 2026년 ~60%로 상승. 이 추세가 지속되면 530 단일 모델 리스크가 가속된다.
 
-**BDC Action:** 530 의존도를 분기별 KPI로 모니터링. 60% 초과 시 경고.
+**Action:** 530 의존도를 분기별 KPI로 모니터링. 60% 초과 시 경고.
 
 ---
 
@@ -44,7 +44,7 @@ Stage 0 Data Feasibility Spike에서 수집한 Google Trends 8개 CSV + Naver Da
 
 **Verdict:** NB 전체 검색은 안정적인데 공식몰 검색만 하락. 소비자의 NB 관심은 유지되나, 구매 채널이 공식몰에서 다른 플랫폼(무신사/쿠팡 등)으로 이동 중일 가능성. D2C 전략 효과에 대한 경고 신호.
 
-**BDC Action:** D2C 검색 추이를 주간 모니터링. 공식몰 전용 프로모션 → 검색 반등 여부 추적.
+**Action:** D2C 검색 추이를 주간 모니터링. 공식몰 전용 프로모션 → 검색 반등 여부 추적.
 
 ---
 
@@ -64,7 +64,7 @@ Stage 0 Data Feasibility Spike에서 수집한 Google Trends 8개 CSV + Naver Da
 
 **Verdict:** NB 패딩 시즌 시작이 노스페이스 대비 평균 **2.6주 빠르다**. 예상과 반대 — NB가 시장 선도. 단, 절대 규모에서 노스페이스가 압도적(avg 13.9 vs NB 1.2). **"타이밍은 빠른데 모멘텀은 못 키우고 있다"** — 시즌 진입 전략은 맞지만 시즌 내 확장이 안 되는 구조적 문제.
 
-**BDC Action:** 패딩 시즌 시작 주차(~38주, 9월 중순)를 연간 캠페인 타이밍 기준점으로 활용.
+**Action:** 패딩 시즌 시작 주차(~38주, 9월 중순)를 연간 캠페인 타이밍 기준점으로 활용.
 
 ---
 
@@ -182,7 +182,7 @@ NB 한국은 **트렌드 감지력은 있으나 채널/포트폴리오 다각화
 - **장기 위험**: 530 의존 심화 추세가 지속되면 단일 모델 라이프사이클 종료 시점에 매출 절벽 위험. 530 후속 히트 모델의 부재가 구조적 문제.
 - **반대 신호**: 패딩 카테고리에서 시즌 진입 타이밍이 시장 선도 — 이 능력을 상품 라인 확장 + 채널 다각화에 활용할 여지 존재.
 
-### BDC Implication
+### Operational Implication
 
 본 프로젝트의 핵심 모니터링 KPI 3종:
 1. **530 분기별 의존도** — 60% 초과 시 알림
@@ -240,7 +240,7 @@ Stage 3 업데이트: **"수요는 있으나 전환이 약하다"** — 3개 차
 
 이 "수요-전환 갭"이 530 의존 심화(+2.36%p/Q, Stage 0 H3)의 근본 원인일 수 있다: 530 이외의 모델에서 수요→만족 전환이 이루어지지 않아, 소비자가 계속 530으로 회귀하는 구조.
 
-### BDC Implication (Stage 3 추가)
+### Operational Implication (Stage 3 추가)
 
 Stage 0 KPI 3종에 추가:
 4. **NB 제품 감성 비율** — positive/neutral/negative 분기별 추적. neutral 비율 감소 = 제품 리뷰 증가 신호.
@@ -265,7 +265,7 @@ DTW 3-way 비교 (raw → trend → residual)를 통해 Stage 0 H1의 cross-corr
 
 NB Korea의 구조적 성장 추세가 Global을 약 10주(~2.5개월) 선행한다. Raw DTW 48w는 Stage 3에서 확인된 Korea=FW dominant / Global=SS dominant 시즌 비대칭이 DTW alignment을 오염시킨 결과였으며, trend DTW로 시즌 성분을 제거한 뒤 10.4w로 수렴했다.
 
-이 발견은 BDC 실무에서 NB Korea 검색 추세를 Global 수요 예측의 leading indicator로 활용할 수 있는 근거를 제공한다.
+이 발견은 실무에서 NB Korea 검색 추세를 Global 수요 예측의 leading indicator로 활용할 수 있는 근거를 제공한다.
 
 ### Data Point 10: NB는 거시 경기 후행 수요 구조
 
@@ -296,14 +296,14 @@ Stage 4 업데이트: NB 한국은 **거시 경기에 반응적이나 글로벌 
 
 **강점 — 글로벌 선행 신호:**
 - NB Korea trend가 Global을 ~10주 선행 (DTW + CC 수렴)
-- BDC가 Korea 검색 추세를 모니터링하면 Global 수요 변화를 ~2.5개월 전에 예측 가능
+- Korea 검색 추세를 모니터링하면 Global 수요 변화를 ~2.5개월 전에 예측 가능
 - CSI → NB Korea → NB Global 3-stage chain 가능성 (Stage 7 검증 후보)
 
 ### Stage 7 검증 핵심 가설 — CSI → NB Korea → NB Global 3-stage Chain
 
 Stage 4 Track A의 NB CSI→Search 단방향 인과 + Track B의 NB Korea trend +10.4w 선행 결과를 결합하면, 거시 소비 심리(CSI)가 NB Korea 검색을 선행하고, NB Korea trend가 NB Global trend를 ~10주 선행한다는 3-stage chain이 가설로 도출된다. 즉 CSI → NB Korea Search → NB Global Search의 인과 구조가 가능하며, 한국이 거시 신호를 글로벌로 변환하는 중간 노드 역할일 수 있다. Stage 7 Korea-Global Bridge 분석에서 정량 검증할 본 프로젝트의 핵심 가설 중 하나.
 
-### BDC Implication (Stage 4 추가)
+### Operational Implication (Stage 4 추가)
 
 Stage 3 KPI 5종에 추가:
 6. **CSI 3개월 이동평균** — 하락 전환 시 NB 검색 방어 캠페인 트리거
@@ -320,7 +320,7 @@ Stage 3 KPI 5종에 추가:
 
 Stage 5 전체 최고 severity (z=+4.24, 2025-04-20)도 992 팝업스토어 + 하프마라톤 대회 + 키즈 샌들 완판이라는 복합 이벤트 구조였다. NB Korea의 anomaly spike는 단일 제품보다 **이벤트 적층(event stacking)**에 의해 발생하는 패턴이 반복적으로 관찰된다.
 
-BDC 시사점: NB Korea 캠페인 기획 시 셀럽 콘텐츠 + 제품 출시 + 이벤트를 의도적으로 같은 주에 집중시키는 "event stacking" 전략의 검색 효과가 실증적으로 확인되었다.
+시사점: NB Korea 캠페인 기획 시 셀럽 콘텐츠 + 제품 출시 + 이벤트를 의도적으로 같은 주에 집중시키는 "event stacking" 전략의 검색 효과가 실증적으로 확인되었다.
 
 ### Data Point 12: CSI 급락과 Multi-Brand Dip 매칭
 
@@ -352,7 +352,7 @@ Stage 5 업데이트: 91.3% false positive 제거 후, NB Korea의 진짜 anomal
 2. **CSI 하락은 dip를 만들지만, 강한 이벤트는 CSI를 override**: NB의 CSI→Search 수동 구조에도 불구하고, 이벤트 적층은 macro 역풍을 돌파할 수 있다 (Data Point 12)
 3. **경쟁사 이벤트도 기회**: Nike Air Max Day 같은 업계 주목 이벤트가 NB 검색을 동반 상승시킬 수 있다 (Data Point 13)
 
-### BDC Implication (Stage 5 추가)
+### Operational Implication (Stage 5 추가)
 
 Stage 4 KPI 7종에 추가:
 8. **Event Stacking Density** — 같은 주에 겹치는 이벤트 수와 검색 spike 크기의 상관. 이벤트 기획 시 분산보다 집중이 효과적인지 정량 검증.
@@ -373,7 +373,7 @@ NB Global 검색 지수의 SARIMAX 최적 order는 (0,1,0), 즉 AR항도 MA항�
 
 이는 NB Global 검색이 "자체적인 모멘텀이나 관성 없이, 외부 요인에 의해서만 움직이는 수요"임을 시사한다. Stage 4에서 NB Korea가 Global을 ~10주 선행한다는 발견과 결합하면, Global 검색은 Korea의 선행 신호 + CSI 거시 환경이라는 두 외부 요인의 함수일 가능성이 높다.
 
-**BDC 시사점:** NB Global 검색 수요 예측에서 자체 과거 데이터보다 CSI 전망 + NB Korea 추세 모니터링이 더 가치 있다.
+**시사점:** NB Global 검색 수요 예측에서 자체 과거 데이터보다 CSI 전망 + NB Korea 추세 모니터링이 더 가치 있다.
 
 ### Data Point 16: CSI 탄력성 비대칭 — Korea가 Global 대비 2배 민감
 
@@ -381,7 +381,7 @@ SARIMAX CSI 계수: Korea 3.98 vs Global 2.01 (둘 다 p<0.001). CSI 1pt 상승 
 
 Stage 4 Granger 결과("NB는 거시 경기 후행 수요 구조")의 정량적 확인이면서, 추가 발견이다. Korea가 더 민감한 이유는 두 가지로 해석 가능하다: (1) 한국 소비자의 NB에 대한 수요가 더 재량적(discretionary)이어서 경기 변동에 탄력적, (2) 한국 시장이 브랜드 관성이 약한 신생 시장이라 외부 환경에 더 반응적.
 
-**BDC 시사점:** CSI 하락 전환 시 Korea 캠페인 강화 우선순위가 Global보다 높다. Korea의 CSI 민감도가 2배이므로 같은 macro 하락에서 Korea 검색 감소폭이 더 크다.
+**시사점:** CSI 하락 전환 시 Korea 캠페인 강화 우선순위가 Global보다 높다. Korea의 CSI 민감도가 2배이므로 같은 macro 하락에서 Korea 검색 감소폭이 더 크다.
 
 > *This elasticity is SARIMAX-specific. Prophet's piecewise trend absorbs CSI-correlated structural variation, reducing CSI regressor marginal effect to near-zero (Korea -0.09, Global 0.002). The elasticity asymmetry reflects real demand structure but is observable only in models with rigid trend specification.*
 
@@ -405,7 +405,7 @@ Prophet이 SARIMAX를 이긴 이유를 3가지 각도에서 분석:
 
 Data Point 15와 함께 읽어야 한다 — SARIMAX는 Global에서 AR/MA 구조 부재를 확인하고, Prophet은 같은 현상을 "자기회귀 모멘텀 없는 piecewise linear trend"로 재해석한다. 두 모델이 같은 결론에 수렴: NB Global 검색은 자체 추진력이 없다.
 
-**BDC 시사점:** 예측 모델 선택 시 "더 복잡한 모델 = 더 좋은 성능"은 보장되지 않는다. 데이터 규모와 구조에 맞는 적정 복잡도가 핵심.
+**시사점:** 예측 모델 선택 시 "더 복잡한 모델 = 더 좋은 성능"은 보장되지 않는다. 데이터 규모와 구조에 맞는 적정 복잡도가 핵심.
 
 ### Integrated Business Diagnosis (Stage 6 업데이트)
 
@@ -419,7 +419,7 @@ Stage 6 업데이트: 예측 모델 4-way 비교(SARIMAX/Prophet/LSTM/Chronos)�
 4. **짧은 시계열에서 통계 모델 > DL**: 174주 규모에서 Prophet/SARIMAX의 파라미터 효율성이 LSTM의 모델 용량을 압도.
 5. **대시보드 모델 단일화**: Prophet이 양쪽 모두 1위 → Stage 8 Streamlit에서 단일 프레임워크로 구현 완료 (2026-05-03 deploy).
 
-### BDC Implication (Stage 6 추가)
+### Operational Implication (Stage 6 추가)
 
 Stage 5 KPI 9종에 추가:
 10. **CSI 탄력성 모니터링** — CSI 변동 × Korea 탄력성(3.98) 기반 검색 영향 추정. CSI 3pt 하락 시 Korea 검색 ~12pt 감소 예상.
@@ -451,7 +451,7 @@ Stage 7은 chain 가설을 5가지 직교 차원(VARX 양방향 + monthly Grange
 
 **해석:** CSI는 Korea와 Global을 **직접 그리고 독립적으로** 구동하고, 두 region 사이에는 mediation channel이 없다. Korea와 Global의 trend 형태 유사성(DTW + CC, sign-corrected)은 common driver에 대한 differential reactivity의 결과이지 인과 chain의 증거가 아니다. **5차원 직교 null은 단일 false-negative 가능성을 배제**하며, 본 프로젝트에서 가장 광범위하게 검정된 null hypothesis이다.
 
-**BDC Implication:** Korea 수요 변동을 Global 수요 driver로 해석하지 않는다. CSI 또는 그 외 macro driver를 직접 monitoring하는 것이 더 정확한 forecast input이다. Cross-region 변동성은 monitoring view (dashboard reference)이지 predictive feature가 아니다.
+**Operational Implication:** Korea 수요 변동을 Global 수요 driver로 해석하지 않는다. CSI 또는 그 외 macro driver를 직접 monitoring하는 것이 더 정확한 forecast input이다. Cross-region 변동성은 monitoring view (dashboard reference)이지 predictive feature가 아니다.
 
 ### Data Point 20: Mediation Spurious Correlation Pre-emption (Step 0 Mitigation Pattern)
 
@@ -465,7 +465,7 @@ Stage 7 Step 0에서 trend 시계열에 ADF + KPSS + cointegration 전수 검사
 
 **Methodology validation 가치:** 본 design choice는 사전에 식별 안 된 다른 위험(DP23 MSTL forward-looking leakage)에 대해서도 robustness check로 기능했다. 단일 design choice가 두 독립 위험에 대한 안전장치로 작동한 사례 — DP23 본문 참조.
 
-**BDC Implication:** 비정상성 검사 + alternative specification 사전 commit은 시계열 분석의 default 위생 절차여야 한다. spurious result를 회의적으로 검증하는 design 자체가 분석 결과의 신뢰성을 보장한다.
+**Operational Implication:** 비정상성 검사 + alternative specification 사전 commit은 시계열 분석의 default 위생 절차여야 한다. spurious result를 회의적으로 검증하는 design 자체가 분석 결과의 신뢰성을 보장한다.
 
 ### Data Point 21: Three-Dimensional Separation Robust [Sign Correction Applied 2026-05-03]
 
@@ -485,19 +485,19 @@ DTW + cointegration + mediation 세 검정의 결과 패턴은 Stage 4부터 다
 
 3-dimensional separation logic 자체는 robust — 어느 방향이 lead인지에 무관하게 "shape exists, equilibrium absent, mediation absent" 구조가 보존된다. 부호 정정은 lead 방향 라벨링만 영향.
 
-**BDC Implication:** Korea-Global 관계는 **monitoring view** (Global 트렌드 시각적 reference로 Korea 수요 anticipation)에 적합하나, **predictive view** (Global을 Korea forecast input으로 직접 투입)는 부적합 — DP24 + Track A3 degradation outcome 참조.
+**Operational Implication:** Korea-Global 관계는 **monitoring view** (Global 트렌드 시각적 reference로 Korea 수요 anticipation)에 적합하나, **predictive view** (Global을 Korea forecast input으로 직접 투입)는 부적합 — DP24 + Track A3 degradation outcome 참조.
 
 ### Data Point 22: Sentinel Framing — Korea = Common Driver Sentinel [DEPRECATED 2026-05-03]
 
-> **DEPRECATED 2026-05-03 — replaced by DP24.** DP22 was authored Stage 5 / early Stage 7 prior to detection of Stage 4 sign convention error (DP24). DP22's "Korea sentinel of common drivers via differential reactivity" framing inverted direction with sign correction: Global is the precursor, Korea is the receiver. The Mirror Sentinel + Differential Reactivity successor framing (DP24) preserves the BDC operational role (Korea ↔ Global translator) with direction reversed. DP22 body below preserved as-is for trace value (advisor decision: trace preservation pattern, identical to stage4_checkpoint.md footnote handling).
+> **DEPRECATED 2026-05-03 — replaced by DP24.** DP22 was authored Stage 5 / early Stage 7 prior to detection of Stage 4 sign convention error (DP24). DP22's "Korea sentinel of common drivers via differential reactivity" framing inverted direction with sign correction: Global is the precursor, Korea is the receiver. The Mirror Sentinel + Differential Reactivity successor framing (DP24) preserves the operational role (Korea ↔ Global translator) with direction reversed. DP22 body below preserved as-is for trace value (trace preservation pattern, identical to stage4_checkpoint.md footnote handling).
 
 **[Body preserved as authored pre-DP24]**
 
-CSI → NB Korea → NB Global 3-stage chain 검증 결과 chain hypothesis는 reject되나, 이를 reframe할 때 BDC 활용 시각이 가장 강한 narrative를 제공한다. NB Korea 수요는 Global 수요의 직접 driver는 아니지만, common driver(CSI 등 macro signal)에 대해 Global보다 빠른 반응을 보이는 **sentinel** 역할을 한다. Korea의 빠른 macro 반응성(elasticity 3.98, Stage 6 DP16) + DTW shape similarity(+10.4w, Stage 4 DP9) + Stage 7 lagged cointegration null이 함께 이 framing을 지지한다.
+CSI → NB Korea → NB Global 3-stage chain 검증 결과 chain hypothesis는 reject되나, 이를 reframe할 때 운영 활용 시각이 가장 강한 narrative를 제공한다. NB Korea 수요는 Global 수요의 직접 driver는 아니지만, common driver(CSI 등 macro signal)에 대해 Global보다 빠른 반응을 보이는 **sentinel** 역할을 한다. Korea의 빠른 macro 반응성(elasticity 3.98, Stage 6 DP16) + DTW shape similarity(+10.4w, Stage 4 DP9) + Stage 7 lagged cointegration null이 함께 이 framing을 지지한다.
 
-**BDC Implication (DEPRECATED):** Korea 검색 trend의 4주 이동평균을 Global 수요 예측의 leading indicator로 활용. KPI 7 dashboard에 직접 surface.
+**Operational Implication (DEPRECATED):** Korea 검색 trend의 4주 이동평균을 Global 수요 예측의 leading indicator로 활용. KPI 7 dashboard에 직접 surface.
 
-→ **Successor: DP24 + KPI 7 redefinition (sentinel direction inverted, BDC role preserved)**
+→ **Successor: DP24 + KPI 7 redefinition (sentinel direction inverted, operational role preserved)**
 
 ### Data Point 23: MSTL Forward-Looking Leakage (Self-Diagnostic)
 
@@ -515,7 +515,7 @@ Track A3 (Korea trend exogenous → Global Prophet)의 narrative-negative 결과
 
 **Methodology validation 가치:** Step 0의 diff1 robustness specification (DP20에서 사전 commit)이 spurious regression risk와 MSTL leakage risk **둘 다에 대한 robustness check**로 incidentally 기능했다. 단일 design choice, 두 독립 risk 대응. 본 프로젝트의 가장 강한 design value 사례.
 
-**BDC Implication:** ML/통계 라이브러리의 default behavior가 forecast pipeline에 미세하게 leakage를 일으킬 수 있다. 자체 진단 routine + alternative specification 병행이 default 위생 절차여야 한다.
+**Operational Implication:** ML/통계 라이브러리의 default behavior가 forecast pipeline에 미세하게 leakage를 일으킬 수 있다. 자체 진단 routine + alternative specification 병행이 default 위생 절차여야 한다.
 
 ### Data Point 24: Stage 4 Sign Convention Inversion (DP22 Successor)
 
@@ -545,18 +545,18 @@ Stage 4 코드는 이를 "Korea leads"로 라벨링 — verbal-mathematical inve
 |---|---|---|
 | DP9 lead direction | Korea → Global +10.4w | **Global → Korea +10.4w** |
 | DP21 shape similarity label | Korea leads shape | **Global leads shape** (3-dim separation logic robust) |
-| DP22 sentinel framing | Korea = sentinel | **Mirror Sentinel** — Global = precursor, Korea = receiver, BDC translator role preserved |
+| DP22 sentinel framing | Korea = sentinel | **Mirror Sentinel** — Global = precursor, Korea = receiver, translator role preserved |
 | KPI 7 leading indicator | Korea trend MA | **Global trend MA** (KPI 7 redefinition + operational scope refined) |
 | `mart.korea_global_lag` | Stage 4 raw | **Migration 011 applied 2026-05-03** — 12 rows sign-flipped + labels swapped |
 | `stage4_checkpoint.md` | original analysis preserved | **Sign Correction Notice footnote applied 2026-05-03** (trace value, cross-ref to §12.4.4) |
 
 **Methodology Validation Climax:**
 
-> Self-diagnostic detection of sign convention error in own analytical pipeline — without external review — is the demonstrable evidence of analytical governance discipline.
+> Self-diagnostic detection of sign convention error in own analytical pipeline is the demonstrable evidence of analytical governance discipline.
 
 DP20 (사전 차단) → DP23 (self-diagnostic) → DP24 (검증 부산물의 critical finding)의 3단 stack은 Stage 7을 단순 hypothesis test stage가 아닌 **methodology validation stage**로 정의한다.
 
-**BDC Implication:** 분석 pipeline의 sign convention은 verbal과 mathematical convention이 일치하는지 사전 검증해야 한다. Self-diagnostic routines (synthetic test data probe, multi-method cross-validation, alternative specification 병행)이 enterprise-grade 분석 governance의 핵심이다. 본 발견이 Stage 8 dashboard 진입 전에 잡혔다는 점이 중요 — 면접 narrative에서 가장 강한 self-skepticism evidence.
+**Operational Implication:** 분석 pipeline의 sign convention은 verbal과 mathematical convention이 일치하는지 사전 검증해야 한다. Self-diagnostic routines (synthetic test data probe, multi-method cross-validation, alternative specification 병행)이 enterprise-grade 분석 governance의 핵심이다. 본 발견이 Stage 8 dashboard 진입 전에 잡혔다는 점이 중요.
 
 ### KPI 7 Redefinition (Sign-Corrected + Operational Scope Explicit)
 
@@ -567,12 +567,12 @@ DP20 (사전 차단) → DP23 (self-diagnostic) → DP24 (검증 부산물의 cr
 > "NB Global 검색 trend 4주 이동평균 — Korea 수요 monitoring leading indicator (directional reference; predictive feature로는 active interference detected)"
 >
 > **Operational scope:**
-> - 사용 O: BDC 대시보드 시각화 (Korea 수요 방향성 reference, 선행 ~10주)
+> - 사용 O: 대시보드 시각화 (Korea 수요 방향성 reference, 선행 ~10주)
 > - 사용 X: Korea forecast 모델 input (Track A3 결과 Prophet/SARIMAX 모두 RMSE 9~11% 악화 — interference detected)
 
 **Refinement rationale (post-Track-A3):** Track A3 sign-corrected (Global → Korea) 결과 Global signal을 Korea forecast 모델 input으로 추가 시 양 모델 모두 RMSE degradation (Prophet −9.01%, SARIMAX −10.94%, DM p<0.001). Sentinel framing 자체는 robust (DTW shape similarity + lagged cointegration null bidirectional + mediation null bidirectional)하나, **monitoring과 predictive 사용은 작동 영역이 분리됨** — DTW에서 보이는 shape lead는 dashboard reference에 적합하되, Prophet changepoint absorption + SARIMAX explicit drift 모두 Global lagged regressor에 대해 active interference. 
 
-KPI 7의 BDC 활용은 dashboard 시각화 layer로 한정되며 forecast model layer로는 propagate되지 않는다. 이 operational asymmetry 자체가 finding — Stage 8 dashboard tooltip에 직접 반영될 design rationale.
+KPI 7의 활용은 dashboard 시각화 layer로 한정되며 forecast model layer로는 propagate되지 않는다. 이 operational asymmetry 자체가 finding — Stage 8 dashboard tooltip에 직접 반영될 design rationale.
 
 ### Integrated Business Diagnosis (Stage 7 업데이트)
 
@@ -580,7 +580,7 @@ Stage 6 진단: "수요는 있으나 자기 채널로 전환되지 않는다 + �
 
 Stage 7 업데이트:
 
-> NB Korea 수요는 NB Global 수요를 직접 구동하지 않는다 (5-dim orthogonal null). 두 region 모두 CSI 등 macro driver를 직접 받으며, 그중 Global이 Korea를 ~10주 선행하는 monitoring signal로 작동한다. 단 Global signal을 Korea forecast 모델 input으로 직접 투입하면 RMSE가 악화 — **BDC의 Korea forecast pipeline은 CSI exogenous + Korea autoregressive 구조로 운영하고, Global signal은 dashboard reference layer에서만 활용**해야 한다.
+> NB Korea 수요는 NB Global 수요를 직접 구동하지 않는다 (5-dim orthogonal null). 두 region 모두 CSI 등 macro driver를 직접 받으며, 그중 Global이 Korea를 ~10주 선행하는 monitoring signal로 작동한다. 단 Global signal을 Korea forecast 모델 input으로 직접 투입하면 RMSE가 악화 — **Korea forecast pipeline은 CSI exogenous + Korea autoregressive 구조로 운영하고, Global signal은 dashboard reference layer에서만 활용**해야 한다.
 
 **약점 재정의:**
 
@@ -588,19 +588,19 @@ NB Korea의 **거시 경기 의존** (Stage 4 DP10) + **자기 채널 부재** (
 
 **시사점:**
 
-NB Korea/Global 양 region을 위한 BDC analytics framework는:
+NB Korea/Global 양 region을 위한 analytics framework는:
 
 1. **Forecast layer**: 각 region 독립 모델 (CSI exogenous + 지역 autoregressive)
 2. **Monitoring layer**: Cross-region leading indicator (Global → Korea ~10w, sign-corrected) for direction anticipation
 3. **Methodology validation layer**: 자체 diagnostic routines (sign convention, leakage detection, alternative specification 병행)
 
-### BDC Implication (Stage 7 추가)
+### Operational Implication (Stage 7 추가)
 
 Stage 6 KPI 11종에 추가 + 정밀화 + 신규 KPI:
 
 12. **5-Dimension Orthogonal Null Verification Pattern** (KPI 7과 별개의 methodology asset) — 향후 cross-region/cross-channel 가설 검정 시 본 프로젝트의 11-test framework (VARX × monthly Granger × mediation × cointegration, 모두 양방향)를 default verification protocol로 적용. 단일 검정 의존 회피.
 
-13. **Methodology Validation Stage Pattern** (governance asset) — 신규 stage 진입 시 reflexive self-diagnostic routine을 commit. DP20 (사전 차단) → DP23 (self-diagnostic) → DP24 (검증 부산물) 3단 cascade가 default 적용 패턴. Stage 7이 본 프로젝트의 governance climax — 면접 자료의 핵심 narrative.
+13. **Methodology Validation Stage Pattern** (governance asset) — 신규 stage 진입 시 reflexive self-diagnostic routine을 commit. DP20 (사전 차단) → DP23 (self-diagnostic) → DP24 (검증 부산물) 3단 cascade가 default 적용 패턴. Stage 7이 본 프로젝트의 governance climax.
 
 **KPI 7 운영 정밀화 (DP24 + Track A3 cascade):** dashboard 시각화 layer × forecast model layer 분리 운영. Global signal은 monitoring O / predictive X.
 
@@ -609,4 +609,4 @@ Stage 6 KPI 11종에 추가 + 정밀화 + 신규 KPI:
 
 *Stage 6 Forecasting Insights: APPENDED (2026-05-01, updated with Track E Prophet + DP18).*
 *Stage 7 Korea-Global Bridge Insights: APPENDED (2026-05-03, DP19~24 + KPI 7 redefinition + DP9 sign correction tag + DP22 deprecated).*
-*Stage 8 — BDC Analytics Dashboard: COMPLETED (2026-05-03). Live URL: https://sportswear-brand-monitor-newbalance.streamlit.app/ | 6-tab Streamlit dashboard, 13 KPIs, dual data source (PostgreSQL / CSV fallback), Stage 7 narrative surfacing 5 locations.*
+*Stage 8 — Analytics Dashboard: COMPLETED (2026-05-03). Live URL: https://sportswear-brand-monitor-newbalance.streamlit.app/ | 6-tab Streamlit dashboard, 13 KPIs, dual data source (PostgreSQL / CSV fallback), Stage 7 narrative surfacing 5 locations.*

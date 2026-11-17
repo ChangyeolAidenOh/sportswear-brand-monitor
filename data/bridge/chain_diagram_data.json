@@ -69,9 +69,9 @@
     "scenario": "B_parallel_with_operational_refinement",
     "primary": "CSI directly and independently drives both Korea and Global search demand. The Global-Korea correlation reflects shape similarity (DTW lead ~10w, sign-corrected) without causal mediation (5-dimension orthogonal null × 11 tests). Global signal serves as monitoring leading indicator only — not as predictive feature for the Korea forecast model.",
     "framing_label": "Mirror Sentinel + Differential Reactivity",
-    "framing_description": "BDC operational role preserved (Korea ↔ Global translator), direction reversed (Global precedes Korea). Common drivers (CSI + unobserved macro factors) act on both regions; Global registers shape changes earlier due to demographic concentration, faster fashion-cycle propagation, or HQ marketing-trigger precedence.",
+    "framing_description": "Operational role preserved (Korea ↔ Global translator), direction reversed (Global precedes Korea). Common drivers (CSI + unobserved macro factors) act on both regions; Global registers shape changes earlier due to demographic concentration, faster fashion-cycle propagation, or HQ marketing-trigger precedence.",
     "operational_distinction": {
-      "monitoring": "Global trend MA (4w) displayed as Korea demand directional reference in BDC dashboard right panel",
+      "monitoring": "Global trend MA (4w) displayed as Korea demand directional reference in the dashboard right panel",
       "predictive": "Korea Prophet forecast uses CSI exogenous only — Global lagged signal explicitly excluded due to documented forecast degradation"
     }
   },

@@ -2,8 +2,8 @@
 Stage 5 Track C — Isolation Forest Anomaly Detection
 
 Applies sklearn IsolationForest to MSTL residuals from mart.seasonal_components.
-Each of the 8 brand x region series is modeled independently (advisor decision #4).
-contamination=0.05 to match Stage 2 anomaly rate (advisor decision #2).
+Each of the 8 brand x region series is modeled independently.
+contamination=0.05 to match Stage 2 anomaly rate.
 
 Usage:
     python analysis/anomaly_isolation_forest.py               # run detection + insert

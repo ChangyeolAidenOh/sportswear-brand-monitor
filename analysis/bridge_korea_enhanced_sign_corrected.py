@@ -1,9 +1,9 @@
 """
 Stage 7 Track A3 (sign-corrected re-design) -- Korea Prophet/SARIMAX + Global lagged exogenous
 
-Per advisor cascade decision post-DP24:
+Per cascade decision post-DP24:
   Direction:        Global -> Korea (sign-corrected per Stage 4 sign convention error)
-  Primary input:    raw global_search lagged (leakage-free per advisor decision 1)
+  Primary input:    raw global_search lagged (leakage-free per decision 1)
   Robustness input: expanding-window MSTL global trend (leakage_free_trends.npz)
   Triple comparison:
     (1) Prophet baseline
@@ -22,7 +22,7 @@ Pre-committed 3-way outcome framings:
   small_gain  (delta_pct <  5, DM p < 0.10): DP18 cross-direction validation
   no_gain     (DM p >= 0.10):                strongest common-driver evidence
 
-Termination: 1-2 day cap. If uninformative, retire formally per advisor decision 1(d).
+Termination: 1-2 day cap. If uninformative, retire formally per decision 1(d).
 Stage 7 narrative robust without §12.4 body -- 5-dim orthogonal null + DP24 cascade core.
 
 Outputs:
@@ -85,7 +85,7 @@ CV_HORIZON = "91 days"   # 13w
 CHANGEPOINT_PRIOR_SCALE = 0.05
 FOURIER_K_YEARLY = 2
 FOURIER_K_QUARTERLY = 2
-SARIMAX_ORDER = (0, 1, 1)  # Stage 6 Korea SARIMAX (cached, advisor spec)
+SARIMAX_ORDER = (0, 1, 1)  # Stage 6 Korea SARIMAX (cached)
 GAIN_PCT_THRESHOLD = 5.0
 DM_PVALUE_THRESHOLD = 0.10
 
@@ -216,7 +216,7 @@ def evaluate_prophet(model_builder, df_full, exog_cols, label):
     }
 
 
-# SARIMAX parallel comparison (advisor spec: Stage 6 Korea reproduction)
+# SARIMAX parallel comparison (Stage 6 Korea reproduction)
 
 def add_fourier_terms(df_train, df_test, k_yearly, k_quarterly):
     fourier_cols = []
@@ -436,7 +436,7 @@ def classify_a3_outcome(baseline_rmse, treatment_rmse, dm_p_value, model_family)
     Positive Δ% = treatment improves over baseline (lower RMSE)
     Negative Δ% = treatment degrades baseline (higher RMSE)
 
-    4-way classification (post-Track A3 patch, advisor-approved matrix):
+    4-way classification (post-Track A3 patch):
       - large_gain         : Δ% >=  5,            DM p < 0.10
       - small_gain         : 0 < Δ% <  5,         DM p < 0.10
       - no_significant_gain: |Δ%| < threshold OR  DM p >= 0.10
@@ -563,10 +563,10 @@ def seasonal_lead_analysis(df_korea, lag_star):
     return pd.DataFrame(rows)
 
 
-# Output writers (advisor schema)
+# Output writers
 
 def write_triple_comparison_csv(prophet_results, sarimax_results, lag_star, path):
-    """Write korea_forecast_triple_comparison.csv per advisor schema.
+    """Write korea_forecast_triple_comparison.csv.
 
     Single-split metrics (training+test from main triple comparison).
     Lag grid CV results saved separately to lag_grid_cv_results_sign_corrected.csv.
@@ -788,7 +788,7 @@ def main():
         cross_model = "asymmetric_other"
         cross_narrative = (
             f"Cross-model asymmetry in unexpected direction "
-            f"(prophet={prophet_outcome}, sarimax={sarimax_outcome}). Advisor escalation."
+            f"(prophet={prophet_outcome}, sarimax={sarimax_outcome}). Review required."
         )
     print(f"  Cross-model: {cross_model}")
     print(f"  {cross_narrative}")
@@ -800,7 +800,7 @@ def main():
     )
     plot_seasonal_lead(df_seasonal, os.path.join(FIG_DIR, "seasonal_lead.png"))
 
-    print("\n## 8. Save outputs (advisor schema)")
+    print("\n## 8. Save outputs")
     write_triple_comparison_csv(
         [p_baseline, p_csi, p_csi_global], [s_base, s_global], lag_star,
         os.path.join(DATA_DIR, "korea_forecast_triple_comparison.csv"),

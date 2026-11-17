@@ -27,7 +27,7 @@
       "cc_best_corr": 0.6758330026812513,
       "scenario": "direction_flipped",
       "flags": [
-        "direction_flip_advisor_escalation"
+        "direction_flip_review_required"
       ]
     },
     "trailing_mean_13w": {
@@ -45,9 +45,9 @@
       "cc_best_corr": 0.6426220651707486,
       "scenario": "direction_flipped",
       "flags": [
-        "direction_flip_advisor_escalation"
+        "direction_flip_review_required"
       ]
     }
   },
-  "section_12_6_narrative_slot": "Leakage-free replication produced direction-flipped result -- advisor escalation. Stage 4 +10.4w lead is not robust to leakage correction; original DTW finding may be artifact of MSTL forward-looking smoothing."
+  "section_12_6_narrative_slot": "Leakage-free replication produced direction-flipped result -- review required. Stage 4 +10.4w lead is not robust to leakage correction; original DTW finding may be artifact of MSTL forward-looking smoothing."
 }

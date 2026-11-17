@@ -18,7 +18,7 @@
 >
 > **DB retrofit applied** — `mart.korea_global_lag` table received migration `011_korea_global_lag_sign_correction.sql` on 2026-05-03, flipping `mean_lag_weeks`, `median_lag_weeks`, `cc_best_lag_weeks` signs and swapping `lag_direction` labels for all 12 rows. Post-commit distribution: Global leads = 10, Korea leads = 2 (NB rows uniformly 'Global leads' across all deseason_method).
 >
-> **Stage 4 narrative body below is preserved as-is** for trace value (advisor decision 4: trace preservation pattern). When interpreting lag values and direction labels in this document, apply sign correction lens:
+> **Stage 4 narrative body below is preserved as-is** for trace value (trace preservation pattern). When interpreting lag values and direction labels in this document, apply sign correction lens:
 > - "Korea leads by +Xw" → "Global leads by Xw"
 > - "Global leads by Xw" (already negative-magnitude) → "Korea leads by Xw"
 > - DP9 (B2 Key Finding line 165): "NB Korea → Global Structural Lead +10.4w" → "**NB Global → Korea Structural Lead ~10.4w**"
@@ -278,7 +278,7 @@ NB Korea is structurally positioned as a **macro-sentiment-reactive brand with r
 
 This finding transforms the "demand-conversion gap" from a weakness into a dual narrative:
 - **Weakness:** NB cannot independently sustain search demand during macro downturns
-- **Strength:** NB Korea serves as a leading indicator for NB Global, giving BDC a ~10-week advance signal for global demand shifts
+- **Strength:** NB Korea serves as a leading indicator for NB Global, giving a ~10-week advance signal for global demand shifts
 
 ---
 

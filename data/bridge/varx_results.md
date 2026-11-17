@@ -1,7 +1,7 @@
 # Stage 7 Track A1 -- VARX on Search diff1 with CSI Distributed-Lag Exogenous
 
 **Date:** 2026-05-03 00:29
-**Endogenous:** (korea_d1, global_d1)  -- Step 0 + Option 6 advisor decision
+**Endogenous:** (korea_d1, global_d1)  -- Step 0 + Option 6 decision
 **Exogenous CSI lags:** [0, 4, 8, 12]
 **Cholesky ordering:** Korea first (Stage 4 +10.4w lead hypothesis)
 **Significance:** alpha = 0.05

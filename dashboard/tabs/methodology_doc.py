@@ -1,6 +1,6 @@
 """
 Methodology Documentation tab — governance assets (KPI 12, 13).
-Visually optimized for 30-second interview impression.
+Visually optimized for a quick read.
 Usage: methodology_doc.render() called from app.py
 """
 
@@ -214,9 +214,8 @@ def render():
         st.markdown("### KPI 13")
         st.markdown("**Methodology Validation Stage**")
         st.markdown(
-            "Three findings detected **without external review**, "
-            "**before** dashboard implementation. "
-            "Timing strengthens the self-skepticism claim."
+            "Three findings detected through internal sanity checks, "
+            "**before** dashboard implementation."
         )
         st.markdown(
             "**DP24 signatures:**  \n"
@@ -233,7 +232,7 @@ def render():
     cols = st.columns(4)
     layers = [
         {"n": "1", "title": "Orthogonal Null", "desc": "5-dim x 11 tests\nAll reject chain", "color": "#E74C3C"},
-        {"n": "2", "title": "Self-Diagnostic", "desc": "DP20 → DP23 → DP24\nNo external review", "color": "#F39C12"},
+        {"n": "2", "title": "Self-Diagnostic", "desc": "DP20 → DP23 → DP24\nInternal sanity checks", "color": "#F39C12"},
         {"n": "3", "title": "Signatures", "desc": "3 quantitative\nDP24 signatures", "color": "#2ECC71"},
         {"n": "4", "title": "Operational", "desc": "Mirror Sentinel +\nDiff. Reactivity", "color": "#3498DB"},
     ]

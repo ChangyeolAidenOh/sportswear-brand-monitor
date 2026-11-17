@@ -1,5 +1,5 @@
 """
-NB Korea BDC Monitor — Streamlit Dashboard Entry Point.
+NB Korea Brand Monitor — Streamlit Dashboard Entry Point.
 Stage 8 sportswear-brand-monitor project.
 Usage: streamlit run dashboard/app.py
 """
@@ -22,7 +22,7 @@ from dashboard.tabs import methodology_doc
 
 # Page config
 st.set_page_config(
-    page_title="NB Korea BDC Monitor",
+    page_title="NB Korea Brand Monitor",
     page_icon="NB",
     layout="wide",
     initial_sidebar_state="expanded",
@@ -35,7 +35,7 @@ if os.path.exists(STYLE_CSS):
 
 # Sidebar — About + data source
 with st.sidebar:
-    st.markdown("### NB Korea BDC Monitor")
+    st.markdown("### NB Korea Brand Monitor")
     st.caption("Sportswear Brand Demand & Competitive Intelligence")
 
     st.markdown("---")

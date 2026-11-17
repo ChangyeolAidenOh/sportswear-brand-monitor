@@ -3,7 +3,7 @@ Stage 4 Track A: Search <-> CSI Leading Indicator Validation
 Tests whether brand-level search demand (micro) serves as a leading indicator
 for consumer sentiment (macro CSI), or vice versa.
 
-Key design decisions (Advisor 2026-04-30):
+Key design decisions:
   - Input: MSTL residual (search side), 1st diff or ADF-based (CSI side)
   - Bidirectional: Search->CSI AND CSI->Search
   - Sub-analysis: shopping search channel as purchase-intent proxy
@@ -45,7 +45,7 @@ from database.connection import get_conn
 
 BRANDS = ["nike", "adidas", "puma", "new_balance"]
 REGIONS = ["korea", "global"]
-MAX_LAG = 4  # advisor decision: 4 months
+MAX_LAG = 4  # 4 months
 
 FIG_DIR = "figures/var"
 DOCS_DIR = "docs"
@@ -576,7 +576,7 @@ def step_a5(data):
         try:
             model = VAR(var_data)
 
-            # AIC-based lag selection (advisor: maxlags=4)
+            # AIC-based lag selection (maxlags=4)
             lag_order = model.select_order(maxlags=MAX_LAG)
             best_lag = lag_order.aic
             if best_lag == 0:
