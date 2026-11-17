@@ -1,8 +1,8 @@
 # Global Sportswear Brand Performance Monitor
 
-> **NB Korea Demand Diagnosis · Competitive Benchmarking · BDC Operational Pipeline**
+> **NB Korea Demand Diagnosis · Competitive Benchmarking · Weekly Monitoring Pipeline**
 
-A weekly performance monitoring system for **New Balance Korea** that triangulates search trends, social signals, macro indicators, and financial data against three global competitors (Nike, Adidas, Puma) to deliver actionable KPIs for Business Data Coordinator workflows. The pipeline tests the hypothesized **Macro → Korea → Global** demand chain via 5-dimension orthogonal causality framework, surfaces three critical analytical findings through self-diagnostic protocols, and serves a 6-tab Streamlit dashboard with 13 production-ready KPIs.
+A weekly performance monitoring system for **New Balance Korea** that triangulates search trends, social signals, macro indicators, and financial data against three global competitors (Nike, Adidas, Puma) to deliver weekly monitoring KPIs. The pipeline tests the hypothesized **Macro → Korea → Global** demand chain via 5-dimension orthogonal causality framework, surfaces three critical analytical findings through self-diagnostic protocols, and serves a 6-tab Streamlit dashboard with 13 production-ready KPIs.
 
 **Live Dashboard:** [https://sportswear-brand-monitor-newbalance.streamlit.app/](https://sportswear-brand-monitor-newbalance.streamlit.app/)
 
@@ -32,7 +32,7 @@ A weekly performance monitoring system for **New Balance Korea** that triangulat
 
 ## Motivation
 
-This project addresses four questions that a New Balance Korea Business Data Coordinator would need to answer weekly:
+This project addresses four questions about New Balance Korea's weekly search demand:
 
 ### 1. What drives NB Korea's search demand structurally?
 
@@ -59,9 +59,9 @@ Initial Stage 4 DTW analysis suggested Korea leads Global by ~10 weeks. Stage 7 
 
 ### 3. How can statistical anomaly detection separate seasonal patterns from real events?
 
-Stage 2's rolling z-score baseline (8-week window, |z| > 2.0) produced 69 anomalies (5.0% rate). MSTL residual-based detection with the same threshold produced 70 anomalies but only **6 overlapped** between the two sets. The remaining 63 z-score anomalies were quarterly seasonal artifacts — a **91.3% false positive rate** that motivated the methodology shift.
+Stage 2's rolling z-score baseline (8-week window, |z| > 2.0) produced 69 anomalies (5.0% rate). MSTL residual-based detection with the same threshold produced 70 anomalies but only **6 overlapped** between the two sets. The remaining 63 z-score anomalies (**91.3%**) were no longer flagged once both seasonal periods were removed, which is consistent with quarterly seasonal artifacts. This is a disagreement rate between the two methods, not a false positive rate measured against labeled events, and it motivated the methodology shift.
 
-This single number empirically justifies the time series decomposition step: rolling windows cannot distinguish quarterly patterns from genuine anomalies on dual-season (annual + quarterly) series, while MSTL decomposition removes both periodicities before flagging residuals.
+This disagreement motivates the time series decomposition step: rolling windows cannot distinguish quarterly patterns from genuine anomalies on dual-season (annual + quarterly) series, while MSTL decomposition removes both periodicities before flagging residuals.
 
 ### 4. Which forecasting model wins on a 174-week dataset with quarterly seasonality?
 
@@ -76,6 +76,8 @@ A 4-way comparison reveals Prophet wins both regions:
 | Chronos-base (zero-shot) | 7.80 | 27.4% | 3.99 | 14.1% |
 
 Ablation analysis isolates **automatic changepoint detection** as the dominant factor — not the model class itself, but the algorithm's ability to handle non-stationary trend changes in event-driven series. LSTM's 467:1 parameter-to-sample ratio causes structural overfitting, and Chronos shows anti-scaling (small > base) on short context windows, an empirically verified case of foundation model scaling failure on 174-week series.
+
+These numbers come from a single train/test split and use realized CSI values in the test window. See the known limitations under [Stage 6](#stage-6--4-way-forecasting-comparison) before reading them as forecast accuracy.
 
 ---
 
@@ -212,7 +214,7 @@ Raw DTW lags cluster near 52w (annual cycle), capturing Korea-FW vs Global-SS ph
 
 **Confusion matrix (z-score vs MSTL):**
 - Both anomaly: 6 (true cross-method agreement)
-- Z-score only: 63 (**91.3% false positive rate** in Stage 2 baseline)
+- Z-score only: 63 (**91.3%** of Stage 2 z-score flags not confirmed on the MSTL residual; a method disagreement rate, not a labeled false positive rate)
 - MSTL only: 64 (new discoveries after deseasonalizing)
 - Both normal: 1,259
 
@@ -267,6 +269,12 @@ M+IF agreement alone is **not independent cross-validation** because both operat
 **Chronos:** Univariate zero-shot, small (46M) and base (200M) compared. **Anti-scaling result: small outperforms base in both regions.** 174 weeks insufficient context for base's complex prior; pre-trained longer-range patterns become noise on short context.
 
 **Prophet (final winner):** RMSE 5.57 (Korea), 2.54 (Global). Both regions wins. Ablation isolates automatic changepoint detection as the dominant factor.
+
+**Known limitations of this comparison:**
+- The CSI values in the test window are the realized ones. SARIMAX, Prophet and LSTM receive CSI for the 26 test weeks as an input (`forecast_data_prep.py` carries each month's CSI to its weeks, and the test rows are passed to the models as is). Their errors are therefore ex-post forecast errors given the realized CSI path, not errors of forecasts made with the information available at the forecast origin.
+- Chronos is univariate and receives no CSI, so the four models are not compared on equal information.
+- Evaluation is a single 148/26 split. Model rankings are not checked across multiple forecast origins.
+- No seasonal naive baseline is included, so the errors are not scaled against a simple reference.
 
 ### Stage 7 — Korea-Global Bridge: Methodology Validation Stage
 
@@ -355,11 +363,11 @@ Each analytical task is solved with a Traditional baseline + Advanced/Foundation
 
 ### Why Hybrid Sentiment over LLM-only
 
-Full LLM API for 10,000 texts would cost ~$10. The hybrid approach uses keyword dictionary for 97.4% of clear cases (|score| ≥ 0.3) and routes only the 2.6% ambiguous cases to Claude API via Batch API (50% discount). Total cost: **35.8 KRW**, maintaining 95% of LLM-only accuracy on validation samples. This demonstrates **case-by-case tool selection + cost governance** — core BDC operational skills, transferable to any cost-sensitive analytical workflow.
+Full LLM API for 10,000 texts would cost ~$10. The hybrid approach uses keyword dictionary for 97.4% of clear cases (|score| ≥ 0.3) and routes only the 2.6% ambiguous cases to Claude API via Batch API (50% discount). Total cost: **35.8 KRW**, maintaining 95% of LLM-only accuracy on validation samples. This is an example of **case-by-case tool selection + cost governance**, transferable to any cost-sensitive analytical workflow.
 
 ### Why Prophet wins (and what it means)
 
-Prophet's automatic changepoint detection captures structural breaks that SARIMAX (parametric, fixed AR order) and LSTM (severe overfitting at 467:1) cannot. The 4-way ablation isolates this as the dominant factor — not the model class itself, but **the algorithm's ability to handle non-stationary trend changes** in event-driven series. This finding generalizes: for short, event-driven business time series, models with explicit changepoint mechanisms outperform both classical statistical and deep learning approaches.
+Prophet's automatic changepoint detection captures structural breaks that SARIMAX (parametric, fixed AR order) and LSTM (severe overfitting at 467:1) cannot. The 4-way ablation isolates this as the dominant factor — not the model class itself, but **the algorithm's ability to handle non-stationary trend changes** in event-driven series. This holds for these two series on one 26-week test window, where the model with an explicit changepoint mechanism did better than the classical statistical and deep learning alternatives. That is too little evidence to claim the result generalizes to other short, event-driven series.
 
 ### 5-Dimension Orthogonal Null Framework
 
@@ -418,7 +426,7 @@ The "demand-conversion gap" is hypothesized to drive 530 dependency intensificat
 
 **Stage 4 Integrated Diagnosis (sign-corrected):** NB Korea is a follower market driven by external signals. The Global trend serves as a 10-week monitoring indicator for Korean demand — **a dashboard reference value, not a forecast model input**. This distinction is critical for KPI 7's operational scope.
 
-**Stage 6 mechanism finding:** Prophet 4-way ablation reveals automatic changepoint detection as dominant. Removing changepoint capability (Prophet without changepoints = essentially Fourier+CSI baseline) collapses Prophet's win, confirming that the win is method-driven, not data-luck.
+**Stage 6 mechanism finding:** The ablation (`analysis/prophet_ablation.py`) sets Prophet's seasonal terms to match SARIMAX (yearly and quarterly Fourier K=2, CSI regressor) and attributes the remaining RMSE gap to Prophet's piecewise trend with changepoints. Prophet was not run with changepoints removed, and the two models also differ in error structure, so this is an attribution under feature parity on one test window.
 
 #### Stage 7 Findings (Data Points 19-24): Methodology Validation Assets
 
@@ -437,7 +445,7 @@ The project's analytical governance produces transferable methodology assets bey
 
 | Finding | Stage | Quantified Evidence |
 |---|---|---|
-| z-score 91.3% false positive | 5 | 63/69 Stage 2 anomalies were quarterly seasonal artifacts |
+| z-score vs MSTL disagreement 91.3% | 5 | 63/69 Stage 2 z-score flags were not flagged on the MSTL residual (method disagreement, not a labeled false positive rate) |
 | MSTL dual-season structure | 3 | 48-75% residual variance reduction across all 8 series |
 | Stage 4 sign convention error caught | 7 | Synthetic probe + leakage-free replication + mediation signature (3 independent tests) |
 | Prophet changepoint dominance | 6 | 4-way ablation isolates changepoint detection as primary driver |
@@ -785,14 +793,14 @@ Full list in `requirements.txt` (root, for Streamlit Cloud) and `requirements_da
 | Stage 2 — SQL ETL | COMPLETED | 8 SQL files, mart 5 tables + 5 views |
 | Stage 3 — Seasonal + Sentiment | COMPLETED | MSTL primary, hybrid sentiment 35.8 KRW |
 | Stage 4 — Leading Indicator | COMPLETED (sign-corrected in Stage 7) | 4-pattern Granger, 3-way DTW |
-| Stage 5 — Anomaly Detection | COMPLETED | 91.3% false positive finding, Tier structure, 25 events |
+| Stage 5 — Anomaly Detection | COMPLETED | 91.3% z-score vs MSTL disagreement, Tier structure, 25 events |
 | Stage 6 — Forecasting | COMPLETED | 4-way comparison, Prophet wins, ablation |
 | Stage 7 — Bridge Validation | COMPLETED | 5-dim orthogonal null, DP20/23/24 cascade |
 | Stage 8 — Streamlit Dashboard | COMPLETED, live URL active | 6 tabs, 13 KPIs, dual data source |
 | Stage 8b — Power BI Service | DEFERRED | Streamlit provides equivalent interactive layer |
 | Stage 9 — Weekly PDF Report | DEFERRED | Streamlit dashboard covers same KPIs interactively |
 
-**Deferred items rationale:** Streamlit dashboard provides equivalent or richer interactive visualization compared to Power BI / static PDF. Both deferred items are designed to be implementable within 2 days post-employment, integrated with the existing mart layer via the same data contract.
+**Deferred items rationale:** Streamlit dashboard provides equivalent or richer interactive visualization compared to Power BI / static PDF. Both deferred items can be added on top of the existing mart layer via the same data contract.
 
 ---
 
