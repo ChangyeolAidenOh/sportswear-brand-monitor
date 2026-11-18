@@ -1,5 +1,5 @@
 """
-Methodology Documentation tab — governance assets (KPI 12, 13).
+Methodology Documentation tab — methodology assets (KPI 12, 13).
 Visually optimized for a quick read.
 Usage: methodology_doc.render() called from app.py
 """
@@ -172,7 +172,7 @@ def _build_signature_chart():
 def render():
     """Render Methodology Documentation tab content."""
     st.header("Methodology Documentation")
-    st.caption("Governance assets — not operational metrics (KPI 12, 13)")
+    st.caption("Methodology assets — not operational metrics (KPI 12, 13)")
 
     # -- Chain diagram
     if os.path.exists(CHAIN_SUMMARY_PNG):
@@ -227,7 +227,7 @@ def render():
     st.markdown("---")
 
     # -- 4-Layer summary
-    st.subheader("Stage 7 — 4-Layer Narrative")
+    st.subheader("Stage 7 — 4-Layer Summary")
 
     cols = st.columns(4)
     layers = [
@@ -249,7 +249,7 @@ def render():
             )
 
     st.caption(
-        "Full narrative: docs/stage7_bridge_report.md | "
+        "Full write-up: docs/stage7_bridge_report.md | "
         "Artifacts: stage7_checkpoint.md | "
         "Source: methodology.md §12"
     )

@@ -18,11 +18,11 @@
 >
 > **DB retrofit applied** — `mart.korea_global_lag` table received migration `011_korea_global_lag_sign_correction.sql` on 2026-05-03, flipping `mean_lag_weeks`, `median_lag_weeks`, `cc_best_lag_weeks` signs and swapping `lag_direction` labels for all 12 rows. Post-commit distribution: Global leads = 10, Korea leads = 2 (NB rows uniformly 'Global leads' across all deseason_method).
 >
-> **Stage 4 narrative body below is preserved as-is** for trace value (trace preservation pattern). When interpreting lag values and direction labels in this document, apply sign correction lens:
+> **Stage 4 body below is preserved as-is** for trace value (trace preservation pattern). When interpreting lag values and direction labels in this document, apply sign correction lens:
 > - "Korea leads by +Xw" → "Global leads by Xw"
 > - "Global leads by Xw" (already negative-magnitude) → "Korea leads by Xw"
 > - DP9 (B2 Key Finding line 165): "NB Korea → Global Structural Lead +10.4w" → "**NB Global → Korea Structural Lead ~10.4w**"
-> - DP21 / DP22 narrative downstream: see stage7_checkpoint.md Cascade Corrections section
+> - DP21 / DP22 downstream changes: see stage7_checkpoint.md Cascade Corrections section
 >
 > **Cross-references:** stage7_checkpoint.md (Track A2 + DP24 detection + §12.4 quantitative validation), exploratory_findings.md (DP24 sign inversion, DP9 sign-corrected, DP22 deprecated → DP24 successor), v3 §4.5 Hypothesis Evolution sub-section.
 >
@@ -149,7 +149,7 @@ adidas/global and nike/global residuals were 1st-differenced and Granger re-run.
 | puma | global | VAR(3) | 0.47 | — |
 | puma | korea | VAR(2) | 1.38 | 0.0033 |
 
-**Cointegration:** 5/8 pairs show Engle-Granger cointegration (p<0.05). NB/korea strongest (p=0.0008) — long-run equilibrium between NB search and consumer sentiment, reinforcing the "demand-conversion gap" narrative. VECM estimation deferred to Stage 7.
+**Cointegration:** 5/8 pairs show Engle-Granger cointegration (p<0.05). NB/korea strongest (p=0.0008) — long-run equilibrium between NB search and consumer sentiment, reinforcing the "demand-conversion gap" reading. VECM estimation deferred to Stage 7.
 
 IRF plots saved to `figures/var/irf/` (8 plots).
 
@@ -268,7 +268,7 @@ figures/dtw/
 
 ---
 
-## Track A + B Combined Narrative
+## Track A + B Combined Reading
 
 NB Korea is structurally positioned as a **macro-sentiment-reactive brand with regional lead**:
 
@@ -276,7 +276,7 @@ NB Korea is structurally positioned as a **macro-sentiment-reactive brand with r
 - **Regional lead (Track B):** NB Korea's structural growth trend precedes Global by ~10 weeks. Korea acts as an early signal for NB's global trajectory.
 - **Combined implication:** A potential chain exists — CSI → NB Korea Search → NB Global Search — where macro consumer sentiment drives NB Korea demand, which in turn leads NB Global demand by ~10 weeks. Quantitative verification of this 3-stage chain is deferred to Stage 7 (Korea-Global Bridge).
 
-This finding transforms the "demand-conversion gap" from a weakness into a dual narrative:
+This finding transforms the "demand-conversion gap" from a weakness into a two-part reading:
 - **Weakness:** NB cannot independently sustain search demand during macro downturns
 - **Strength:** NB Korea serves as a leading indicator for NB Global, giving a ~10-week advance signal for global demand shifts
 

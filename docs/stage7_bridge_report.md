@@ -3,7 +3,7 @@
 **Project:** NB Korea Sportswear Brand Monitor
 **Stage:** 7 (Korea-Global Bridge Analysis)
 **Date:** 2026-05-03
-**Purpose:** 1-page narrative summary. Full methodology in `methodology.md` §12; quantitative artifacts in `stage7_checkpoint.md`.
+**Purpose:** 1-page summary. Full methodology in `methodology.md` §12; quantitative artifacts in `stage7_checkpoint.md`.
 
 ---
 
@@ -21,7 +21,7 @@ The chain hypothesis was rejected, but the rejection itself is not the story.
 
 - **DP20 — Mediation spurious correlation pre-emption.** Step 0 stationarity re-check identified that monthly-aggregated trend regressions would produce spurious mediation coefficients regardless of true causal structure. Diff1 robustness specifications were committed pre-execution, preventing post-hoc result chasing.
 
-- **DP23 — MSTL forward-looking leakage.** A narrative-negative Track A3 result (Korea trend exogenous degrading Prophet RMSE +59%) triggered self-diagnostic that revealed `statsmodels.MSTL` uses a two-sided STL filter, leaking future information into the trend component. Track A3 was invalidated as a result; replication framework established.
+- **DP23 — MSTL forward-looking leakage.** A negative Track A3 result (Korea trend exogenous degrading Prophet RMSE +59%) triggered self-diagnostic that revealed `statsmodels.MSTL` uses a two-sided STL filter, leaking future information into the trend component. Track A3 was invalidated as a result; replication framework established.
 
 - **DP24 — Stage 4 sign convention inversion.** Leakage-free DTW + CC re-computation produced direction-flipped results relative to Stage 4 labels. A synthetic Korea-leads-by-5w probe confirmed: Stage 4 code returns CC −5, DTW −4.57. Magnitude correct, sign convention inverted. Cascade applied through DP9 / DP21 / DP22 / KPI 7.
 
@@ -44,13 +44,13 @@ This operational asymmetry between visualization and prediction propagates direc
 
 ---
 
-## Why This Matters
+## Implications
 
 The result of Stage 7 is more than a 3-stage chain that turned out to be null.
 
 The verification detected three findings in the pipeline itself, including a sign convention error in earlier stages. The detection chain was DP20 (pre-emption design) → DP23 (self-diagnostic) → DP24 (verification byproduct).
 
-KPI 12 (5-Dimension Orthogonal Null Verification Pattern) and KPI 13 (Methodology Validation Stage Pattern) explicitly index these as governance assets for future analyses. The Stage 4 sign correction was caught before Stage 8 dashboard implementation, not after — timing matters for the credibility of the self-skepticism claim.
+KPI 12 (5-Dimension Orthogonal Null Verification Pattern) and KPI 13 (Methodology Validation Stage Pattern) explicitly index these as methodology assets for future analyses. The Stage 4 sign correction was caught before Stage 8 dashboard implementation.
 
 ---
 
@@ -75,4 +75,4 @@ Trace preservation: `stage4_checkpoint.md` retains original analysis with Sign C
 - Database retrofit: `database/migrations/011_korea_global_lag_sign_correction.sql`
 - Visualization: `figures/bridge/chain_summary.png`
 
-*Stage 7 closing narrative: methodology validation stage. Hypothesis test result is one finding among four governance findings.*
+*Stage 7 closing note: methodology validation stage. Hypothesis test result is one finding among four governance findings.*

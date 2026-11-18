@@ -493,7 +493,7 @@ DTW + cointegration + mediation 세 검정의 결과 패턴은 Stage 4부터 다
 
 **[Body preserved as authored pre-DP24]**
 
-CSI → NB Korea → NB Global 3-stage chain 검증 결과 chain hypothesis는 reject되나, 이를 reframe할 때 운영 활용 시각이 가장 강한 narrative를 제공한다. NB Korea 수요는 Global 수요의 직접 driver는 아니지만, common driver(CSI 등 macro signal)에 대해 Global보다 빠른 반응을 보이는 **sentinel** 역할을 한다. Korea의 빠른 macro 반응성(elasticity 3.98, Stage 6 DP16) + DTW shape similarity(+10.4w, Stage 4 DP9) + Stage 7 lagged cointegration null이 함께 이 framing을 지지한다.
+CSI → NB Korea → NB Global 3-stage chain 검증 결과 chain hypothesis는 reject되나, 이를 reframe할 때 운영 활용 시각이 가장 설득력 있는 해석을 제공한다. NB Korea 수요는 Global 수요의 직접 driver는 아니지만, common driver(CSI 등 macro signal)에 대해 Global보다 빠른 반응을 보이는 **sentinel** 역할을 한다. Korea의 빠른 macro 반응성(elasticity 3.98, Stage 6 DP16) + DTW shape similarity(+10.4w, Stage 4 DP9) + Stage 7 lagged cointegration null이 함께 이 framing을 지지한다.
 
 **Operational Implication (DEPRECATED):** Korea 검색 trend의 4주 이동평균을 Global 수요 예측의 leading indicator로 활용. KPI 7 dashboard에 직접 surface.
 
@@ -501,7 +501,7 @@ CSI → NB Korea → NB Global 3-stage chain 검증 결과 chain hypothesis는 r
 
 ### Data Point 23: MSTL Forward-Looking Leakage (Self-Diagnostic)
 
-Track A3 (Korea trend exogenous → Global Prophet)의 narrative-negative 결과(Prophet RMSE +59% degradation)가 self-diagnostic을 trigger했다.
+Track A3 (Korea trend exogenous → Global Prophet)의 negative 결과(Prophet RMSE +59% degradation)가 self-diagnostic을 trigger했다.
 
 **Detection trail (3 steps):**
 
@@ -511,7 +511,7 @@ Track A3 (Korea trend exogenous → Global Prophet)의 narrative-negative 결과
 
 3. **Quantification.** `bridge_mstl_leakage_check.py` — expanding-window MSTL real-time trend 추정 후 bulk-fit trend과의 차이 측정. korea_trend ratio 0.2689, global_trend ratio 0.2612, 둘 다 0.15 significance threshold 초과. **Significant leakage 확정.**
 
-**대응 — Track A3 재설계:** 부호 정정 + MSTL 미사용 + leakage-free trend (raw search lagged 또는 expanding-window MSTL trend)로 재설계 → DP24 narrative와 결합.
+**대응 — Track A3 재설계:** 부호 정정 + MSTL 미사용 + leakage-free trend (raw search lagged 또는 expanding-window MSTL trend)로 재설계 → DP24 해석과 결합.
 
 **Methodology validation 가치:** Step 0의 diff1 robustness specification (DP20에서 사전 commit)이 spurious regression risk와 MSTL leakage risk **둘 다에 대한 robustness check**로 incidentally 기능했다. 단일 design choice, 두 독립 risk 대응. 본 프로젝트의 가장 강한 design value 사례.
 
@@ -550,13 +550,13 @@ Stage 4 코드는 이를 "Korea leads"로 라벨링 — verbal-mathematical inve
 | `mart.korea_global_lag` | Stage 4 raw | **Migration 011 applied 2026-05-03** — 12 rows sign-flipped + labels swapped |
 | `stage4_checkpoint.md` | original analysis preserved | **Sign Correction Notice footnote applied 2026-05-03** (trace value, cross-ref to §12.4.4) |
 
-**Methodology Validation Climax:**
+**Methodology Validation Summary:**
 
 > Self-diagnostic detection of sign convention error in own analytical pipeline is the demonstrable evidence of analytical governance discipline.
 
 DP20 (사전 차단) → DP23 (self-diagnostic) → DP24 (검증 부산물의 critical finding)의 3단 stack은 Stage 7을 단순 hypothesis test stage가 아닌 **methodology validation stage**로 정의한다.
 
-**Operational Implication:** 분석 pipeline의 sign convention은 verbal과 mathematical convention이 일치하는지 사전 검증해야 한다. Self-diagnostic routines (synthetic test data probe, multi-method cross-validation, alternative specification 병행)이 enterprise-grade 분석 governance의 핵심이다. 본 발견이 Stage 8 dashboard 진입 전에 잡혔다는 점이 중요.
+**Operational Implication:** 분석 pipeline의 sign convention은 verbal과 mathematical convention이 일치하는지 사전 검증해야 한다. Self-diagnostic routines (synthetic test data probe, multi-method cross-validation, alternative specification 병행)이 분석 governance의 기본 절차다. 본 발견이 Stage 8 dashboard 진입 전에 잡혔다는 점이 중요.
 
 ### KPI 7 Redefinition (Sign-Corrected + Operational Scope Explicit)
 
@@ -600,7 +600,7 @@ Stage 6 KPI 11종에 추가 + 정밀화 + 신규 KPI:
 
 12. **5-Dimension Orthogonal Null Verification Pattern** (KPI 7과 별개의 methodology asset) — 향후 cross-region/cross-channel 가설 검정 시 본 프로젝트의 11-test framework (VARX × monthly Granger × mediation × cointegration, 모두 양방향)를 default verification protocol로 적용. 단일 검정 의존 회피.
 
-13. **Methodology Validation Stage Pattern** (governance asset) — 신규 stage 진입 시 reflexive self-diagnostic routine을 commit. DP20 (사전 차단) → DP23 (self-diagnostic) → DP24 (검증 부산물) 3단 cascade가 default 적용 패턴. Stage 7이 본 프로젝트의 governance climax.
+13. **Methodology Validation Stage Pattern** (methodology asset) — 신규 stage 진입 시 reflexive self-diagnostic routine을 commit. DP20 (사전 차단) → DP23 (self-diagnostic) → DP24 (검증 부산물) 3단 cascade가 default 적용 패턴.
 
 **KPI 7 운영 정밀화 (DP24 + Track A3 cascade):** dashboard 시각화 layer × forecast model layer 분리 운영. Global signal은 monitoring O / predictive X.
 
@@ -609,4 +609,4 @@ Stage 6 KPI 11종에 추가 + 정밀화 + 신규 KPI:
 
 *Stage 6 Forecasting Insights: APPENDED (2026-05-01, updated with Track E Prophet + DP18).*
 *Stage 7 Korea-Global Bridge Insights: APPENDED (2026-05-03, DP19~24 + KPI 7 redefinition + DP9 sign correction tag + DP22 deprecated).*
-*Stage 8 — Analytics Dashboard: COMPLETED (2026-05-03). Live URL: https://sportswear-brand-monitor-newbalance.streamlit.app/ | 6-tab Streamlit dashboard, 13 KPIs, dual data source (PostgreSQL / CSV fallback), Stage 7 narrative surfacing 5 locations.*
+*Stage 8 — Analytics Dashboard: COMPLETED (2026-05-03). Live URL: https://sportswear-brand-monitor-newbalance.streamlit.app/ | 6-tab Streamlit dashboard, 13 KPIs, dual data source (PostgreSQL / CSV fallback), Stage 7 summary shown in 5 locations.*

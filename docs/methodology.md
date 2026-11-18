@@ -236,7 +236,7 @@ Engle-Granger cointegration detected in 5/8 brand×region pairs:
 | nike | korea | 0.0070 |
 | puma | korea | 0.0033 |
 
-Cointegration implies a long-run equilibrium relationship between search demand and consumer sentiment — an independent finding from Granger causality. Even when short-run dynamics differ by brand, the series revert to a shared equilibrium. NB/korea's strongest cointegration (p=0.0008) reinforces the "demand-conversion gap" narrative: NB search and consumer sentiment are tightly coupled in the long run, yet NB fails to convert this coupling into market leadership (search leads). VECM estimation deferred to Stage 7 (Korea-Global Bridge extension).
+Cointegration implies a long-run equilibrium relationship between search demand and consumer sentiment — an independent finding from Granger causality. Even when short-run dynamics differ by brand, the series revert to a shared equilibrium. NB/korea's strongest cointegration (p=0.0008) reinforces the "demand-conversion gap" reading: NB search and consumer sentiment are tightly coupled in the long run, yet NB fails to convert this coupling into market leadership (search leads). VECM estimation deferred to Stage 7 (Korea-Global Bridge extension).
 
 ### 7.8 Neural Granger Exclusion
 
@@ -297,7 +297,7 @@ NB's trend DTW (+10.4w) and cross-correlation (+9w) converge, providing dual-met
 
 ---
 
-## 9. Granger Interpretation Narrative (Stage 4)
+## 9. Granger Interpretation (Stage 4)
 
 ### 9.1 Honest Negative Result
 
@@ -391,7 +391,7 @@ Air Max Day 2024 (March 26, brand=nike) was undetected — not because the match
 
 ### 11.1 Forecast Target and Horizon
 
-Forecast target: NB Korea and NB Global weekly search_index from mart.brand_kpi_weekly. These two series form the core CSI → NB Korea → NB Global chain narrative (Stage 4). Other brands excluded — 4-brand × 2-region expansion offers low marginal value relative to implementation cost, and NB is the project's primary analytical subject.
+Forecast target: NB Korea and NB Global weekly search_index from mart.brand_kpi_weekly. These two series form the core CSI → NB Korea → NB Global chain hypothesis (Stage 4). Other brands excluded — 4-brand × 2-region expansion offers low marginal value relative to implementation cost, and NB is the project's primary analytical subject.
 
 Forecast horizon: 26 weeks (test set). This spans two quarterly cycles (13w × 2), ensuring the test window contains at least one full period of both annual (52w) and quarterly (13w) seasonality discovered in Stage 3 MSTL decomposition. A 12-week test would not complete a single quarterly cycle, making it impossible to evaluate whether models capture seasonal patterns.
 
@@ -415,7 +415,7 @@ Stage 3 MSTL confirmed dual seasonality: annual (52w) and quarterly (13w). Three
 
 Configuration: K=2 for T=52 (annual) + K=2 for T=13 (quarterly) = 8 Fourier columns. K=2 captures the fundamental frequency and first harmonic for each period. K≥3 was rejected because total parameter count (ARIMA order + 9 exogenous + intercept ≈ 12-14 parameters) against 148 observations must maintain at least 10:1 ratio.
 
-The Fourier index t is sequential (0, 1, ..., n-1) starting from the first training observation. For test-period forecasting, t continues seamlessly (148, 149, ..., 173), ensuring phase continuity.
+The Fourier index t is sequential (0, 1, ..., n-1) starting from the first training observation. For test-period forecasting, t continues from the training index (148, 149, ..., 173), ensuring phase continuity.
 
 ### 11.4 SARIMAX Order Selection
 
@@ -528,11 +528,11 @@ Stage 7 was designed to verify the 3-stage chain hypothesis (CSI → NB Korea �
 
 **DP20 — Mediation spurious correlation pre-emption.** Step 0 stationarity re-check identified that monthly-aggregated trend components produce non-stationary regression inputs, which would generate spurious mediation coefficients regardless of true causal structure. Alternative specifications (diff1, residual) were committed pre-execution, preventing post-hoc result chasing.
 
-**DP23 — MSTL forward-looking leakage.** Track A3 narrative-negative result (Korea trend exogenous → Prophet RMSE +59%) triggered self-diagnostic that revealed MSTL decomposition uses two-sided STL filter, leaking future information into trend component. This invalidated Track A3 design and prompted leakage-free replication.
+**DP23 — MSTL forward-looking leakage.** Track A3 negative result (Korea trend exogenous → Prophet RMSE +59%) triggered self-diagnostic that revealed MSTL decomposition uses two-sided STL filter, leaking future information into trend component. This invalidated Track A3 design and prompted leakage-free replication.
 
 **DP24 — Stage 4 sign convention inversion.** Leakage-free DTW + CC re-computation classified results as direction_flipped relative to Stage 4 labels. Synthetic test data (Korea leads Global by 5w) confirmed Stage 4 code returns CC −5, DTW −4.57 — magnitude correct, sign convention inverted. Mediation re-run with corrected direction validated: inconsistent mediation signature dissipated (% indirect 120% → 11%), CI width narrowed 47%, both quantitative signatures of correct directional specification.
 
-**Cumulative implication.** Stage 7's value lies less in the hypothesis test result (chain rejected) than in the verification process, which relied on **self-skepticism + multi-method validation**. Three critical findings were surfaced through internal sanity checks.
+**Cumulative implication.** Stage 7's value lies less in the hypothesis test result (chain rejected) than in the verification process, which relied on **self-diagnostic checks + multi-method validation**. Three critical findings were surfaced through internal sanity checks.
 
 ### 12.4 Korea Trend / Global Trend Exogenous (Sign-Corrected, Track A3)
 
@@ -568,7 +568,7 @@ Stage 6 4-way comparison established Prophet as primary forecast model for both 
 
 #### 12.7.2 Bridge Tab Right-Panel Integration
 
-Stage 8 dashboard adopts a "Forecast & Bridge" tab consolidating Stage 6's forecasting output with Stage 7's chain diagram visualization (Track C). The right panel surfaces three artifacts: (1) Global trend MA as monitoring leading indicator visualization (KPI 7 redefinition), (2) `chain_diagram_data.json` node/edge structure rendering CSI/Global/Korea relationships with sign-corrected direction labels and `operational_use` metadata distinguishing monitoring vs predictive scope, (3) Mirror Sentinel + Differential Reactivity narrative tooltip surfacing the operational interpretation. Korea Prophet forecast chart occupies the left panel; the right panel does not feed into the forecast model — operational asymmetry between visualization and prediction is itself documented in the dashboard tooltip as design rationale.
+Stage 8 dashboard adopts a "Forecast & Bridge" tab consolidating Stage 6's forecasting output with Stage 7's chain diagram visualization (Track C). The right panel surfaces three artifacts: (1) Global trend MA as monitoring leading indicator visualization (KPI 7 redefinition), (2) `chain_diagram_data.json` node/edge structure rendering CSI/Global/Korea relationships with sign-corrected direction labels and `operational_use` metadata distinguishing monitoring vs predictive scope, (3) Mirror Sentinel + Differential Reactivity tooltip surfacing the operational interpretation. Korea Prophet forecast chart occupies the left panel; the right panel does not feed into the forecast model — operational asymmetry between visualization and prediction is itself documented in the dashboard tooltip as design rationale.
 
 #### 12.7.3 KPI 7 Operational Implementation
 
@@ -580,7 +580,7 @@ Migration 011 (`011_korea_global_lag_sign_correction.sql`) applied 2026-05-03 to
 
 #### 12.7.5 Methodology Asset Propagation (KPI 12, KPI 13)
 
-Two new KPIs from Stage 7 represent governance assets transferable to future analyses: KPI 12 (5-Dimension Orthogonal Null Verification Pattern) and KPI 13 (Methodology Validation Stage Pattern). These are surfaced in the Stage 8 Methodology Documentation tab (6th tab) as governance assets, separated from operational metrics (Tab 1-5) by design. Implementation includes 5-dim null heatmap (11/11 REJECT visualization), DP20→DP23→DP24 cascade flow diagram, and DP24 before/after signature chart.
+Two new KPIs from Stage 7 are methodology assets reusable in future analyses: KPI 12 (5-Dimension Orthogonal Null Verification Pattern) and KPI 13 (Methodology Validation Stage Pattern). These are surfaced in the Stage 8 Methodology Documentation tab (6th tab) as methodology assets, separated from operational metrics (Tab 1-5) by design. Implementation includes 5-dim null heatmap (11/11 REJECT visualization), DP20→DP23→DP24 cascade flow diagram, and DP24 before/after signature chart.
 
 
 ### 12.8 Stage 8 Dashboard Implementation Record (2026-05-03)
@@ -598,9 +598,9 @@ Stage 8 implemented the analytics dashboard as Streamlit web application, deploy
 | Channel | 2 | SoV Korea vs Global grouped bar + divergence timeline + product gap (574/2002r) |
 | Anomaly | 4, 8, 9 | 3-way detection timeline + method agreement monthly + spike/dip breakdown + event stacking |
 | Forecast & Bridge | 6, 7, 10, 11 | Prophet 26w with CI + 4-way model comparison + chain diagram + Global 4w MA |
-| Methodology Doc | 12, 13 | 5-dim null heatmap + DP cascade flow + DP24 signature chart + 4-layer narrative cards |
+| Methodology Doc | 12, 13 | 5-dim null heatmap + DP cascade flow + DP24 signature chart + 4-layer summary cards |
 
-**Stage 7 Narrative Surfacing (5 locations):** (1) Sidebar About — 4-layer one-line summary, (2) Tab 5 chain_summary.png + chain_diagram_data.json visualization, (3) Tab 5 monitoring vs predictive caption, (4) Tab 5 degradation evidence expander, (5) Methodology Doc tab — KPI 12/13 full governance asset visualization.
+**Stage 7 Summary Locations (5 locations):** (1) Sidebar About — 4-layer one-line summary, (2) Tab 5 chain_summary.png + chain_diagram_data.json visualization, (3) Tab 5 monitoring vs predictive caption, (4) Tab 5 degradation evidence expander, (5) Methodology Doc tab — KPI 12/13 full methodology asset visualization.
 
 **Migration 011 Verification:** `mart.korea_global_lag` queried directly with sign-corrected column names (`deseason_method`, `lag_direction = 'Global leads'`). CSV export post-Migration 011 confirmed 12 rows.
 

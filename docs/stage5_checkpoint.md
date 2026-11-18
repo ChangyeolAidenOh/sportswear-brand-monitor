@@ -10,7 +10,7 @@
 
 Stage 2's rolling z-score anomalies (69 cases, 5.0% rate) were 91.3% false positives — seasonal artifacts from quarterly (13w) patterns that the rolling window could not distinguish from genuine anomalies. MSTL decomposition removes these patterns before anomaly detection, producing a fundamentally different anomaly set.
 
-This single number answers "why was time series decomposition necessary?" with empirical evidence.
+This figure is the empirical answer to "why was time series decomposition necessary?"
 
 ---
 
@@ -202,7 +202,7 @@ Tier 1 ex-macro = Tier 1 all (no macro matches in Tier 1) — clean result.
 
 ---
 
-## Narrative Insights (Stage 5)
+## Insights (Stage 5)
 
 ### Data Point 11: Celebrity-Driven Search Dominance in NB Korea
 
@@ -293,6 +293,6 @@ figures/anomaly/
 - SARIMAX with exogenous CSI variable (leveraging Stage 4 Granger results)
 - LSTM sequence model (174w short series challenge)
 - Chronos zero-shot foundation model comparison
-- Narrative: short time series → foundation model advantage?
+- Question: short time series → foundation model advantage?
 
 *Stage 5 Anomaly Detection Refinement: COMPLETED.*

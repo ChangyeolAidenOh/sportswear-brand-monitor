@@ -19,7 +19,7 @@ A weekly performance monitoring system for **New Balance Korea** that triangulat
 - [Key Findings — 24 Data Points](#key-findings--24-data-points)
   - [NB Korea Structural Diagnosis](#nb-korea-structural-diagnosis)
   - [Methodology Validation Findings](#methodology-validation-findings)
-  - [The 4-Layer Narrative](#the-4-layer-narrative)
+  - [The 4-Layer Summary](#the-4-layer-summary)
 - [Dashboard](#dashboard)
 - [13 Production KPIs](#13-production-kpis)
 - [Project Structure](#project-structure)
@@ -237,7 +237,7 @@ M+IF agreement alone is **not independent cross-validation** because both operat
 | Tier 1 + 2 | 17 | 38 | 44.7% | Includes same-input M+IF cases |
 | Scheduled events | 6 | 7 | **85.7%** | Event Detection Rate (independent ground truth) |
 
-**Narrative findings:**
+**Findings:**
 - Celebrity endorsement creates search spikes exceeding typical product launches (NB Korea 2024-09-15: 송혜교 + 아이유 + Stone Island simultaneous, z=+2.15)
 - CSI macro events explain multi-brand dips (2024-12 CSI -12.7pt drop matched co-occurring NB+Puma Korea anomalies)
 - Air Max Day creates competitor spillover anomalies (Nike's seasonal model absorbs the predictable annual event, but adidas/NB anomalies appear in the same week)
@@ -321,11 +321,11 @@ Stage 4's headline finding "NB Korea leads Global by ~10 weeks" was direction-in
 | DP24 | Migration 011 | Database retrofit applied |
 | DP24 | Stage 8 dashboard Tab 5 | Chain diagram direction corrected, Global MA panel added |
 
-**Stage 7 climax narrative:**
+**Stage 7 summary:**
 
 > "Stage 7's value lies less in the hypothesis test result (chain rejected) than in the verification process. Three critical findings were surfaced through internal sanity checks."
 
-This is a **methodology validation stage** — its primary deliverable is the analytical governance pattern (DP20 → DP23 → DP24 cascade) itself, registered as KPI 13 (governance asset).
+This is a **methodology validation stage** — its primary deliverable is the analytical governance pattern (DP20 → DP23 → DP24 cascade) itself, registered as KPI 13 (methodology asset).
 
 ### Stage 8 — Streamlit Dashboard
 
@@ -363,7 +363,7 @@ Each analytical task is solved with a Traditional baseline + Advanced/Foundation
 
 ### Why Hybrid Sentiment over LLM-only
 
-Full LLM API for 10,000 texts would cost ~$10. The hybrid approach uses keyword dictionary for 97.4% of clear cases (|score| ≥ 0.3) and routes only the 2.6% ambiguous cases to Claude API via Batch API (50% discount). Total cost: **35.8 KRW**, maintaining 95% of LLM-only accuracy on validation samples. This is an example of **case-by-case tool selection + cost governance**, transferable to any cost-sensitive analytical workflow.
+Full LLM API for 10,000 texts would cost ~$10. The hybrid approach uses keyword dictionary for 97.4% of clear cases (|score| ≥ 0.3) and routes only the 2.6% ambiguous cases to Claude API via Batch API (50% discount). Total cost: **35.8 KRW**, maintaining 95% of LLM-only accuracy on validation samples. This is an example of **case-by-case tool selection + cost governance**.
 
 ### Why Prophet wins (and what it means)
 
@@ -379,7 +379,7 @@ A research-grade methodology asset developed in Stage 7 to guard against false p
 4. **Monthly Granger bidirectional** — Resolution sensitivity check (weekly noise control)
 5. **Lagged cointegration bidirectional** — Engle-Granger long-run equilibrium test
 
-If the chain hypothesis holds, all 5 dimensions should produce convergent evidence. If even one rejects, the hypothesis is provisionally rejected pending additional investigation. This framework is registered as **KPI 12 (methodology asset)** for transferable use in future causal analyses.
+If the chain hypothesis holds, all 5 dimensions should produce convergent evidence. If even one rejects, the hypothesis is provisionally rejected pending additional investigation. This framework is registered as **KPI 12 (methodology asset)** for reuse in future causal analyses.
 
 ---
 
@@ -441,7 +441,7 @@ The "demand-conversion gap" is hypothesized to drive 530 dependency intensificat
 
 ### Methodology Validation Findings
 
-The project's analytical governance produces transferable methodology assets beyond the immediate business diagnosis:
+Beyond the business diagnosis, the project produced reusable methodology assets:
 
 | Finding | Stage | Quantified Evidence |
 |---|---|---|
@@ -453,9 +453,9 @@ The project's analytical governance produces transferable methodology assets bey
 | Inconsistent mediation signature | 7 | %indirect 120.35% (sign error) → 10.82% (corrected) |
 | MSTL forward-looking leakage | 7 | Two-sided filter introduces look-ahead bias, one-sided replacement applied |
 
-### The 4-Layer Narrative
+### The 4-Layer Summary
 
-The original 3-stage chain hypothesis (CSI → NB Korea → NB Global) was **rejected** through 5-dimension orthogonal null testing. However, the 4-layer narrative restructures Stage 7's deliverable around its actual contribution:
+The original 3-stage chain hypothesis (CSI → NB Korea → NB Global) was **rejected** through 5-dimension orthogonal null testing. The 4-layer summary below organizes Stage 7's deliverable around what the stage actually produced:
 
 ```
 Layer 1: Original Hypothesis (CSI → Korea → Global)
@@ -464,8 +464,8 @@ Layer 2: Hypothesis Rejection (statistical result)
          ↓ Reframed as: "What did the verification process surface?"
 Layer 3: Three Self-Diagnostic Findings (DP20, DP23, DP24)
          ↓ Cascaded into: Sign correction + leakage fix + retroactive validation framework
-Layer 4: Methodology Validation Stage Pattern (KPI 13 — governance asset)
-         ↓ Final deliverable: Analytical governance discipline transferable to enterprise contexts
+Layer 4: Methodology Validation Stage Pattern (KPI 13 — methodology asset)
+         ↓ Final deliverable: a reusable validation procedure
 ```
 
 > "Stage 7's value lies less in the hypothesis test result (chain rejected) than in the verification process. Three critical findings were surfaced through internal sanity checks."
@@ -483,7 +483,7 @@ Layer 4: Methodology Validation Stage Pattern (KPI 13 — governance asset)
 | **Channel** | SoV Korea vs Global side-by-side + divergence bar chart (574/2002R cross-region anchors) + product gap analysis | 2 |
 | **Anomaly** | 222 anomaly records across 4 detection methods (z-score 69 + MSTL z2.0 70 + MSTL z3.0 11 + Isolation Forest 72) + interactive timeline + method agreement matrix + event stacking density visualization | 4, 8, 9 |
 | **Forecast & Bridge** | Prophet 26-week forecast + 4-way RMSE comparison bar chart + chain diagram (sign-corrected) + Global trend 4-week MA monitoring panel with operational scope tooltip | 6, 7, 10, 11 |
-| **Methodology Doc** | 5-dim orthogonal null heatmap + DP20→DP23→DP24 cascade flow + DP24 verification signatures (3 tests) + 4-Layer Narrative cards (color-coded borders) | 12, 13 |
+| **Methodology Doc** | 5-dim orthogonal null heatmap + DP20→DP23→DP24 cascade flow + DP24 verification signatures (3 tests) + 4-Layer Summary cards (color-coded borders) | 12, 13 |
 
 KPI 7 in Tab 5 explicitly distinguishes monitoring use (dashboard visualization, ✓) from predictive use (forecast model input, ✗) per Stage 7 sign-correction findings — a Migration 011 retrofit applied directly to the dashboard layer.
 
@@ -514,9 +514,9 @@ Each KPI has been promoted from a confirmed finding through the pipeline. Operat
 | 10 | CSI elasticity monitoring | CSI variation × Korea elasticity (3.98) → estimated search impact | Stage 6 |
 | 11 | 26-week search forecast (Prophet baseline) | Quarterly forecast with CSI + Fourier K=2 + changepoints | Stage 6 |
 | 12 | 5-Dimension Orthogonal Null Verification Pattern | **Methodology asset** — VARX × monthly Granger × mediation × cointegration 11-test framework | Stage 7 |
-| 13 | Methodology Validation Stage Pattern | **Governance asset** — DP20 (pre-emptive) → DP23 (self-diagnostic) → DP24 (verification byproduct) cascade | Stage 7 |
+| 13 | Methodology Validation Stage Pattern | **Methodology asset** — DP20 (pre-emptive) → DP23 (self-diagnostic) → DP24 (verification byproduct) cascade | Stage 7 |
 
-KPIs 12 and 13 are not weekly monitoring metrics but **transferable analytical assets** — they represent the project's contribution to methodology and governance practice itself.
+KPIs 12 and 13 are **reusable analytical assets** and are not tracked as weekly monitoring metrics. They record the validation methods developed in the project.
 
 ---
 
@@ -526,7 +526,7 @@ KPIs 12 and 13 are not weekly monitoring metrics but **transferable analytical a
 sportswear-brand-monitor/
 ├── README.md                                    # this file
 ├── docs/
-│   ├── methodology.md                           # §1-12 analytical decisions narrative
+│   ├── methodology.md                           # §1-12 analytical decisions
 │   ├── exploratory_findings.md                  # 24 data points + diagnoses
 │   ├── data_feasibility_report.md               # Stage 0 spike report
 │   ├── stage1_checkpoint.md ~ stage8_checkpoint.md
@@ -644,9 +644,9 @@ Every major analytical decision is documented in `methodology.md` (§1-12) with 
 
 This produces a self-documenting audit trail. Each stage's checkpoint references methodology sections, and methodology sections reference verification figures and code modules. The result is a navigable graph of decisions, evidence, and consequences.
 
-### Self-Diagnostic Discipline (Stage 7 Climax)
+### Self-Diagnostic Discipline (Stage 7)
 
-Stage 7 represents the project's analytical governance climax. Three critical findings were surfaced through self-diagnostic:
+In Stage 7, three critical findings were surfaced through self-diagnostic:
 
 | Finding | Type | Detection Method |
 |---|---|---|
@@ -654,7 +654,7 @@ Stage 7 represents the project's analytical governance climax. Three critical fi
 | DP23 — MSTL forward-looking leakage | Methodology | Detected via residual autocorrelation at non-zero lags |
 | DP24 — Stage 4 sign convention error | Methodology | 3 independent tests (synthetic + leakage-free + mediation signature) |
 
-These findings would have been invisible without **deliberate self-diagnostic protocols**. The Methodology Validation Stage Pattern (DP20 → DP23 → DP24 cascade) is itself a transferable analytical asset, registered as KPI 13.
+These findings would have been invisible without **deliberate self-diagnostic protocols**. The Methodology Validation Stage Pattern (DP20 → DP23 → DP24 cascade) is itself a reusable analytical asset, registered as KPI 13.
 
 ---
 

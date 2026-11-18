@@ -113,7 +113,7 @@
 
 **Result:** Social → Search hop removed. Granger chain: Search → Sales (2-stage).
 Social repositioned as cross-sectional auxiliary variable.
-See `docs/methodology.md` for full narrative.
+See `docs/methodology.md` for details.
 
 ### Decision #3: nb_social / nb_channel excluded (Option B)
 

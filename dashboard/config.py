@@ -70,7 +70,7 @@ BRAND_LABELS = {
 
 # KPI registry — 13 KPIs mapped to tabs
 # KPI 1-11: operational metrics (Tabs 1-5)
-# KPI 12-13: governance assets (Methodology Doc tab)
+# KPI 12-13: methodology assets (Methodology Doc tab)
 KPI_TAB_MAP = {
     1: {"tab": "tab1", "name": "530 Dependency Ratio", "alert": "> 60%"},
     2: {"tab": "tab1,tab3", "name": "D2C Search Trend", "alert": "4-week decline"},

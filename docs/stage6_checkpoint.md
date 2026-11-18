@@ -345,7 +345,7 @@ Three key inputs from Stage 6 to Stage 7:
 
 1. **CSI elasticity asymmetry (Korea 3.98 vs Global 2.01, SARIMAX-specific).** The first hop of the 3-stage chain (CSI→Korea) has ~2x the gain of CSI→Global direct. This quantitative baseline enables hop-by-hop gain comparison in Stage 7. Note: Prophet's changepoint trend absorbs this CSI effect, so the 2x ratio is a SARIMAX structural finding, not model-agnostic.
 
-2. **Global ARIMA(0,1,0) — no autoregressive momentum.** Global search has no self-predictive structure, strongly supporting the Stage 7 hypothesis that Global is driven entirely by external signals (Korea lead + CSI). This justifies the experiment of adding Korea trend as an exogenous variable in Global forecasting. Prophet's piecewise trend already captures some structural breaks that Korea lead might explain — the incremental gain of adding Korea trend as exogenous may be smaller than against SARIMAX baseline. This is not a narrative loss but a testable prediction for Stage 7.
+2. **Global ARIMA(0,1,0) — no autoregressive momentum.** Global search has no self-predictive structure, strongly supporting the Stage 7 hypothesis that Global is driven entirely by external signals (Korea lead + CSI). This justifies the experiment of adding Korea trend as an exogenous variable in Global forecasting. Prophet's piecewise trend already captures some structural breaks that Korea lead might explain — the incremental gain of adding Korea trend as exogenous may be smaller than against SARIMAX baseline. This is a testable prediction for Stage 7.
 
 3. **Dashboard model selection: Prophet for both series.** Single framework simplifies Stage 8 Streamlit implementation — one model class covers Korea and Global.
 

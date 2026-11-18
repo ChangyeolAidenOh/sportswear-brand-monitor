@@ -43,9 +43,9 @@
 | prophet_metrics.csv | 6 |
 | forecast_comparison_4way.csv | 24 |
 
-### Stage 7 Narrative Surfacing
+### Stage 7 Summary Locations
 
-- **Sidebar About:** 4-layer narrative one-line summary
+- **Sidebar About:** 4-layer one-line summary
 - **Tab 5 right panel:** chain_diagram_data.json visualization + chain_summary.png
 - **Tab 5 caption:** monitoring vs predictive distinction (KPI 7)
 - **Tab 5 expander:** degradation evidence table (Prophet -9.0% / SARIMAX -10.9%)

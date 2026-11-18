@@ -27,7 +27,7 @@
 
 **Decision:** MSTL adopted as primary method. STL retained as comparison in documentation only.
 
-**Narrative:** "STL로 시작했으나 MSTL 비교에서 분기 sub-annual 구조를 발견, 잔차 분산 48–75% 감소를 확인하고 MSTL로 전환. 발견 → 판단 → 전환의 데이터 기반 의사결정."
+**Summary:** "STL로 시작했으나 MSTL 비교에서 분기 sub-annual 구조를 발견, 잔차 분산 48–75% 감소를 확인하고 MSTL로 전환. 발견 → 판단 → 전환의 데이터 기반 의사결정."
 
 **Implication for Stage 6:** Dual-season structure means single seasonal order SARIMA is insufficient. Stage 6 will use SARIMAX with quarterly exogenous dummies, TBATS, or Chronos comparison.
 
@@ -268,4 +268,4 @@ figures/sentiment/
 - `methodology.md` §6 신설: Hybrid 감성 분석 (3-way 사전, 협찬 필터, threshold, sentiment_static 비정규화)
 - `exploratory_findings.md` H2: Stage 3 correction 주석 추가 (~~1.18~~ → 0.86, 취소선 보존)
 - `exploratory_findings.md` H2 summary table: status 업데이트 (🔍 Weak → ✅ Corrected)
-- `exploratory_findings.md` Stage 3 Cross-cutting Insights 섹션 신설 (8개 data point narrative + Integrated Business Diagnosis 업데이트)
+- `exploratory_findings.md` Stage 3 Cross-cutting Insights 섹션 신설 (8개 data point 설명 + Integrated Business Diagnosis 업데이트)

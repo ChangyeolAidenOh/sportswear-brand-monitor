@@ -211,7 +211,7 @@ Both models show statistically significant degradation. Cross-model classificati
 
 Original 3-way framing (large/small/no gain) failed to anticipate negative-delta significant outcomes. Auto-classifier sign-handling flaw self-detected and patched. 4-way matrix officialized:
 
-| Outcome | Trigger | Narrative |
+| Outcome | Trigger | Interpretation |
 |---|---|---|
 | Large gain | Δ% ≥ +5%, DM p < 0.10 | Global signal as leading proxy for common-driver effect |
 | Small gain | +2% ≤ Δ% < +5%, DM p < 0.10 | DP18 cross-direction validation: changepoint absorption symmetric |
@@ -303,7 +303,7 @@ Original DP22 ("sentinel framing — Korea = sentinel for common drivers via dif
 - Mechanism preserved: differential reactivity to common drivers; Global registers shape changes earlier
 - All 9 cumulative cross-stage evidence points re-aligned to sign-corrected direction (see §12.6)
 
-DP24 occupies the slot DP22 held in narrative function.
+DP24 occupies the slot DP22 held in the write-up.
 
 **Trace preservation pattern.** `exploratory_findings.md` DP22 본문은 보존, 상단에 `[DEPRECATED 2026-05-03]` tag + DP24 cross-reference 추가. 본문 내용 수정 금지. `stage4_checkpoint.md` footnote 처리와 동일 패턴 — "DP22가 사라졌다"가 아니라 "DP22가 deprecated됐고 DP24가 successor"라는 trace를 남긴다.
 
@@ -319,7 +319,7 @@ Defensive value: Step 0 diff1 robustness specification (committed against spurio
 
 **Detection trail:** DP24 evidence is documented in Track A2 (Sign Convention Validation) Tests 1–3. See A2 section for quantitative results.
 
-Cascade applied through DP9 / DP21 / DP22 / KPI 7 / §12.6 / operational narrative. Stage 4 mart table `mart.korea_global_lag.lag_weeks` retains original sign for trace preservation; migration 011 applies retrofit at Stage 7 close.
+Cascade applied through DP9 / DP21 / DP22 / KPI 7 / §12.6 / operational interpretation. Stage 4 mart table `mart.korea_global_lag.lag_weeks` retains original sign for trace preservation; migration 011 applies retrofit at Stage 7 close.
 
 ### KPI 7 Redefinition
 
@@ -345,8 +345,8 @@ Operational implication preserved — leading indicator monitoring workflow vali
 | §12.7 Stage 7 → Stage 8 Handoff | body authored (post-Track-C close) | 5 sub-sections: Forecast Model Selection / Bridge Tab Right-Panel Integration / KPI 7 Operational Implementation / Migration 011 Retrofit Status / Methodology Asset Propagation (KPI 12, 13) |
 
 **§12.7 stub outline** (본문은 Stage 7 close 시점 — Track A3 + B1 nested 완료 후):
-- Track A3 결과별 Stage 8 "Forecast & Bridge" 탭 우측 패널 데이터 명세 — large/small/no gain 시나리오 각각의 input CSV 분기 + 차트 narrative
-- Track C chain diagram (`chain_diagram_data.json`) → Stage 8 dashboard linkage 명세 (sign-corrected 노드/엣지 구조, Mirror Sentinel narrative tooltip)
+- Track A3 결과별 Stage 8 "Forecast & Bridge" 탭 우측 패널 데이터 명세 — large/small/no gain 시나리오 각각의 input CSV 분기 + 차트 설명
+- Track C chain diagram (`chain_diagram_data.json`) → Stage 8 dashboard linkage 명세 (sign-corrected 노드/엣지 구조, Mirror Sentinel tooltip)
 - KPI 7 redefinition operational implementation — Streamlit/Power BI dashboard에서 Korea trend MA → Global trend MA 정의 변경 + Korea 수요 예측 leading indicator framing 정확 표시
 - Migration 011 retrofit 시점 명시 — Stage 7 close 일괄 commit (Track A3 final + B1 nested 결과 본 후, Stage 8 진입 전)
 
@@ -356,11 +356,11 @@ Stage 7 was designed to verify the 3-stage chain hypothesis (CSI → NB Korea �
 
 **DP20 — Mediation spurious correlation pre-emption.** Step 0 stationarity re-check identified that monthly-aggregated trend components produce non-stationary regression inputs, which would generate spurious mediation coefficients regardless of true causal structure. Alternative specifications (diff1, residual) were committed pre-execution, preventing post-hoc result chasing.
 
-**DP23 — MSTL forward-looking leakage.** Track A3 narrative-negative result (Korea trend exogenous → Prophet RMSE +59%) triggered self-diagnostic that revealed MSTL decomposition uses two-sided STL filter, leaking future information into trend component. This invalidated Track A3 design and prompted leakage-free replication.
+**DP23 — MSTL forward-looking leakage.** Track A3 negative result (Korea trend exogenous → Prophet RMSE +59%) triggered self-diagnostic that revealed MSTL decomposition uses two-sided STL filter, leaking future information into trend component. This invalidated Track A3 design and prompted leakage-free replication.
 
 **DP24 — Stage 4 sign convention inversion.** Leakage-free DTW + CC re-computation classified results as direction_flipped relative to Stage 4 labels. Synthetic test data (Korea leads Global by 5w) confirmed Stage 4 code returns CC −5, DTW −4.57 — magnitude correct, sign convention inverted. Mediation re-run with corrected direction validated: inconsistent mediation signature dissipated (% indirect 120% → 11%), CI width narrowed 47%, both quantitative signatures of correct directional specification.
 
-**Cumulative implication.** Stage 7's value lies less in the hypothesis test result (chain rejected) than in the verification process, which relied on **self-skepticism + multi-method validation**. Three critical findings were surfaced through internal sanity checks.
+**Cumulative implication.** Stage 7's value lies less in the hypothesis test result (chain rejected) than in the verification process, which relied on **self-diagnostic checks + multi-method validation**. Three critical findings were surfaced through internal sanity checks.
 
 ### §12.6 Mechanism: Three Plausible Hypotheses (Sign-Corrected Direction) (body)
 
@@ -543,7 +543,7 @@ figures/bridge/
 └── chain_summary.png                                   # Track C — 1-slide summary visualization
 
 docs/
-└── stage7_bridge_report.md                             # Track C — 1-page narrative summary (4-layer climax)
+└── stage7_bridge_report.md                             # Track C — 1-page summary (4-layer structure)
 
 database/migrations/
 └── 011_korea_global_lag_sign_correction.sql            # Applied 2026-05-03 (12 rows sign-flipped + labels swapped)
@@ -553,9 +553,9 @@ database/migrations/
 
 ## Documentation Updates
 
-- `methodology.md` §12.1~§12.7 body authored (sign-corrected). §12.3.5 Methodology Validation expansion + §12.6 Mechanism 3 hypotheses + §12.7 5 sub-sections handoff narrative all complete.
+- `methodology.md` §12.1~§12.7 body authored (sign-corrected). §12.3.5 Methodology Validation expansion + §12.6 Mechanism 3 hypotheses + §12.7 5 sub-sections handoff notes all complete.
 - `exploratory_findings.md` Stage 7 section: DP19/20/21/23/24 + KPI 7 redefinition (Global trend MA → Korea monitoring leading indicator, operational scope explicit) + KPI 12 (5-Dim Verification Pattern) + KPI 13 (Methodology Validation Stage Pattern) + Integrated Business Diagnosis (Stage 7 sign-corrected). DP22 deprecated with body preserved + DP24 successor cross-reference. DP9 [Sign Correction Applied] tag.
-- `sportswear_brand_monitor_project_plan_v3.md`: §4.5 Sign Correction Notice inline blockquote + §4.8 Stage 7 4-layer narrative inline blockquote + §12 검증된 인사이트 재구성 (KPI 11 → 13종) + footer Stage 7 close 날짜 갱신 applied 2026-05-03.
+- `sportswear_brand_monitor_project_plan_v3.md`: §4.5 Sign Correction Notice inline blockquote + §4.8 Stage 7 4-layer summary inline blockquote + §12 검증된 인사이트 재구성 (KPI 11 → 13종) + footer Stage 7 close 날짜 갱신 applied 2026-05-03.
 
 ### Decisions recorded (Stage 7, including post-DP24 cascade)
 
@@ -590,9 +590,9 @@ Track A3 re-design + B1 nested closed with degradation outcome (4th scenario, se
 |---|---|---|
 | Machine-readable chain data | `data/bridge/chain_diagram_data.json` | Stage 8 Streamlit dashboard direct input. Schema includes `nodes` (CSI/Global/Korea), `edges` (3 with sign-corrected direction), `operational_use` object 5 fields (monitoring_indicator / predictive_feature / interference_detected / interference_evidence / dashboard_role), `narrative` scenario tag (`B_parallel_with_operational_refinement` + Mirror Sentinel + Differential Reactivity framing), `test_summary` 11 tests, `data_points_referenced` 5건. |
 | Visualization | `figures/bridge/chain_summary.png` | 1-slide summary. 3-node diagram with sign-corrected direction (Global → Korea dashed line = shape lead monitoring only), CSI → Global/Korea solid lines (direct drive), "✗ NOT predictive feature (Prophet −9.0% / SARIMAX −10.9% RMSE degradation)" red annotation, 5-Dimension Orthogonal Null + DP20→DP23→DP24 self-diagnostic chain bottom panel. |
-| Narrative summary | `docs/stage7_bridge_report.md` | 1-page narrative summary. 4-layer climax structure: Layer 1 (5-dim orthogonal null × 11 tests) → Layer 2 (self-diagnostic chain DP20→DP23→DP24) → Layer 3 (3 quantitative signatures of DP24) → Layer 4 (operational refinement Mirror Sentinel + Differential Reactivity). "Why This Matters" section. Stage 8 handoff 4 components. Cross-references to stage7_checkpoint.md, methodology.md §12, exploratory_findings.md DP19~24, migration 011, chain_summary.png. |
+| Summary | `docs/stage7_bridge_report.md` | 1-page summary. 4-layer structure: Layer 1 (5-dim orthogonal null × 11 tests) → Layer 2 (self-diagnostic chain DP20→DP23→DP24) → Layer 3 (3 quantitative signatures of DP24) → Layer 4 (operational refinement Mirror Sentinel + Differential Reactivity). "Implications" section. Stage 8 handoff 4 components. Cross-references to stage7_checkpoint.md, methodology.md §12, exploratory_findings.md DP19~24, migration 011, chain_summary.png. |
 
-**Three artifacts in complementary roles:** machine-readable (JSON for dashboard code) + visualization (PNG for slide) + narrative (Markdown for human read). All three express the same 4-layer narrative + sign-corrected direction + monitoring vs predictive distinction with internal consistency.
+**Three artifacts in complementary roles:** machine-readable (JSON for dashboard code) + visualization (PNG for slide) + text (Markdown for human read). All three express the same 4-layer summary + sign-corrected direction + monitoring vs predictive distinction with internal consistency.
 
 ---
 
@@ -602,26 +602,26 @@ Stage 7 close required synchronization across 8 documents and artifacts. All app
 
 | Item | Status | Note |
 |---|---|---|
-| `methodology.md` §12.1~§12.7 body | COMPLETED | §12.1~§12.6 condensed body + §12.3.5 + §12.6 full migrate from checkpoint + §12.7 5 sub-sections handoff narrative |
-| `exploratory_findings.md` DP19~24 + KPI 7 redefinition + KPI 12/13 | COMPLETED | DP9 [Sign Correction Applied] tag + DP22 [DEPRECATED] + DP24 climax 3-signature stack + Stage 7 Integrated Diagnosis + Methodology Validation Climax 인용 |
+| `methodology.md` §12.1~§12.7 body | COMPLETED | §12.1~§12.6 condensed body + §12.3.5 + §12.6 full migrate from checkpoint + §12.7 5 sub-sections handoff notes |
+| `exploratory_findings.md` DP19~24 + KPI 7 redefinition + KPI 12/13 | COMPLETED | DP9 [Sign Correction Applied] tag + DP22 [DEPRECATED] + DP24 3-signature stack + Stage 7 Integrated Diagnosis + Methodology Validation Summary 인용 |
 | Migration 011 retrofit | COMPLETED | `mart.korea_global_lag` 12 rows sign-flipped + `lag_direction` labels swapped |
 | `stage4_checkpoint.md` Sign Correction Notice footnote | COMPLETED | 5-item surfacing (detect timing / magnitude vs direction / 3 quantitative signatures / DB retrofit applied / 본문 보존 정책) |
 | Track C 3 산출물 | COMPLETED | chain_diagram_data.json + chain_summary.png + stage7_bridge_report.md |
-| `sportswear_brand_monitor_project_plan_v3.md` 동기화 | COMPLETED | §4.5 Sign Correction Notice + §4.8 Stage 7 4-layer narrative inline blockquote + §12 검증된 인사이트 재구성 (KPI 11→13종) + footer 날짜 |
+| `sportswear_brand_monitor_project_plan_v3.md` 동기화 | COMPLETED | §4.5 Sign Correction Notice + §4.8 Stage 7 4-layer summary inline blockquote + §12 검증된 인사이트 재구성 (KPI 11→13종) + footer 날짜 |
 | Auto-classifier patch (signed delta + 4-way branch) | COMPLETED | self-detected + applied + 4-way outcome matrix officialized |
 
 ---
 
 ## Next: Stage 8 Entry
 
-Stage 7 → Stage 8 handoff narrative authored in methodology.md §12.7 (5 sub-sections). Track C산출물이 Stage 8 dashboard 직접 입력으로 작동하도록 schema 사전 commit 완료.
+Stage 7 → Stage 8 handoff notes authored in methodology.md §12.7 (5 sub-sections). Track C산출물이 Stage 8 dashboard 직접 입력으로 작동하도록 schema 사전 commit 완료.
 
 **Stage 8 entry pre-decisions (Stage 7 cascade 반영):**
 - Forecast & Bridge tab 통합 구조 (Korea Prophet 좌측 + chain_diagram 우측)
 - KPI 7 dual surface (monitoring vs predictive 분리 tooltip 양 dashboard)
-- Methodology Documentation tab (KPI 12/13 governance asset surfacing)
+- Methodology Documentation tab (KPI 12/13 methodology asset surfacing)
 - Migration 011 sign-corrected table 직접 query (no further translation logic)
-- Stage 7 4-layer narrative dashboard tooltip / About section 반영
+- Stage 7 4-layer summary dashboard tooltip / About section 반영
 - stage7_bridge_report.md README link
 
-*Stage 7 COMPLETED 2026-05-03 — All Tracks (A1 + A1' bidirectional + A2 sign convention validation + A3 re-design + B1 nested + C bridge report) closed. Methodology Validation Stage narrative committed across methodology.md §12, exploratory_findings.md DP19~24, stage7_bridge_report.md, v3 plan §4.8. Stage 8 진입 준비 완료.*
+*Stage 7 COMPLETED 2026-05-03 — All Tracks (A1 + A1' bidirectional + A2 sign convention validation + A3 re-design + B1 nested + C bridge report) closed. Methodology Validation Stage write-up committed across methodology.md §12, exploratory_findings.md DP19~24, stage7_bridge_report.md, v3 plan §4.8. Stage 8 진입 준비 완료.*

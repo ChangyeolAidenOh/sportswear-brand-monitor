@@ -47,7 +47,7 @@ with st.sidebar:
         "corporate filings)."
     )
 
-    st.markdown("#### Stage 7 Narrative")
+    st.markdown("#### Stage 7 Summary")
     st.markdown(
         "**Layer 1** — 5-dim orthogonal null x 11 tests  \n"
         "**Layer 2** — Self-diagnostic chain: DP20 -> DP23 -> DP24  \n"
@@ -57,7 +57,7 @@ with st.sidebar:
     st.caption(
         "Stage 7 validated that Korea and Global demand are independently "
         "driven by CSI. Global leads Korea by ~10 weeks (monitoring only, "
-        "not predictive). Full narrative: stage7_bridge_report.md"
+        "not predictive). Full write-up: stage7_bridge_report.md"
     )
 
     st.markdown("---")

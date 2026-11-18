@@ -1,5 +1,5 @@
 """
-Tooltip component for Stage 7 narrative and operational context.
+Tooltip component for Stage 7 summary and operational context.
 Usage: from dashboard.components.tooltip import render_tooltip
 """
 
@@ -28,7 +28,7 @@ TOOLTIPS = {
     ),
     "methodology_validation": (
         "Stage 7 is a methodology validation stage, not just a hypothesis test. "
-        "4-layer narrative: 5-dim null (Layer 1) -> self-diagnostic chain (Layer 2) "
+        "4-layer summary: 5-dim null (Layer 1) -> self-diagnostic chain (Layer 2) "
         "-> quantitative signatures (Layer 3) -> operational refinement (Layer 4)."
     ),
 }

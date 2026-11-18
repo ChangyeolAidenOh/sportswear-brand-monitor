@@ -3,7 +3,7 @@ Tab 5: Forecast & Bridge — Prophet forecast (top) + chain diagram (bottom).
 KPI coverage: 6 (CSI MA), 7 (Global trend MA, monitoring only),
               10 (CSI elasticity), 11 (Prophet baseline 26w).
 Layout: Top row = Prophet forecast + 4-way comparison (region-dependent).
-        Bottom row = chain diagram + Global MA + operational narrative (static).
+        Bottom row = chain diagram + Global MA + operational notes (static).
 Usage: tab5_forecast_bridge.render() called from app.py
 """
 
